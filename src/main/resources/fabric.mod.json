@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "asteroide",
+  "version": "${version}",
+  "name": "Asteroide",
+  "description": "Simple and small additions for Meteor",
+  "authors": [
+    "Spigey"
+  ],
+  "contact": {
+    "repo": "https://github.com/MeteorDevelopment/meteor-addon-template"
+  },
+  "icon": "assets/asteroide/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "meteor": [
+      "spigey.asteroide.AsteroideAddon"
+    ]
+  },
+  "mixins": [
+    "asteroide.mixins.json"
+  ],
+  "custom": {
+    "meteor-client:color": "225,25,25"
+  },
+  "depends": {
+    "java": ">=17",
+    "minecraft": ">=${mc_version}",
+    "meteor-client": "*"
+  }
+}
