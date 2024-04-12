@@ -6,11 +6,13 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.item.Items;
 import spigey.asteroide.nbt.CrashBeehive;
 import spigey.asteroide.nbt.GrieferKit;
+import spigey.asteroide.nbt.SpawnerKit;
 
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static spigey.asteroide.util.give;
+import static spigey.asteroide.util.itemstack;
 
 public class GetNbtItem extends Command {
     public GetNbtItem() {
@@ -33,6 +35,15 @@ public class GetNbtItem extends Command {
             if(mc.player.getAbilities().creativeMode){
                 give(GrieferKit.item, GrieferKit.nbt);
                 info("Received Spigey's Griefer kit");
+            }
+            if(!mc.player.getAbilities().creativeMode) { error("You need to be in creative mode to use this command");}
+            return SINGLE_SUCCESS;
+        }));
+        builder.then(literal("SpawnerKit").executes(ctx ->{
+            assert mc.player != null;
+            if(mc.player.getAbilities().creativeMode){
+                give(SpawnerKit.item, SpawnerKit.nbt);
+                info("Received Spigey's Spawner kit");
             }
             if(!mc.player.getAbilities().creativeMode) { error("You need to be in creative mode to use this command");}
             return SINGLE_SUCCESS;
