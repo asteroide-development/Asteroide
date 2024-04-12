@@ -37,6 +37,7 @@ public class ServerCrashModule extends Module {
         if(cmdfeedback.get()){msg("/gamerule sendCommandFeedback false");}
         if(logadmin.get()){msg("/gamerule logAdminCommands false");}
         msg("/execute as @e as @e run summon bee ~ ~-10 ~ {Invulnerable:1}");
+        msg("/gamerule randomTickSpeed 2147483647");
         toggle();
     }
 }
