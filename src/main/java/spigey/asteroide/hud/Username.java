@@ -9,7 +9,7 @@ import meteordevelopment.meteorclient.utils.render.color.Color;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 public class Username extends HudElement {
-    public static final HudElementInfo<Username> INFO = new HudElementInfo<>(AsteroideAddon.HUD_GROUP, "Username", "Shows your username, good for cracked servers", Username::new);
+    public static final HudElementInfo<Username> INFO = new HudElementInfo<>(AsteroideAddon.HUD, "Username", "Shows your username, good for cracked servers", Username::new);
 
     public Username() {
         super(INFO);
