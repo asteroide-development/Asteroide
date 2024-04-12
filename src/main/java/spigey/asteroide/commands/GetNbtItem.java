@@ -32,7 +32,7 @@ public class GetNbtItem extends Command {
             assert mc.player != null;
             if(mc.player.getAbilities().creativeMode){
                 give(GrieferKit.item, GrieferKit.nbt);
-                info("Receives Spigey's Griefer kit");
+                info("Received Spigey's Griefer kit");
             }
             if(!mc.player.getAbilities().creativeMode) { error("You need to be in creative mode to use this command");}
             return SINGLE_SUCCESS;
