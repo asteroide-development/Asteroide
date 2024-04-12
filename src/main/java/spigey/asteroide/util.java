@@ -1,6 +1,11 @@
 package spigey.asteroide;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import meteordevelopment.meteorclient.commands.Command;
+import meteordevelopment.meteorclient.commands.Commands;
+import meteordevelopment.meteorclient.systems.hud.Hud;
+import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
+import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -49,5 +54,14 @@ public class util {
             perm = 0;
         }
         return perm;
+    }
+    public static void addModule(meteordevelopment.meteorclient.systems.modules.Module ModuleToAdd){
+        Modules.get().add(ModuleToAdd);
+    }
+    public static void addCommand(Command CommandToAdd){
+        Commands.add(CommandToAdd);
+    }
+    public static void addHud(HudElementInfo HudToAdd){
+        Hud.get().register(HudToAdd);
     }
 }

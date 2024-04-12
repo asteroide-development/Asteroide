@@ -1,5 +1,6 @@
 package spigey.asteroide;
 
+import net.minecraft.item.Items;
 import spigey.asteroide.commands.*;
 import spigey.asteroide.hud.*;
 import spigey.asteroide.modules.*;
@@ -12,31 +13,32 @@ import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
 
+import static spigey.asteroide.util.*;
+
 public class AsteroideAddon extends MeteorAddon {
     public static final Logger LOG = LogUtils.getLogger();
-    public static final Category CATEGORY = new Category("Asteroide");
-    public static final HudGroup HUD_GROUP = new HudGroup("Asteroide");
-
+    public static final Category CATEGORY = new Category("Asteroide", Items.AIR.getDefaultStack());
+    public static final HudGroup HUD = new HudGroup("Asteroide");
     @Override
     public void onInitialize() {
-        LOG.info("Initializing Asteoride");
-
+        LOG.info("\nI feel like killing myself rn <3\n");
         // Modules
-        Modules.get().add(new AutoKys());
-        Modules.get().add(new ServerCrashModule());
-        // Modules.get().add(new WordFilterModule());
+        addModule(new AutoKys());
+        addModule(new ServerCrashModule());
+        // addModule(new WordFilterModule());
 
 
         // Commands
-        Commands.add(new CrashAll());
-        Commands.add(new CrashPlayer());
-        Commands.add(new ServerCrash());
-        Commands.add(new GetNbtItem());
-        Commands.add(new PermLevel());
+        addCommand(new CrashAll());
+        addCommand(new CrashPlayer());
+        addCommand(new ServerCrash());
+        addCommand(new GetNbtItem());
+        addCommand(new PermLevel());
 
         // HUD
-        Hud.get().register(Username.INFO);
+        addHud(Username.INFO);
     }
+
 
     @Override
     public void onRegisterCategories() {
