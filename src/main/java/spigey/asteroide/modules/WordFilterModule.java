@@ -26,5 +26,6 @@ public class WordFilterModule extends Module {
         event.message = "aaaaa";
         info("working");
         System.out.println("working");
+        // events don't work for me :(
     }
 }
