@@ -1,5 +1,6 @@
 package spigey.asteroide.modules;
 
+import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.events.game.SendMessageEvent;
 import meteordevelopment.meteorclient.settings.*;
@@ -23,6 +24,7 @@ public class WordFilterModule extends Module {
 
     @EventHandler
     private void onMessageSend(SendMessageEvent event) {
+        MeteorClient.EVENT_BUS.subscribe(this);
         event.message = "aaaaa";
         info("working");
         System.out.println("working");
