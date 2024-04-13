@@ -39,7 +39,7 @@
 
 2. **Download the Mod**:
 
-    - Download Asteroide Here: [Releases](https://github.com/LuminaDevelopment/LuminaClient)
+    - Download Asteroide Here: [Releases](https://github.com/Spigey/Asteroide/releases)
     - Ensure the mod version you download is compatible with your Minecraft and Fabric Loader versions.
     - Save the mod `.jar` file to your computer.
 
