@@ -48,7 +48,7 @@ public class AutoKys extends Module {
             assert mc.player != null;
             Entity attacker = getAttacker(mc.player);
             if (attacker instanceof PlayerEntity) {
-                message = "GG! " + Objects.requireNonNull(((PlayerEntity) attacker).getDisplayName()).getString() + " got you.";
+                message = "sadsadsadsa";
             }
             // ChatUtils.sendMsg(Text.of(Config.get().prefix + "say " + message));
             ChatUtils.sendPlayerMsg(String.valueOf(message));
