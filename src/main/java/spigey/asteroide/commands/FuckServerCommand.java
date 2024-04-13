@@ -1,7 +1,6 @@
 package spigey.asteroide.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -21,7 +20,6 @@ public class FuckServerCommand extends Command {
         super("fuckserver", "Fucks the server using command blocks. Only do this if you are completely sure!");
     }
     private int tick;
-    private boolean enabled;
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.executes(context -> {
@@ -36,7 +34,7 @@ public class FuckServerCommand extends Command {
     }
 
     @EventHandler
-    private void onTick(TickEvent.Post event) throws CommandSyntaxException {
+    private void onTick(TickEvent.Post event) {
         if(this.tick > 0){this.tick--; return;} // don't execute when it's not done waiting
         if(this.tick == -1){return;} // disable when on -1
         assert mc.player != null;
