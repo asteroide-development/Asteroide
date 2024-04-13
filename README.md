@@ -4,7 +4,7 @@
   <img src="https://github.com/Spigey/Asteroide/blob/master/src/main/resources/assets/asteroide/icon.png?raw=true" alt="Asteroide" width="200">
 </div>
 <p align="center">
-  <strong>Simple Addons for Meteor Client</strong>
+  <strong>Simple Addons for Meteor Client. Misspelled on purpose</strong>
   <br>
   This project is still in the beta.
 </p>
