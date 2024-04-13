@@ -64,4 +64,9 @@ public class util {
     public static void addHud(HudElementInfo HudToAdd){
         Hud.get().register(HudToAdd);
     }
+    public static void CommandBlock(Item CommandBlockToGive, String Command, int AlwaysActive) throws CommandSyntaxException {
+        if(!CommandBlockToGive.toString().toUpperCase().contains("COMMAND_BLOCK")){return;}    // Only allow Command Blocks
+        String nbt = "{BlockEntityTag:{Command:\"" + Command + "\",auto:" + AlwaysActive + "b},HideFlags:127}"; // idfk nbt
+        give(itemstack(CommandBlockToGive), nbt);
+    }
 }

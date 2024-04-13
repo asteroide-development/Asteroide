@@ -4,14 +4,14 @@ import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
 import spigey.asteroide.AsteroideAddon;
+import net.minecraft.block.entity.CommandBlockBlockEntity;
 
 public class CreativeCrashModule extends Module {
-    private int checking;
-
     public CreativeCrashModule() {
         super(AsteroideAddon.CATEGORY, "Server Fuck", "Crashes the server without using OP. Creative mode required");
     }

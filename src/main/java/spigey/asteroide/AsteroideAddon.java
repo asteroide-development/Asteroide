@@ -34,6 +34,7 @@ public class AsteroideAddon extends MeteorAddon {
         addCommand(new ServerCrash());
         addCommand(new GetNbtItem());
         addCommand(new PermLevel());
+        addCommand(new thingycomnad());
 
         // HUD
         addHud(Username.INFO);
