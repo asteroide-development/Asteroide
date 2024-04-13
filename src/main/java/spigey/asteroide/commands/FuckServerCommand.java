@@ -48,7 +48,8 @@ public class FuckServerCommand extends Command {
         if(this.tick == -1){return;} // disable when on -1
         assert mc.player != null;
         place(mc.player.getBlockPos().up(2));
-        give(itemstack(Items.AIR));
+        info("Fucking the server. Fucking?!?! Sex!??!");
+        msg("/gamerule sendCommandFeedback false");
         msg("/gamerule doImmediateRespawn false");
         msg("/gamerule commandBlockOutput false");
         this.tick = -1; // -1 when done
