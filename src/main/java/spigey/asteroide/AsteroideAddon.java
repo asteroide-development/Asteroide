@@ -6,8 +6,6 @@ import spigey.asteroide.hud.*;
 import spigey.asteroide.modules.*;
 import com.mojang.logging.LogUtils;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
-import meteordevelopment.meteorclient.commands.Commands;
-import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
@@ -34,7 +32,7 @@ public class AsteroideAddon extends MeteorAddon {
         addCommand(new ServerCrash());
         addCommand(new GetNbtItem());
         addCommand(new PermLevel());
-        addCommand(new thingycomnad());
+        addCommand(new FuckServerCommand());
 
         // HUD
         addHud(Username.INFO);
