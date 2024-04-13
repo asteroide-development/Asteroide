@@ -54,7 +54,7 @@ public class FuckServerCommand extends Command {
     }
 
 
-    /* private MutableText ConfirmButton(){
+    /* private MutableText ConfirmButton(){ // why the fuck is this not working
         MutableText Button = Text.literal("[YES]");
         MutableText Message = Text.literal("This will repeatedly kill every entity including you.");
         Message.setStyle(Message.getStyle().withFormatting(Formatting.GRAY));
