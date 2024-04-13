@@ -8,7 +8,8 @@
     "Spigey"
   ],
   "contact": {
-    "repo": "https://github.com/MeteorDevelopment/meteor-addon-template"
+    "repo": "https://github.com/Spigey/Asteroide",
+    "discord": "Spigey"
   },
   "icon": "assets/asteroide/icon.png",
   "environment": "client",
