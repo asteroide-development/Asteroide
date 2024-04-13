@@ -14,13 +14,13 @@
 <a href="https://discord.gg/K8g9hmza">
   <img alt="Discord" src="https://img.shields.io/discord/1211627879243448340?label=Discord&logo=discord&style=flat-square">
 </a>
-  <a href="https://github.com/LuminaDevelopment/LuminaClient/graphs/contributors">
+  <a href="https://github.com/Spigey/Asteroide/graphs/contributors">
     <img alt="Contributors" src="https://img.shields.io/github/contributors/Spigey/Asteroide?style=flat-square">
   </a>
-  <a href="https://github.com/LuminaDevelopment/LuminaClient">
+  <a href="https://github.com/Spigey/Asteroide">
     <img alt="Code size" src="https://img.shields.io/github/languages/code-size/Spigey/Asteroide?style=flat-square">
   </a>
-  <a href="https://github.com/LuminaDevelopment/LuminaClient">
+  <a href="https://github.com/Spigey/Asteroide">
     <img alt="Lines of Code" src="https://tokei.rs/b1/github/Spigey/Asteroide?style=flat-square">
   </a>
 </p>
