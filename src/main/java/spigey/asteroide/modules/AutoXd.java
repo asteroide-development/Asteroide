@@ -6,13 +6,12 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.StringListSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
+import meteordevelopment.orbit.EventPriority;
 import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.*;
-import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
-import net.minecraft.entity.damage.DamageSource;
 
 
 import java.util.List;
@@ -35,13 +34,20 @@ public class AutoXd extends Module {
         if(event.packet instanceof EntitiesDestroyS2CPacket packet){
             List<Integer> entityIds = packet.getEntityIds();
             for(int entityId : entityIds){
+                assert mc.world != null;
                 Entity entity = mc.world.getEntityById(entityId);
                 assert entity != null;
                 if(!(entity instanceof PlayerEntity) && !(entity instanceof OtherClientPlayerEntity)){return;}
-                info("SOMEONE DIED!!!");
-                System.out.println(entity);
+                if(entity == mc.player){return;}
+                msg(messages.get().isEmpty() ? "LMAOOO" : messages.get().get(randomNum(0, messages.get().size() - 1)));
             }
         }
+    }
+    @EventHandler(priority = EventPriority.HIGHEST + 1)
+    private void PacketReceive(PacketEvent.Receive event){
+        if(!(event.packet instanceof GameMessageS2CPacket)){return;}
+        if(!((GameMessageS2CPacket) event.packet).content().toString().equals("translation{key='chat.disabled.options', args=[]}[style={color=red}]")){return;}
+        event.cancel();
     }
     private static final Random random = new Random();
     public static int randomNum(int min, int max) {
