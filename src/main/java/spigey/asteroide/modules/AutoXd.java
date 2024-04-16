@@ -39,7 +39,9 @@ public class AutoXd extends Module {
                 assert entity != null;
                 if(!(entity instanceof PlayerEntity) && !(entity instanceof OtherClientPlayerEntity)){return;}
                 if(entity == mc.player){return;}
-                msg(messages.get().isEmpty() ? "LMAOOO" : messages.get().get(randomNum(0, messages.get().size() - 1)));
+                msg(messages.get().isEmpty() ? "LMAOOO" : messages.get().get(randomNum(0, messages.get().size() - 1)).replace("{username}",entity.getDisplayName().toString()
+                    .split("/tell ")[1]
+                    .split(" '},hoverEv")[0]));
             }
         }
     }
