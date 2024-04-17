@@ -32,21 +32,9 @@ public class AntiAnnouncement extends Module {
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void PacketReceive(PacketEvent.Receive event){
         if(!(event.packet instanceof GameMessageS2CPacket)){return;}
-        boolean yes = false;
-        boolean no = !yes;
-        String message = ((GameMessageS2CPacket) event.packet).content().toString();
-        for(int i = 0; i < messages.get().size(); i++) {
-            int KILLYOURSELF = message.split("literal", -1).length - 2;
-            String[] splitMessage = ((GameMessageS2CPacket) event.packet).content().toString().split("literal");
-            for(int j = 0; j <= KILLYOURSELF && j < splitMessage.length; j++) {
-                String[] splitByBracket = splitMessage[KILLYOURSELF].split("}");
-                if(j < splitByBracket.length && splitByBracket[j].toLowerCase().contains(messages.get().get(i).toLowerCase())) {
-                    yes = true;
-                    no = !yes;
-                }
-            }
+        String content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
+        for(int i = 0; i < messages.get().size(); i++){
+            if(content.toLowerCase().contains(messages.get().get(i).toLowerCase())){event.cancel();}
         }
-        if(no){return;}
-        event.cancel();
     }
 }
