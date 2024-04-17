@@ -1,7 +1,7 @@
 # 🚀 Asteroide
 
 <div align="center">
-  <img src="https://github.com/Spigey/Asteroide/blob/master/src/main/resources/assets/asteroide/icon.png?raw=true" alt="Asteroide" width="200">
+  <img src="https://github.com/Spigey/Asteroide/blob/master/icon.png?raw=true" alt="Asteroide" width="200">
 </div>
 <p align="center">
   <strong>Simple Addons for Meteor Client. Misspelled on purpose</strong>
