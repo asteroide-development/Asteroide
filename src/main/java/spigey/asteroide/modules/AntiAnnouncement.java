@@ -8,17 +8,10 @@ import meteordevelopment.meteorclient.settings.StringListSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
-import net.minecraft.client.network.OtherClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import spigey.asteroide.AsteroideAddon;
 
 import java.util.List;
-import java.util.Random;
-
-import static spigey.asteroide.util.msg;
 
 public class AntiAnnouncement extends Module {
 
@@ -43,6 +36,6 @@ public class AntiAnnouncement extends Module {
         for(int i = 0; i < messages.get().size(); i++){
             if(content.toLowerCase().contains(messages.get().get(i).toLowerCase())){event.cancel();}
         }
-        if(content.replace(" ", "") == "" && mtmsg.get()){event.cancel();}
+        if(content.replaceAll(" ", "") == "" && mtmsg.get()){event.cancel();}
     }
 }
