@@ -1,7 +1,7 @@
 # 🚀 Asteroide
 
 <div align="center">
-  <img src="https://github.com/Spigey/Asteroide/blob/master/icon.png?raw=true" alt="Asteroide" width="200">
+  <img src="https://github.com/asteroide-development/Asteroide/blob/master/icon.png?raw=true" alt="Asteroide" width="200">
 </div>
 <p align="center">
   <strong>Simple Additions for Meteor Client. Misspelled on purpose</strong>
@@ -14,14 +14,14 @@
 <a href="https://discord.gg/K8g9hmza">
   <img alt="Discord" src="https://img.shields.io/discord/1211627879243448340?label=Discord&logo=discord&style=flat-square">
 </a>
-  <a href="https://github.com/Spigey/Asteroide/graphs/contributors">
-    <img alt="Contributors" src="https://img.shields.io/github/contributors/Spigey/Asteroide?style=flat-square">
+  <a href="https://github.com/asteroide-development/Asteroide/graphs/contributors">
+    <img alt="Contributors" src="https://img.shields.io/github/contributors/asteroide-development/Asteroide?style=flat-square">
   </a>
-  <a href="https://github.com/Spigey/Asteroide">
-    <img alt="Code size" src="https://img.shields.io/github/languages/code-size/Spigey/Asteroide?style=flat-square">
+  <a href="https://github.com/asteroide-development/Asteroide">
+    <img alt="Code size" src="https://img.shields.io/github/languages/code-size/asteroide-development/Asteroide?style=flat-square">
   </a>
-  <a href="https://github.com/Spigey/Asteroide">
-    <img alt="Lines of Code" src="https://tokei.rs/b1/github/Spigey/Asteroide?style=flat-square">
+  <a href="https://github.com/asteroide-development/Asteroide">
+    <img alt="Lines of Code" src="https://tokei.rs/b1/github/asteroide-development/Asteroide?style=flat-square">
   </a>
 </p>
 
@@ -39,7 +39,7 @@
 
 2. **Download the Mod**:
 
-    - Download Asteroide Here: [Releases](https://github.com/Spigey/Asteroide/releases)
+    - Download Asteroide Here: [Releases](https://github.com/asteroide-development/Asteroide/releases)
     - Ensure the mod version you download is compatible with your Minecraft and Fabric Loader versions.
     - Save the mod `.jar` file to your computer.
 
