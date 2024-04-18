@@ -37,6 +37,7 @@ public class AutoXd extends Module {
                 assert mc.world != null;
                 Entity entity = mc.world.getEntityById(entityId);
                 assert entity != null;
+                if(mc.world.getPlayerByUuid(entity.getUuid()) == null){return;}
                 if(!(entity instanceof PlayerEntity) && !(entity instanceof OtherClientPlayerEntity)){return;}
                 if(entity == mc.player){return;}
                 msg(messages.get().isEmpty() ? "LMAOOO" : messages.get().get(randomNum(0, messages.get().size() - 1)).replace("{username}",entity.getDisplayName().toString()
