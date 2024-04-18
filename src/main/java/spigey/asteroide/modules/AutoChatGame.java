@@ -1,9 +1,7 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
-import meteordevelopment.meteorclient.settings.Setting;
-import meteordevelopment.meteorclient.settings.SettingGroup;
-import meteordevelopment.meteorclient.settings.StringListSetting;
+import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
@@ -25,7 +23,12 @@ public class AutoChatGame extends Module {
 
     private final Setting<List<String>> messages = sgGeneral.add(new StringListSetting.Builder().name("messages").description("Trigger messages").defaultValue("say", "type", "write").build());
     private final Setting<List<String>> quotes = sgGeneral.add(new StringListSetting.Builder().name("quotes").description("Quotes").defaultValue("\"", "'", "`").build());
-
+    private final Setting<Boolean> contain = sgGeneral.add(new BoolSetting.Builder()
+        .name("Must contain 'Chat'")
+        .description("Requires the message to contain 'Chat'")
+        .defaultValue(true)
+        .build()
+    );
     public AutoChatGame() {
         super(AsteroideAddon.CATEGORY, "auto-chatgame", "Automatically answers 'say [...]' chat games when triggered");
     }
@@ -41,6 +44,7 @@ public class AutoChatGame extends Module {
         for(int i = 0; i < messages.get().size(); i++){
             if(content.toLowerCase().contains(messages.get().get(i).toLowerCase())){yes = true;}
             if(content.toLowerCase().contains("reverse")){yes = true; reverse = true;}
+            if(contain.get() && !content.toLowerCase().contains("chat")){yes = false;}
         }
         for(int i = 0; i < quotes.get().size(); i++){
             if(content.toLowerCase().contains(quotes.get().get(i))){no = true; quote = quotes.get().get(i);}

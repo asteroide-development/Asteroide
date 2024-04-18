@@ -1,6 +1,7 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.StringListSetting;
@@ -24,6 +25,12 @@ public class AntiAnnouncement extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
     private final Setting<List<String>> messages = sgGeneral.add(new StringListSetting.Builder().name("messages").description("Keywords to filter").defaultValue("❙", "-------------").build());
+    private final Setting<Boolean> mtmsg = sgGeneral.add(new BoolSetting.Builder()
+        .name("Hide empty messages")
+        .description("also prevents empty messages from showing in the chat")
+        .defaultValue(true)
+        .build()
+    );
 
     public AntiAnnouncement() {
         super(AsteroideAddon.CATEGORY, "anti-announcement", "Prevents the chat from being flooded from automated messages");
@@ -36,5 +43,6 @@ public class AntiAnnouncement extends Module {
         for(int i = 0; i < messages.get().size(); i++){
             if(content.toLowerCase().contains(messages.get().get(i).toLowerCase())){event.cancel();}
         }
+        if(content.replace(" ", "") == "" && mtmsg.get()){event.cancel();}
     }
 }
