@@ -135,7 +135,6 @@ public class AutoChatGame extends Module {
                 } else if(mode.get() == Mode.Random){
                     int randomshit = this.rand.nextInt(maxoffset.get() - minoffset.get() + 1) + minoffset.get();
                     if(Math.random() > 0.5){randomshit -= randomshit * 2;}
-                    info(String.valueOf(delay.get() + randomshit));
                     this.tick = delay.get() + randomshit;
                 }
                 if(!subscribed){
