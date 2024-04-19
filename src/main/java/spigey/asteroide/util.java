@@ -14,6 +14,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 
+import java.lang.reflect.Array;
 import java.util.Objects;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
@@ -153,5 +154,11 @@ public class util {
                 return x;
             }
         }.parse();
+    }
+    public static boolean[] append(boolean[] kys, boolean retard){ // wtf??
+        boolean[] killyourself = new boolean[kys.length + 1];
+        System.arraycopy(kys, 0, killyourself, 0, kys.length);
+        killyourself[killyourself.length - 1] = retard;
+        return killyourself;
     }
 }

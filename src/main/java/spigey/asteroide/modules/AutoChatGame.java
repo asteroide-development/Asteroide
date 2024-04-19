@@ -19,6 +19,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -33,18 +34,13 @@ public class AutoChatGame extends Module {
     private final Setting<List<String>> quotes = sgGeneral.add(new StringListSetting.Builder().name("quotes").description("Quotes").defaultValue("\"", "'", "`").build());
     private final Setting<List<String>> dont = sgGeneral.add(new StringListSetting.Builder().name("blacklisted messages").description("Do not solve the chatgame if it contains one of these Strings").defaultValue("solved", "successfully").build());
     private final Setting<List<String>> mether = sgGeneral.add(new StringListSetting.Builder().name("mather").description("Strings that will solve an equation as solution").defaultValue("solve", "equation", "calculate").build());
+    private final Setting<List<String>> contain = sgGeneral.add(new StringListSetting.Builder().name("must contain").description("Requires the message to contain all of these Strings").defaultValue().build());
     private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
         .name("delay")
         .description("The delay before sending the solution in ticks")
         .defaultValue(30)
         .min(0)
         .sliderMax(200)
-        .build()
-    );
-    private final Setting<Boolean> contain = sgGeneral.add(new BoolSetting.Builder()
-        .name("Must contain 'Chat'")
-        .description("Requires the message to contain 'Chat'")
-        .defaultValue(true)
         .build()
     );
     private final Setting<Boolean> showsul = sgGeneral.add(new BoolSetting.Builder()
@@ -86,7 +82,11 @@ public class AutoChatGame extends Module {
         for(int i = 0; i < dont.get().size(); i++){
             if(content.toLowerCase().contains(dont.get().get(i))){yes = false;}
         }
-        if(contain.get() && !content.toLowerCase().contains("chat")){yes = false;}
+        boolean[] isit = new boolean[0];
+        for(int i = 0; i < contain.get().size(); i++){
+            if(content.toLowerCase().contains(contain.get().get(i))){util.append(isit, true);}
+        }
+        if(Arrays.asList(isit).contains(false)){yes = false;}
         if(yes && no){
             if(reverse){
                 solution = String.valueOf(new StringBuilder(content.split(quote)[1]).reverse());
