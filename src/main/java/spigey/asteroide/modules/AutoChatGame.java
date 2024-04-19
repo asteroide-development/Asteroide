@@ -7,21 +7,11 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
-import net.minecraft.client.network.OtherClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.util;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import static spigey.asteroide.util.msg;
 
@@ -55,11 +45,11 @@ public class AutoChatGame extends Module {
     public AutoChatGame() {
         super(AsteroideAddon.CATEGORY, "auto-chatgame", "Automatically answers most chat games when triggered");
     }
-    int meth(String equation) throws ScriptException {
+    int meth(String equation) {
         return (int) util.eval(equation); // I was too lazy to actually change the method everywhere
     }
     @EventHandler(priority = EventPriority.HIGHEST + 1)
-    private void PacketReceive(PacketEvent.Receive event) throws ScriptException {
+    private void PacketReceive(PacketEvent.Receive event) {
         if (!(event.packet instanceof GameMessageS2CPacket)) {return;}
         String content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
         boolean yes = false;
@@ -82,17 +72,19 @@ public class AutoChatGame extends Module {
         for(int i = 0; i < dont.get().size(); i++){
             if(content.toLowerCase().contains(dont.get().get(i))){yes = false;}
         }
-        boolean[] isit = new boolean[0];
+        boolean[] isit = new boolean[contain.get().size()];
         for(int i = 0; i < contain.get().size(); i++){
-            if(content.toLowerCase().contains(contain.get().get(i).toLowerCase())){util.append(isit, true);} else{util.append(isit, false);}
+            isit[i] = content.toLowerCase().contains(contain.get().get(i).toLowerCase());
         }
-        if(Arrays.asList(isit).contains(false)){yes = false;}
+        for(int i = 0;i < isit.length; i++){
+            if(!isit[i]){yes = false;}
+        }
         if(yes && no){
             if(reverse){
                 solution = String.valueOf(new StringBuilder(content.split(quote)[1]).reverse());
             } else if(dometh) {
                 boolean cum = false;
-                int themeth = -1;
+                int themeth;
                 String except = null;
                 try{
                     themeth = meth(content.split(quote)[1]);
@@ -103,7 +95,7 @@ public class AutoChatGame extends Module {
                 }
                 if(cum){
                     info(except);
-                    yes = false;
+                    return;
                 } else{
                     solution = String.valueOf(themeth);
                 }
@@ -117,7 +109,7 @@ public class AutoChatGame extends Module {
                     MeteorClient.EVENT_BUS.subscribe(this);
                     subscribed = true;
                 }
-            };
+            }
         }
 
     }
