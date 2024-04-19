@@ -84,7 +84,7 @@ public class AutoChatGame extends Module {
         }
         boolean[] isit = new boolean[0];
         for(int i = 0; i < contain.get().size(); i++){
-            if(content.toLowerCase().contains(contain.get().get(i))){util.append(isit, true);}
+            if(content.toLowerCase().contains(contain.get().get(i).toLowerCase())){util.append(isit, true);} else{util.append(isit, false);}
         }
         if(Arrays.asList(isit).contains(false)){yes = false;}
         if(yes && no){
