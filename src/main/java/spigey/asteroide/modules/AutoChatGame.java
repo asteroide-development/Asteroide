@@ -13,6 +13,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import spigey.asteroide.AsteroideAddon;
+import spigey.asteroide.util;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -29,6 +31,7 @@ public class AutoChatGame extends Module {
     private final Setting<List<String>> messages = sgGeneral.add(new StringListSetting.Builder().name("messages").description("Trigger messages").defaultValue("say", "type", "write").build());
     private final Setting<List<String>> reversers = sgGeneral.add(new StringListSetting.Builder().name("reversers").description("Strings that will reverse the solution").defaultValue("reverse").build());
     private final Setting<List<String>> quotes = sgGeneral.add(new StringListSetting.Builder().name("quotes").description("Quotes").defaultValue("\"", "'", "`").build());
+    private final Setting<List<String>> dont = sgGeneral.add(new StringListSetting.Builder().name("blacklisted messages").description("Do not solve the chatgame if it contains one of these Strings").defaultValue("solved", "successfully").build());
     private final Setting<List<String>> mether = sgGeneral.add(new StringListSetting.Builder().name("mather").description("Strings that will solve an equation as solution").defaultValue("solve", "equation", "calculate").build());
     private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
         .name("delay")
@@ -52,14 +55,12 @@ public class AutoChatGame extends Module {
     );
     private int tick;
     private String solution = "";
+    private boolean subscribed = false;
     public AutoChatGame() {
         super(AsteroideAddon.CATEGORY, "auto-chatgame", "Automatically answers most chat games when triggered");
     }
     int meth(String equation) throws ScriptException {
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("js");
-
-        return ((Number) engine.eval(equation)).intValue();
+        return (int) util.eval(equation); // I was too lazy to actually change the method everywhere
     }
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void PacketReceive(PacketEvent.Receive event) throws ScriptException {
@@ -76,35 +77,54 @@ public class AutoChatGame extends Module {
         for(int i = 0; i < reversers.get().size(); i++){
             if(content.toLowerCase().contains(reversers.get().get(i).toLowerCase())){yes = true; reverse = true;}
         }
-        if(contain.get() && !content.toLowerCase().contains("chat")){yes = false;}
         for(int i = 0; i < quotes.get().size(); i++){
-            if(content.toLowerCase().contains(quotes.get().get(i))){no = true; quote = quotes.get().get(i);}
+            if(content.toLowerCase().contains(quotes.get().get(i)) && content.toLowerCase().indexOf(quotes.get().get(i), content.indexOf(quotes.get().get(i)) + 1) != -1){no = true; quote = quotes.get().get(i);}
         }
         for(int i = 0; i < mether.get().size(); i++){
             if(content.toLowerCase().contains(mether.get().get(i))){yes = true; dometh = true;}
         }
+        for(int i = 0; i < dont.get().size(); i++){
+            if(content.toLowerCase().contains(dont.get().get(i))){yes = false;}
+        }
+        if(contain.get() && !content.toLowerCase().contains("chat")){yes = false;}
         if(yes && no){
             if(reverse){
                 solution = String.valueOf(new StringBuilder(content.split(quote)[1]).reverse());
             } else if(dometh) {
-                int themeth = meth(content.split(quote)[1]);
+                boolean cum = false;
+                int themeth = -1;
+                String except = null;
                 try{
-                    solution = String.valueOf(themeth);
-                } catch(Exception L) {
-                    info("§c[X] " + L + "§r");
+                    themeth = meth(content.split(quote)[1]);
+                } catch(Exception L){
+                    except = "§c[X] " + L + "§r";
+                    themeth = -1;
+                    cum = true;
                 }
+                if(cum){
+                    info(except);
+                    yes = false;
+                } else{
+                    solution = String.valueOf(themeth);
+                }
+
             } else {
                 solution = content.split(quote)[1];
             }
             if(showsul.get()){info("[\uD83D\uDEC8] §fThe solution is " + solution + ".§r");} else{
                 this.tick = delay.get();
-                MeteorClient.EVENT_BUS.subscribe(this);
+                if(!subscribed){
+                    MeteorClient.EVENT_BUS.subscribe(this);
+                    subscribed = true;
+                }
             };
         }
 
     }
+
     @EventHandler
     private void onTick(TickEvent.Post event) {
+        if(!isActive()){return;} // this got me banned off my favorite server
         if(this.tick > 0){this.tick--; return;} // don't execute when it's not done waiting
         if(this.tick == -1){return;} // disable when on -1
         msg(this.solution);
