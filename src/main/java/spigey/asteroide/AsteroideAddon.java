@@ -30,7 +30,7 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new AutoBack());
         addModule(new ChatBot());
         addModule(new AutoMacro());
-        // addModule(new WordFilterModule());
+        addModule(new WordFilterModule());
 
 
         // Commands
