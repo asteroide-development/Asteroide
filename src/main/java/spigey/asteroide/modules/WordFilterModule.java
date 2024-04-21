@@ -1,19 +1,13 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.MeteorClient;
-import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.events.game.SendMessageEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import meteordevelopment.orbit.EventPriority;
-import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
 
 import java.util.List;
-import java.util.regex.Pattern;
-
-import static spigey.asteroide.util.msg;
 
 public class WordFilterModule extends Module {
     public WordFilterModule() {
