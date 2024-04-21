@@ -53,6 +53,6 @@ public class WordFilterModule extends Module {
         for(int i = 0; i < datshit.length; i++){
             message += datshit[i] + " ";
         }
-        event.message = message;
+        event.message = message.trim();
     }
 }
