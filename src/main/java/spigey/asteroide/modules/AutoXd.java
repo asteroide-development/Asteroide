@@ -1,5 +1,6 @@
 package spigey.asteroide.modules;
 
+import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
@@ -12,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.*;
 import spigey.asteroide.AsteroideAddon;
+import spigey.asteroide.events.PlayerDeathEvent;
 
 
 import java.util.List;
@@ -20,37 +22,27 @@ import java.util.Random;
 import static spigey.asteroide.util.msg;
 
 public class AutoXd extends Module {
-
+    private boolean active = false;
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
-
     private final Setting<List<String>> messages = sgGeneral.add(new StringListSetting.Builder().name("messages").description("Randomly takes the message from the list and sends on each death.").defaultValue("xd", "skill issue").build());
-
     public AutoXd() {
-        super(AsteroideAddon.CATEGORY, "auto-xd", "Sends a message when someone in your render distance dies");
+        super(AsteroideAddon.CATEGORY, "auto-xd", "Sends a message when someone dies");
+    }
+
+    @Override
+    public void onActivate() {
+        if(active){return;}
+        MeteorClient.EVENT_BUS.subscribe(this);
+        active = true;
     }
 
     @EventHandler
-    private void onPacketReceive(PacketEvent.Receive event){
-        if(event.packet instanceof EntitiesDestroyS2CPacket packet){
-            List<Integer> entityIds = packet.getEntityIds();
-            for(int entityId : entityIds){
-                assert mc.world != null;
-                Entity entity = mc.world.getEntityById(entityId);
-                assert entity != null;
-                if(mc.world.getPlayerByUuid(entity.getUuid()) == null){return;}
-                if(!(entity instanceof PlayerEntity) && !(entity instanceof OtherClientPlayerEntity)){return;}
-                if(entity == mc.player){return;}
-                msg(messages.get().isEmpty() ? "LMAOOO" : messages.get().get(randomNum(0, messages.get().size() - 1)).replace("{username}",entity.getDisplayName().toString()
-                    .split("/tell ")[1]
-                    .split(" '},hoverEv")[0]));
-            }
-        }
-    }
-    @EventHandler(priority = EventPriority.HIGHEST + 1)
-    private void PacketReceive(PacketEvent.Receive event){
-        if(!(event.packet instanceof GameMessageS2CPacket)){return;}
-        if(!((GameMessageS2CPacket) event.packet).content().toString().equals("translation{key='chat.disabled.options', args=[]}[style={color=red}]")){return;}
-        event.cancel();
+    private void onPlayerDeath(PlayerDeathEvent event){
+        if(!isActive()){return;}
+        PlayerEntity victim = event.getPlayer();
+        msg(messages.get().get(randomNum(0,messages.get().size() - 1))
+            .replace("{player}", victim.getGameProfile().getName())
+        );
     }
     private static final Random random = new Random();
     public static int randomNum(int min, int max) {
