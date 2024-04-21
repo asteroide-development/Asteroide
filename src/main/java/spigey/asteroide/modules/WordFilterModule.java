@@ -20,10 +20,24 @@ public class WordFilterModule extends Module {
         .defaultValue("cum", "sex", "dick", "nigga", "nigger", "retard", "hitler")
         .build()
     );
+    private final Setting<Boolean> woblox = sgGeneral.add(new BoolSetting.Builder()
+        .name("Roblox-like Replacement")
+        .description("Filters the message to look more like roblox filtering")
+        .defaultValue(false)
+        .build()
+    );
     private final Setting<String> replacement = sgGeneral.add(new StringSetting.Builder()
         .name("filter replacement")
         .description("String to replace filtered messages with")
         .defaultValue("@$#!?&")
+        .visible(() -> !woblox.get())
+        .build()
+    );
+    private final Setting<String> roblock = sgGeneral.add(new StringSetting.Builder()
+        .name("roblox-like filter replacement")
+        .description("String to replace filtered messages with")
+        .defaultValue("#")
+        .visible(() -> woblox.get())
         .build()
     );
     boolean activated = false;
@@ -41,7 +55,17 @@ public class WordFilterModule extends Module {
         String message = "";
         for(int i = 0; i < datshit.length; i++){
             for(int j = 0; j < messages.get().size(); j++){
-                if(datshit[i].toLowerCase().contains(messages.get().get(j).toLowerCase())){datshit[i] = replacement.get();}
+                if(datshit[i].toLowerCase().contains(messages.get().get(j).toLowerCase())) {
+                    if (woblox.get()) {
+                        String temp = "";
+                        for(int k = 0; k < datshit[i].length(); k++){
+                            temp += roblock.get();
+                        }
+                        datshit[i] = temp;
+                    } else {
+                        datshit[i] = replacement.get();
+                    }
+                }
             }
         }
         for(int i = 0; i < datshit.length; i++){
