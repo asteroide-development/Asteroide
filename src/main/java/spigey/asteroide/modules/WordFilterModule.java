@@ -1,7 +1,7 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.MeteorClient;
-import meteordevelopment.meteorclient.events.game.SendMessageEvent;
+import spigey.asteroide.events.SendMessageEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
@@ -40,17 +40,20 @@ public class WordFilterModule extends Module {
         .visible(() -> woblox.get())
         .build()
     );
-    boolean activated = false;
+    private boolean activated = false;
     @Override
     public void onActivate() {
-        if(activated){return;}
+        if(activated){info("Already activated"); return;}
         MeteorClient.EVENT_BUS.subscribe(this);
+        info("Subscribed! Hit that bell too.");
         activated = true;
     }
 
     @EventHandler
     private void onMessageSend(SendMessageEvent event) {
+        info("Someone has sent a message");
         if(!isActive()){return;}
+        info("Alr it's activated ig");
         String[] datshit = event.message.split(" ");
         String message = "";
         for(int i = 0; i < datshit.length; i++){
@@ -71,6 +74,7 @@ public class WordFilterModule extends Module {
         for(int i = 0; i < datshit.length; i++){
             message += datshit[i] + " ";
         }
+        info("ok now changing the text");
         event.message = message.trim();
     }
 }
