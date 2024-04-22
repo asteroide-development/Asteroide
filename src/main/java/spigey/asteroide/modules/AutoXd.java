@@ -22,7 +22,7 @@ import java.util.Random;
 import static spigey.asteroide.util.msg;
 
 public class AutoXd extends Module {
-    private boolean active = false;
+    private boolean active4 = false;
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<List<String>> messages = sgGeneral.add(new StringListSetting.Builder().name("messages").description("Randomly takes the message from the list and sends on each death.").defaultValue("xd", "skill issue").build());
     public AutoXd() {
@@ -31,9 +31,9 @@ public class AutoXd extends Module {
 
     @Override
     public void onActivate() {
-        if(active){return;}
+        if(active4){return;}
         MeteorClient.EVENT_BUS.subscribe(this);
-        active = true;
+        active4 = true;
     }
 
     @EventHandler
