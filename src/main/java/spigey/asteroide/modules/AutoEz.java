@@ -20,7 +20,7 @@ public class AutoEz extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<List<String>> messages = sgGeneral.add(new StringListSetting.Builder().name("messages").description("Randomly takes the message from the list and sends on each kill.").defaultValue("ez", "skill issue", "get ez'd", "get better you fucking wimp").build());
     public AutoEz() {
-        super(AsteroideAddon.CATEGORY, "auto-xd", "Automatically sends a message when you kill someone");
+        super(AsteroideAddon.CATEGORY, "auto-ez", "Automatically sends a message when you kill someone");
     }
 
     @Override
