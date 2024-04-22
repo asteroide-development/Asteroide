@@ -15,7 +15,7 @@ import static spigey.asteroide.util.*;
 
 public class AsteroideAddon extends MeteorAddon {
     public static final Logger LOG = LogUtils.getLogger();
-    public static final Category CATEGORY = new Category("Asteroide", Items.AIR.getDefaultStack());
+    public static final Category CATEGORY = new Category("Asteroide", Items.MAGMA_BLOCK.getDefaultStack());
     public static final HudGroup HUD = new HudGroup("Asteroide");
     @Override
     public void onInitialize() {
@@ -23,15 +23,15 @@ public class AsteroideAddon extends MeteorAddon {
         // Modules
         addModule(new AutoKys());
         addModule(new ServerCrashModule());
-        addModule(new AutoXd());
+        // addModule(new AutoXd());
         addModule(new AutoChatGame());
         addModule(new DeathNotifier());
         addModule(new AntiAnnouncement());
         addModule(new AutoBack());
         addModule(new ChatBot());
         addModule(new AutoMacro());
-        addModule(new WordFilterModule());
-        addModule(new AutoEz());
+        // addModule(new WordFilterModule());
+        // addModule(new AutoEz());
 
 
         // Commands
