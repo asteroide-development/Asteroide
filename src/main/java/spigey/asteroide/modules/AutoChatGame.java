@@ -5,9 +5,11 @@ import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
+import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.util;
 
@@ -56,6 +58,19 @@ public class AutoChatGame extends Module {
         .min(0)
         .sliderMax(40)
         .visible(() -> mode.get() == Mode.Random)
+        .build()
+    );
+    private final Setting<Boolean> hidetr = sgGeneral.add(new BoolSetting.Builder()
+        .name("Hide Triggers")
+        .description("Hides messages that trigger the chatgame module")
+        .defaultValue(false)
+        .build()
+    );
+    private final Setting<Boolean> shmsg = sgGeneral.add(new BoolSetting.Builder()
+        .name("Shorter message instead")
+        .description("Shows a shorter chatgame message instead")
+        .defaultValue(false)
+        .visible(() -> hidetr.get())
         .build()
     );
     private final Setting<Boolean> showsul = sgGeneral.add(new BoolSetting.Builder()
@@ -128,6 +143,14 @@ public class AutoChatGame extends Module {
 
             } else {
                 solution = content.split(quote)[1];
+            }
+            if(hidetr.get()){
+                event.cancel();
+                if(shmsg.get()){
+                    String mode = "write out";
+                    if(reverse){mode = "reverse";} else if(dometh){mode = "meth";}
+                    ChatUtils.sendMsg(Text.of("§7[§9Chatgame§7]§f " + mode + ": " + quote + content.split(quote)[1] + quote + "!"));
+                }
             }
             if(showsul.get()){info("[\uD83D\uDEC8] §fThe solution is " + solution + ".§r");} else{
                 if(mode.get() == Mode.Precise){
