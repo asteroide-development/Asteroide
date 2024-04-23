@@ -89,7 +89,7 @@ public class AutoChatGame extends Module {
     int meth(String equation) {
         return (int) util.eval(equation); // I was too lazy to actually change the method everywhere
     }
-    @EventHandler(priority = EventPriority.HIGHEST + 1)
+    @EventHandler(priority = EventPriority.HIGHEST + 2)
     private void PacketReceive(PacketEvent.Receive event) {
         if (!(event.packet instanceof GameMessageS2CPacket)) {return;}
         String content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
