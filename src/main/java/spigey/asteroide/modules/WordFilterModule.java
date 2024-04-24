@@ -43,6 +43,7 @@ public class WordFilterModule extends Module {
     private boolean activated = false;
     @Override
     public void onActivate() {
+        activated = false;
         if(activated){info("Already activated"); return;}
         MeteorClient.EVENT_BUS.subscribe(this);
         info("Subscribed! Hit that bell too.");

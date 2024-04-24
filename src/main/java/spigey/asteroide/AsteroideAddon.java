@@ -19,7 +19,7 @@ public class AsteroideAddon extends MeteorAddon {
     public static final HudGroup HUD = new HudGroup("Asteroide");
     @Override
     public void onInitialize() {
-        LOG.info("\nI feel like killing myself rn <3\n");
+        LOG.info("\nLoaded Asteroide v0.1.4-dev\n");
         // Modules
         addModule(new AutoKys());
         addModule(new ServerCrashModule());
