@@ -228,7 +228,7 @@ public class AutoChatGame extends Module {
             }
         } catch(Exception L){
             info("Something got very wrong for some reason?? you should be kicked rn");
-            info((Text) L);
+            error(String.valueOf(L));
         }
     }
     int DoVariableGame(String output){ // No, this is actually not AI generated.
