@@ -110,92 +110,126 @@ public class AutoChatGame extends Module {
 
     @EventHandler(priority = EventPriority.HIGHEST + 2)
     private void PacketReceive(PacketEvent.Receive event) {
-        if (!(event.packet instanceof GameMessageS2CPacket)) {return;}
-        String content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
-        boolean yes = false;
-        boolean no = false;
-        boolean reverse = false;
-        boolean dometh = false;
-        boolean vargame = false;
-        String quote = "";
-        for(int i = 0; i < messages.get().size(); i++){
-            if(content.toLowerCase().contains(messages.get().get(i).toLowerCase())){yes = true;}
-        }
-        for(int i = 0; i < reversers.get().size(); i++){
-            if(content.toLowerCase().contains(reversers.get().get(i).toLowerCase())){yes = true; reverse = true;}
-        }
-        for(int i = 0; i < quotes.get().size(); i++){
-            if(content.toLowerCase().contains(quotes.get().get(i)) && content.toLowerCase().indexOf(quotes.get().get(i), content.indexOf(quotes.get().get(i)) + 1) != -1){no = true; quote = quotes.get().get(i);}
-        }
-        for(int i = 0; i < mether.get().size(); i++){
-            if(content.toLowerCase().contains(mether.get().get(i))){yes = true; dometh = true;}
-        }
-        for(int i = 0; i < dont.get().size(); i++){
-            if(content.toLowerCase().contains(dont.get().get(i))){yes = false;}
-        }
-        boolean[] isit = new boolean[contain.get().size()];
-        for(int i = 0; i < contain.get().size(); i++){
-            isit[i] = content.toLowerCase().contains(contain.get().get(i).toLowerCase());
-        }
-        for(int i = 0;i < isit.length; i++){
-            if(!isit[i]){yes = false;}
-        }
-        for(int i = 0; i < variablegame.get().size(); i++){
-            if(!experimental.get()){return;}
-            if(content.toLowerCase().contains(variablegame.get().get(i))){yes = true; dometh = false; reverse = false; vargame = true;}
-        }
-        if(yes && no){
-            if(reverse){
-                solution = String.valueOf(new StringBuilder(content.split(quote)[1]).reverse());
-            } else if(dometh) {
-                boolean cum = false;
-                int themeth;
-                String except = null;
-                try{
-                    themeth = meth(content.split(quote)[1]);
-                } catch(Exception L){
-                    except = "§c[X] " + L + "§r";
-                    themeth = -1;
-                    cum = true;
+        try {
+            if (!(event.packet instanceof GameMessageS2CPacket)) {
+                return;
+            }
+            String content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
+            boolean yes = false;
+            boolean no = false;
+            boolean reverse = false;
+            boolean dometh = false;
+            boolean vargame = false;
+            String quote = "";
+            for (int i = 0; i < messages.get().size(); i++) {
+                if (content.toLowerCase().contains(messages.get().get(i).toLowerCase())) {
+                    yes = true;
                 }
-                if(cum){
-                    info(except);
+            }
+            for (int i = 0; i < reversers.get().size(); i++) {
+                if (content.toLowerCase().contains(reversers.get().get(i).toLowerCase())) {
+                    yes = true;
+                    reverse = true;
+                }
+            }
+            for (int i = 0; i < quotes.get().size(); i++) {
+                if (content.toLowerCase().contains(quotes.get().get(i)) && content.toLowerCase().indexOf(quotes.get().get(i), content.indexOf(quotes.get().get(i)) + 1) != -1) {
+                    no = true;
+                    quote = quotes.get().get(i);
+                }
+            }
+            for (int i = 0; i < mether.get().size(); i++) {
+                if (content.toLowerCase().contains(mether.get().get(i))) {
+                    yes = true;
+                    dometh = true;
+                }
+            }
+            for (int i = 0; i < dont.get().size(); i++) {
+                if (content.toLowerCase().contains(dont.get().get(i))) {
+                    yes = false;
+                }
+            }
+            boolean[] isit = new boolean[contain.get().size()];
+            for (int i = 0; i < contain.get().size(); i++) {
+                isit[i] = content.toLowerCase().contains(contain.get().get(i).toLowerCase());
+            }
+            for (int i = 0; i < isit.length; i++) {
+                if (!isit[i]) {
+                    yes = false;
+                }
+            }
+            for (int i = 0; i < variablegame.get().size(); i++) {
+                if (!experimental.get()) {
                     return;
-                } else{
-                    solution = String.valueOf(themeth);
                 }
+                if (content.toLowerCase().contains(variablegame.get().get(i))) {
+                    yes = true;
+                    dometh = false;
+                    reverse = false;
+                    vargame = true;
+                }
+            }
+            if (yes && no) {
+                if (reverse) {
+                    solution = String.valueOf(new StringBuilder(content.split(quote)[1]).reverse());
+                } else if (dometh) {
+                    boolean cum = false;
+                    int themeth;
+                    String except = null;
+                    try {
+                        themeth = meth(content.split(quote)[1]);
+                    } catch (Exception L) {
+                        except = "§c[X] " + L + "§r";
+                        themeth = -1;
+                        cum = true;
+                    }
+                    if (cum) {
+                        info(except);
+                        return;
+                    } else {
+                        solution = String.valueOf(themeth);
+                    }
 
-            } else if(vargame){
-               solution = String.valueOf(DoVariableGame(content));
-            } else {
-                solution = content.split(quote)[1];
-            }
-            if(hidetr.get()){
-                event.cancel();
-                if(shmsg.get()){
-                    String mode = "write out";
-                    if(reverse){mode = "reverse";} else if(dometh){mode = "meth";}
-                    ChatUtils.sendMsg(Text.of("§7[§9Chatgame§7]§f " + mode + ": " + quote + content.split(quote)[1] + quote + "!"));
+                } else if (vargame) {
+                    solution = String.valueOf(DoVariableGame(content));
+                } else {
+                    solution = content.split(quote)[1];
                 }
-            }
-                if(mode.get() == Mode.Precise){
+                if (hidetr.get()) {
+                    event.cancel();
+                    if (shmsg.get()) {
+                        String mode = "write out";
+                        if (reverse) {
+                            mode = "reverse";
+                        } else if (dometh) {
+                            mode = "meth";
+                        }
+                        ChatUtils.sendMsg(Text.of("§7[§9Chatgame§7]§f " + mode + ": " + quote + content.split(quote)[1] + quote + "!"));
+                    }
+                }
+                if (mode.get() == Mode.Precise) {
                     this.tick = delay.get();
-                } else if(mode.get() == Mode.Random){
+                } else if (mode.get() == Mode.Random) {
                     int randomshit = this.rand.nextInt(maxoffset.get() - minoffset.get() + 1) + minoffset.get();
-                    if(Math.random() > 0.5){randomshit -= randomshit * 2;}
+                    if (Math.random() > 0.5) {
+                        randomshit -= randomshit * 2;
+                    }
                     this.tick = delay.get() + randomshit;
                 }
-                if(showsul.get()){
+                if (showsul.get()) {
                     this.OutputMode = "show";
                     this.solution = "§7[§f\uD83D\uDEC8§7] §fThe solution is " + solution + ".§r";
                     this.tick = 1;
                 }
-                if(!subscribed){
+                if (!subscribed) {
                     MeteorClient.EVENT_BUS.subscribe(this);
                     subscribed = true;
                 }
+            }
+        } catch(Exception L){
+            info("Something got very wrong for some reason?? you should be kicked rn");
+            info((Text) L);
         }
-
     }
     int DoVariableGame(String output){ // No, this is actually not AI generated.
         String[] equations = output.split("\n");
