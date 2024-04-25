@@ -1,13 +1,22 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.MeteorClient;
+import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
+import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import spigey.asteroide.events.SendMessageEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import spigey.asteroide.AsteroideAddon;
+import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
+import io.netty.buffer.Unpooled;
+import net.minecraft.network.PacketByteBuf;
 
 import java.util.List;
+
+import static spigey.asteroide.util.msg;
 
 public class WordFilterModule extends Module {
     public WordFilterModule() {
@@ -49,17 +58,22 @@ public class WordFilterModule extends Module {
         info("Subscribed! Hit that bell too.");
         activated = true;
     }
-
+    private int delay = 1;
+    String message = "";
+    boolean pleasekillme = false;
+    boolean thisactivated = false;
     @EventHandler
-    private void onMessageSend(SendMessageEvent event) {
-        info("Someone has sent a message");
+    private void onPacketSend(PacketEvent.Send event) {
+        if(!(event.packet instanceof ChatMessageC2SPacket)){return;}
         if(!isActive()){return;}
-        info("Alr it's activated ig");
-        String[] datshit = event.message.split(" ");
-        String message = "";
+        message = "";
+        pleasekillme = false;
+        String content = ((ChatMessageC2SPacket) event.packet).chatMessage();
+        String[] datshit = content.split(" ");
         for(int i = 0; i < datshit.length; i++){
             for(int j = 0; j < messages.get().size(); j++){
                 if(datshit[i].toLowerCase().contains(messages.get().get(j).toLowerCase())) {
+                    pleasekillme = true;
                     if (woblox.get()) {
                         String temp = "";
                         for(int k = 0; k < datshit[i].length(); k++){
@@ -75,7 +89,20 @@ public class WordFilterModule extends Module {
         for(int i = 0; i < datshit.length; i++){
             message += datshit[i] + " ";
         }
-        info("ok now changing the text");
-        event.message = message.trim();
+        if(content.trim().toLowerCase().equals(message.trim().toLowerCase())){return;}
+        if(!pleasekillme){return;}
+        /* ChatMessageC2SPacket packet = new ChatMessageC2SPacket(new PacketByteBuf(Unpooled.buffer()).writeString(message.trim())); // wtf is this??
+        mc.player.networkHandler.sendPacket(packet); // I took this shit from meteor client */
+        // ↑ that code sends something so fucked up that it crashes your client
+        if(pleasekillme){event.cancel();}
+        this.delay = 1;
+        if(!activated){MeteorClient.EVENT_BUS.subscribe(this); activated = true;}
+    }
+    @EventHandler
+    private void onTick(TickEvent.Post event) {
+        if(!isActive()){return;}
+        if(this.delay == -1){return;}
+        msg(this.message.trim());
+        this.delay = -1;
     }
 }
