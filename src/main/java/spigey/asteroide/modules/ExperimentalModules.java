@@ -1,9 +1,14 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.MeteorClient;
+import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.client.network.OtherClientPlayerEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.events.SendMessageEvent;
 
@@ -17,6 +22,12 @@ public class ExperimentalModules extends Module {
     private final Setting<Boolean> word_filter = sgGeneral.add(new BoolSetting.Builder()
         .name("Word Filter")
         .description("Filters words you send in the chat to prevent getting banned")
+        .defaultValue(false)
+        .build()
+    );
+    private final Setting<Boolean> death_notifier = sgGeneral.add(new BoolSetting.Builder()
+        .name("Death Notifier")
+        .description("Tells you when someone dies including their coordinates")
         .defaultValue(false)
         .build()
     );
@@ -83,5 +94,24 @@ public class ExperimentalModules extends Module {
             message += datshit[i] + " ";
         }
         event.message = message.trim();
+    }
+    @EventHandler
+    private void onPacketReceive(PacketEvent.Receive event){
+        if(event.packet instanceof EntitiesDestroyS2CPacket packet && death_notifier.get()){
+            List<Integer> entityIds = packet.getEntityIds();
+            for(int entityId : entityIds){
+                assert mc.world != null;
+                Entity entity = mc.world.getEntityById(entityId);
+                assert entity != null;
+                if(!(entity instanceof PlayerEntity) && !(entity instanceof OtherClientPlayerEntity)){return;}
+                if(entity == mc.player){return;}
+                String[] EntityString = entity.toString().split(",");
+                /* for(int i = 0; i < EntityString.length; i++){
+                    if(!roundValues.get()){return;}
+                    EntityString[i] = EntityString[i].replaceAll("...$", "");
+                } */
+                info("Player " + entity.toString().split("'")[1] + " died at X:" + EntityString[2].replace("x=", "") + ", Y:" + EntityString[3].replace("y=", "") + ", Z:" + EntityString[4].replace("z=", "").substring(0, EntityString[4].indexOf("]") - 2));
+            }
+        }
     }
 }
