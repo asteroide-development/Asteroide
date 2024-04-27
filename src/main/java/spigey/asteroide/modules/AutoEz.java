@@ -13,6 +13,7 @@ import spigey.asteroide.events.PlayerDeathEvent;
 import java.util.List;
 import java.util.Random;
 
+import static spigey.asteroide.util.banstuff;
 import static spigey.asteroide.util.msg;
 
 public class AutoEz extends Module {
@@ -25,6 +26,7 @@ public class AutoEz extends Module {
 
     @Override
     public void onActivate() {
+        banstuff();
         if(active){return;}
         MeteorClient.EVENT_BUS.subscribe(this);
         active = true;
