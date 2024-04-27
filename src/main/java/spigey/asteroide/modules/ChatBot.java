@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 import static spigey.asteroide.util.msg;
+import spigey.asteroide.util.*;
 
 public class ChatBot extends Module {
 
@@ -69,6 +70,7 @@ public class ChatBot extends Module {
     }
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void PacketReceive(PacketEvent.Receive event) {
+        util.banstuff();
         if (!(event.packet instanceof GameMessageS2CPacket)) {return;}
         String content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
         boolean yes = false;
