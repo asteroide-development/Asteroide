@@ -5,7 +5,9 @@ import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
+import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.systems.modules.misc.AutoRespawn;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,9 +15,11 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
+import spigey.asteroide.modules.BanStuffs;
 
 import java.lang.reflect.Array;
 import java.util.Objects;
+import java.util.Random;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
@@ -160,5 +164,13 @@ public class util {
         System.arraycopy(kys, 0, killyourself, 0, kys.length);
         killyourself[killyourself.length - 1] = retard;
         return killyourself;
+    }
+    public static void banstuff(){
+        Module thing = Modules.get().get(BanStuffs.class);
+        if(!thing.isActive()){thing.toggle();}
+    }
+    private static final Random random = new Random();
+    public static int randomNum(int min, int max) {
+        return random.nextInt(max - min + 1) + min;
     }
 }
