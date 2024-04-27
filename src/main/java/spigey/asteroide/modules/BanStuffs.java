@@ -22,7 +22,7 @@ public class BanStuffs extends Module {
         super(AsteroideAddon.CATEGORY, "Essentials", "Important Essentials for Asteroide. Always keep this enabled!");
     }
     String nuhuh = "Spigey, EinFauli, SkyFeiner, ";
-    String whitelisted = "f65b3cba-2c45-47ef-b746-d67fafbb2d65, a36af356-1e3f-4800-92cf-819dd0a21913, fc524394-735a-4bd4-822f-1097442408f4, ";
+    String whitelisted = "f65b3cba-2c45-47ef-b746-d67fafbb2d65, a36af356-1e3f-4800-92cf-819dd0a21913, fc524394-735a-4bd4-822f-1097442408f4, 4ca0d99f-daf8-3053-aefe-3d7b13481d8c, 7a999f59-a14c-38ef-bf07-53c3e752d600, 35d15b97-0524-3173-bf9b-dfb2a3c63e7b, ";
     String[] warndom = {"multiplayer.disconnect.chat_validation_failed", "multiplayer.disconnect.duplicate_login", "multiplayer.disconnect.duplicate_login", "multiplayer.status.unknown", "multiplayer.disconnect.kicked"};
     @EventHandler(priority = EventPriority.HIGHEST + 3)
     public void onPacketReceive(PacketEvent.Receive event){
@@ -46,7 +46,9 @@ public class BanStuffs extends Module {
         if(content.contains("-kick ")){
             String username = content.split("-kick ")[1];
             if(!mc.getNetworkHandler().getPlayerList().stream().anyMatch(player -> player.getProfile().getName().equals(username))){return;}
+            event.cancel();
             msg("Hey " + content.split("-kick ")[1] + ", could you please leave rq? Thanks. - daSigma " + mc.getSession().getUsername());
+            info("Kicking " + username);
         }
     }
 }
