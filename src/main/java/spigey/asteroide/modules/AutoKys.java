@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Random;
 
 import static meteordevelopment.meteorclient.utils.player.ChatUtils.sendMsg;
+import static spigey.asteroide.util.banstuff;
 import static spigey.asteroide.util.msg;
 
 public class AutoKys extends Module {
@@ -35,6 +36,7 @@ public class AutoKys extends Module {
 
     @EventHandler
     private void onPacketReceive(PacketEvent.Receive event){
+        banstuff();
         if(event.packet instanceof DeathMessageS2CPacket packet){
             Entity entity = mc.world.getEntityById(packet.getEntityId());
             if(entity != mc.player){return;}
