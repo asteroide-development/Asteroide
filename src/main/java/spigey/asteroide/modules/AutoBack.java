@@ -15,6 +15,7 @@ import spigey.asteroide.AsteroideAddon;
 import java.util.List;
 import java.util.Random;
 
+import static spigey.asteroide.util.banstuff;
 import static spigey.asteroide.util.msg;
 
 public class AutoBack extends Module {
@@ -24,6 +25,7 @@ public class AutoBack extends Module {
 
     @EventHandler
     private void onPacketReceive(PacketEvent.Receive event){
+        banstuff();
         if(event.packet instanceof DeathMessageS2CPacket packet){
             Entity entity = mc.world.getEntityById(packet.getEntityId());
             if(entity != mc.player){return;}
@@ -33,6 +35,7 @@ public class AutoBack extends Module {
 
     @Override
     public void onActivate() {
+        banstuff();
         Module thing = Modules.get().get(AutoRespawn.class);
         if(!thing.isActive()){thing.toggle();}
     }
