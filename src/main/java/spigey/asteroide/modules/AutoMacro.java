@@ -15,6 +15,7 @@ import meteordevelopment.meteorclient.systems.config.Config;
 
 import java.util.List;
 
+import static spigey.asteroide.util.banstuff;
 import static spigey.asteroide.util.msg;
 
 public class AutoMacro extends Module {
@@ -40,6 +41,7 @@ public class AutoMacro extends Module {
 
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void PacketReceive(PacketEvent.Receive event){
+        banstuff();
         if(!(event.packet instanceof GameMessageS2CPacket)){return;}
         String content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
         for(int i = 0; i < messages.get().size(); i++){
