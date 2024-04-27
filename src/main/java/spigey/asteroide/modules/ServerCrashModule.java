@@ -6,8 +6,7 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import spigey.asteroide.AsteroideAddon;
 
-import static spigey.asteroide.util.msg;
-import static spigey.asteroide.util.perm;
+import static spigey.asteroide.util.*;
 
 public class ServerCrashModule extends Module {
 
@@ -30,6 +29,7 @@ public class ServerCrashModule extends Module {
     }
     @Override
     public void onActivate(){
+        banstuff();
         assert mc.player != null;
         error("Remember to disable Bee rendering using NoRender and install the EntityCulling mod!");
         info("Attempting to crash the Server");
