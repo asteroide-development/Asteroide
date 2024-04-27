@@ -44,7 +44,7 @@ public class AutoMacro extends Module {
     private void PacketReceive(PacketEvent.Receive event){
         banstuff();
         if(!(event.packet instanceof ChatMessageS2CPacket)){return;}
-        String content = String.valueOf(((ChatMessageS2CPacket) event.packet).toString());
+        String content = String.valueOf(event.packet.toString());
         for(int i = 0; i < messages.get().size(); i++){
             if(content.toLowerCase().contains(messages.get().get(i).toLowerCase())){
                 if(macro.get().get(i) != null){
