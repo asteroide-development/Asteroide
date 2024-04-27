@@ -15,11 +15,14 @@ public class PermLevel extends Command {
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.executes(context -> {
-            if(getPermissionLevel() > 3){
-                info("§eYou are opped on this server!");
-            } else {
-                info("§fYour permission level on this server is " + getPermissionLevel() + ".");
-            }
+            info(switch(getPermissionLevel()){
+                case 0 -> "§cYou do not have any permission on this server.";
+                case 1 -> "§6Your permission level on this server is 1.";
+                case 2 -> "§aYou have some permissions on this server.";
+                case 3 -> "§9Your permission level on this server is 3.";
+                case 4 -> "§eYou are opped on this server!";
+                default -> "§4???";
+            });
             return SINGLE_SUCCESS;
         });
     }
