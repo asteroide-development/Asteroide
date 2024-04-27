@@ -14,6 +14,8 @@ import spigey.asteroide.events.SendMessageEvent;
 
 import java.util.List;
 
+import static spigey.asteroide.util.banstuff;
+
 public class ExperimentalModules extends Module {
     public ExperimentalModules() {
         super(AsteroideAddon.CATEGORY, "experimental-features", "Experimental features that are still in development");
@@ -25,43 +27,44 @@ public class ExperimentalModules extends Module {
         .defaultValue(false)
         .build()
     );
-    private final Setting<Boolean> death_notifier = sgGeneral.add(new BoolSetting.Builder()
-        .name("Death Notifier")
-        .description("Tells you when someone dies including their coordinates")
-        .defaultValue(false)
-        .build()
-    );
     private final Setting<List<String>> messages = sgGeneral.add(new StringListSetting.Builder()
-        .name("messages to filter")
+        .name("WordFilter: messages to filter")
         .description("Filter these messages")
         .defaultValue("cum", "sex", "dick", "nigga", "nigger", "retard", "hitler")
         .visible(() -> word_filter.get())
         .build()
     );
     private final Setting<Boolean> woblox = sgGeneral.add(new BoolSetting.Builder()
-        .name("Roblox-like Replacement")
+        .name("WordFilter: Roblox-like Replacement")
         .description("Filters the message to look more like roblox filtering")
         .defaultValue(false)
         .visible(() -> word_filter.get())
         .build()
     );
     private final Setting<String> replacement = sgGeneral.add(new StringSetting.Builder()
-        .name("filter replacement")
+        .name("WordFilter: filter replacement")
         .description("String to replace filtered messages with")
         .defaultValue("@$#!?&")
         .visible(() -> !woblox.get() && word_filter.get())
         .build()
     );
     private final Setting<String> roblock = sgGeneral.add(new StringSetting.Builder()
-        .name("roblox-like filter replacement")
+        .name("WordFilter: roblox-like filter replacement")
         .description("String to replace filtered messages with")
         .defaultValue("#")
         .visible(() -> woblox.get() && word_filter.get())
         .build()
     );
+    private final Setting<Boolean> death_notifier = sgGeneral.add(new BoolSetting.Builder()
+        .name("Death Notifier")
+        .description("Tells you when someone dies including their coordinates")
+        .defaultValue(false)
+        .build()
+    );
     private boolean activated = false;
     @Override
     public void onActivate() {
+        banstuff();
         if(!word_filter.get()){return;}
         if(activated){return;}
         MeteorClient.EVENT_BUS.subscribe(this);
@@ -97,6 +100,7 @@ public class ExperimentalModules extends Module {
     }
     @EventHandler
     private void onPacketReceive(PacketEvent.Receive event){
+        banstuff();
         if(event.packet instanceof EntitiesDestroyS2CPacket packet && death_notifier.get()){
             List<Integer> entityIds = packet.getEntityIds();
             for(int entityId : entityIds){
