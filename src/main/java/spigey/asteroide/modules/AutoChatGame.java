@@ -16,6 +16,7 @@ import spigey.asteroide.util;
 import java.util.List;
 import java.util.Random;
 
+import static spigey.asteroide.util.banstuff;
 import static spigey.asteroide.util.msg;
 
 public class AutoChatGame extends Module {
@@ -243,6 +244,7 @@ public class AutoChatGame extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Post event) {
+        banstuff();
         if(!isActive()){return;} // this got me banned off my favorite server
         if(this.tick > 0){this.tick--; return;} // don't execute when it's not done waiting
         if(this.tick == -1){return;} // disable when on -1
