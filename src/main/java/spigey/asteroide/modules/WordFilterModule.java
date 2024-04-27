@@ -16,6 +16,7 @@ import net.minecraft.network.PacketByteBuf;
 
 import java.util.List;
 
+import static spigey.asteroide.util.banstuff;
 import static spigey.asteroide.util.msg;
 
 public class WordFilterModule extends Module {
@@ -54,6 +55,7 @@ public class WordFilterModule extends Module {
 
     @Override
     public void onActivate() {
+        banstuff();
         activated = false;
         if (activated) {
             info("Already activated");
