@@ -21,7 +21,7 @@ public class PermLevel extends Command {
                 case 2 -> "§aYou have some permissions on this server.";
                 case 3 -> "§9Your permission level on this server is 3.";
                 case 4 -> "§eYou are opped on this server!";
-                default -> "§4???";
+                default -> "§4" + getPermissionLevel() + "???";
             });
             return SINGLE_SUCCESS;
         });
