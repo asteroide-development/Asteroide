@@ -8,6 +8,7 @@ import meteordevelopment.meteorclient.settings.StringListSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
+import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import spigey.asteroide.AsteroideAddon;
 
@@ -34,11 +35,22 @@ public class AntiAnnouncement extends Module {
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void PacketReceive(PacketEvent.Receive event){
         banstuff();
-        if(!(event.packet instanceof GameMessageS2CPacket)){return;}
-        String content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
-        for(int i = 0; i < messages.get().size(); i++){
-            if(content.toLowerCase().contains(messages.get().get(i).toLowerCase())){event.cancel();}
+        if(event.packet instanceof GameMessageS2CPacket) {
+            String content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
+            for (int i = 0; i < messages.get().size(); i++) {
+                if (content.toLowerCase().contains(messages.get().get(i).toLowerCase())) {
+                    event.cancel();
+                }
+            }
+            if (content.replaceAll(" ", "") == "" && mtmsg.get()) {
+                event.cancel();
+            }
+        } else if(event.packet instanceof ChatMessageS2CPacket){
+            String content = String.valueOf(event.packet.toString());
+            for(int i = 0; i < messages.get().size(); i++){
+                if(content.toLowerCase().contains(messages.get().get(i).toLowerCase())){event.cancel();}
+            }
+            if(content.replaceAll(" ", "").replaceAll("\\n", "") == "" && mtmsg.get()){event.cancel();}
         }
-        if(content.replaceAll(" ", "") == "" && mtmsg.get()){event.cancel();}
     }
 }
