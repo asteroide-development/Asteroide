@@ -33,7 +33,6 @@ public class AsteroideAddon extends MeteorAddon {
         // Modules
         addModule(new AutoKys());
         addModule(new ServerCrashModule());
-        // addModule(new AutoXd());
         addModule(new AutoChatGame());
         addModule(new AntiAnnouncement());
         addModule(new AutoBack());

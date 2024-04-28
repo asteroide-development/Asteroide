@@ -10,11 +10,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
 import spigey.asteroide.AsteroideAddon;
+import spigey.asteroide.events.PlayerDeathEvent;
 import spigey.asteroide.events.SendMessageEvent;
+import spigey.asteroide.util;
 
 import java.util.List;
 
 import static spigey.asteroide.util.banstuff;
+import static spigey.asteroide.util.msg;
 
 public class ExperimentalModules extends Module {
     public ExperimentalModules() {
@@ -61,6 +64,20 @@ public class ExperimentalModules extends Module {
         .defaultValue(false)
         .build()
     );
+    private final Setting<Boolean> auto_xd = sgGeneral.add(new BoolSetting.Builder()
+        .name("Auto Xd")
+        .description("Sends a message when someone dies")
+        .defaultValue(false)
+        .build()
+    );
+    private final Setting<List<String>> autoxdmessages = sgGeneral.add(new StringListSetting.Builder()
+        .name("AutoXd: messages")
+        .description("Randomly takes the message from the list and sends on each death.")
+        .defaultValue("xd", "skill issue")
+        .visible(() -> auto_xd.get())
+        .build()
+    );
+
     private boolean activated = false;
     @Override
     public void onActivate() {
@@ -117,5 +134,14 @@ public class ExperimentalModules extends Module {
                 info("Player " + entity.toString().split("'")[1] + " died at X:" + EntityString[2].replace("x=", "") + ", Y:" + EntityString[3].replace("y=", "") + ", Z:" + EntityString[4].replace("z=", "").substring(0, EntityString[4].indexOf("]") - 2));
             }
         }
+    }
+    @EventHandler
+    private void onPlayerDeath(PlayerDeathEvent event){
+        if(!isActive()){return;}
+        if(!auto_xd.get()){return;}
+        PlayerEntity victim = event.getPlayer();
+        msg(messages.get().get(util.randomNum(0, messages.get().size() - 1))
+            .replace("{player}", victim.getGameProfile().getName())
+        );
     }
 }
