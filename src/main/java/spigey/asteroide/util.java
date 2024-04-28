@@ -57,6 +57,8 @@ public class util {
             perm = 1;
         } else if(mc.player.hasPermissionLevel(0)){
             perm = 0;
+        } else {
+            perm = -1;
         }
         return perm;
     }
