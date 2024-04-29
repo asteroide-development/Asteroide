@@ -4,6 +4,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.commands.Command;
 import net.minecraft.command.CommandSource;
 
+import java.util.Objects;
+
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
@@ -20,6 +22,7 @@ public class MeCommand extends Command {
             info("§fUUID: §7" + mc.getSession().getUuidOrNull());
             info("§fAccountType: §7" + mc.getSession().getAccountType());
             info("§fServer: §7" + mc.getServer());
+            info("§fScreen: §7" + mc.currentScreen);
             return SINGLE_SUCCESS;
         });
     }

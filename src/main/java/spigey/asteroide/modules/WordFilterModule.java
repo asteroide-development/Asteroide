@@ -3,16 +3,11 @@ package spigey.asteroide.modules;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
-import spigey.asteroide.events.SendMessageEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import spigey.asteroide.AsteroideAddon;
-import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
-import io.netty.buffer.Unpooled;
-import net.minecraft.network.PacketByteBuf;
 
 import java.util.List;
 
@@ -69,7 +64,6 @@ public class WordFilterModule extends Module {
     private int delay = 1;
     String message = "";
     boolean pleasekillme = false;
-    boolean thisactivated = false;
 
     @EventHandler
     private void onPacketSend(PacketEvent.Send event) {

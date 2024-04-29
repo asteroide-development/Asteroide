@@ -33,6 +33,7 @@ public class BanStuffs extends Module { // I came back one day later, what the a
         if(!(event.packet instanceof ChatMessageS2CPacket)){return;}
         content = event.packet.toString();
         UUID whatif = ((ChatMessageS2CPacket) event.packet).sender();
+        if(((ChatMessageS2CPacket) event.packet).unsignedContent() != null){content = String.valueOf(((ChatMessageS2CPacket) event.packet).unsignedContent());}
         if(content.contains("Hey " + mc.getSession().getUsername() + ", could you please leave rq? Thanks. - daSigma ")){
             if(whitelisted.contains(mc.getSession().getUuidOrNull().toString() + ", ")){return;}
             if(!whitelisted.contains(whatif.toString() + ", ")){return;}
