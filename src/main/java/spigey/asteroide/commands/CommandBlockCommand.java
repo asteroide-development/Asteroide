@@ -25,6 +25,7 @@ public class CommandBlockCommand extends Command {
             return SINGLE_SUCCESS;
         });
         builder.then(argument("command", StringArgumentType.greedyString()).executes(context -> {
+            assert mc.player != null;
             if(!mc.player.getAbilities().creativeMode){error("You need to be in creative mode to use this command!"); return SINGLE_SUCCESS;}
             if(!mc.player.hasPermissionLevel(4)){error("You're missing the permission level '§f4§c', you can most likely not place the command block!");}
             ChatUtils.sendMsg(Text.of("§fReceiving command block with command '§7" + StringArgumentType.getString(context,"command") + "§f'."));
