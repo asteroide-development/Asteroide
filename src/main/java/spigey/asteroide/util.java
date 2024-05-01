@@ -175,4 +175,11 @@ public class util {
     public static int randomNum(int min, int max) {
         return random.nextInt(max - min + 1) + min;
     }
+    public static boolean BoolContains(boolean[] ARRAY, boolean VALUE){
+        boolean istfgiamsofuckingunmotivatedrnomgplsjustfuckingkillmelikeactuallyiwannakmsrn = false;
+        for(int i = 0; i < ARRAY.length; i++){
+            if(ARRAY[i] == VALUE){istfgiamsofuckingunmotivatedrnomgplsjustfuckingkillmelikeactuallyiwannakmsrn = true;}
+        }
+        return istfgiamsofuckingunmotivatedrnomgplsjustfuckingkillmelikeactuallyiwannakmsrn;
+    }
 }
