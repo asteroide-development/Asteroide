@@ -248,11 +248,7 @@ public class AutoChatGame extends Module {
         if(!isActive()){return;} // this got me banned off my favorite server
         if(this.tick > 0){this.tick--; return;} // don't execute when it's not done waiting
         if(this.tick == -1){return;} // disable when on -1
-        if (this.OutputMode == "send") {
-            msg(this.solution);
-        } else{
-            ChatUtils.sendMsg(Text.of(this.solution));
-        }
+        if (this.OutputMode == "send") {msg(this.solution);} else{ChatUtils.sendMsg(Text.of(this.solution));}
         this.tick = -1;
     }
 
