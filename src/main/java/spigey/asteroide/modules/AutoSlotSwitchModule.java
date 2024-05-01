@@ -10,15 +10,17 @@ import meteordevelopment.orbit.EventHandler;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.util;
 
+import java.util.List;
+
 public class AutoSlotSwitchModule extends Module {
     public AutoSlotSwitchModule() {
-        super(AsteroideAddon.CATEGORY, "", "");
+        super(AsteroideAddon.CATEGORY, "auto-hotbar", "Automatically swaps between slots in the hotbar");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
         .name("delay")
         .description("The delay before switching slots again")
-        .defaultValue(5)
+        .defaultValue(0)
         .min(0)
         .sliderMax(200)
         .build()
@@ -46,6 +48,7 @@ public class AutoSlotSwitchModule extends Module {
     );
     // slot priority
     private boolean SlotActivated = false;
+    private int remainingDelay = -1;
     @Override
     public void onActivate() {
         if(!SlotActivated){return;}
@@ -54,8 +57,45 @@ public class AutoSlotSwitchModule extends Module {
     }
     @EventHandler
     private void onTick(TickEvent.Post event){
-        InvUtils.swap(util.randomNum(0,8), false);
+        if(remainingDelay > 0){remainingDelay--; return;}
+        int num = 9;
+        if(slotmode.get() == SlotMode.Custom){
+            boolean[] slots = {slot1.get(), slot2.get(), slot3.get(), slot4.get(), slot5.get(), slot6.get(), slot7.get(), slot8.get(), slot9.get(), false};
+            if(!util.BoolContains(slots,true)){toggle(); error("No Slots enabled"); return;}
+            while(!slots[num]){
+                if(switchmode.get() == SwitchMode.Random) {
+                    num = util.randomNum(0, 8);
+                } else{
+                    assert mc.player != null;
+                    int temp = mc.player.getInventory().selectedSlot + 1;
+                    for(int i = 0; i < 10; i++){
+                        if(temp > 9){temp = 0;}
+                        if(!slots[temp]){temp++;}
+                    }
+                    num = temp;
+                    // Custom Switch Mode done
+                }
+            }
+        } else{
+            if(switchmode.get() == SwitchMode.Random) {
+                num = util.randomNum(0, 8);
+            } else{
+                assert mc.player != null;
+                num = mc.player.getInventory().selectedSlot + 1;
+                if(num == 9){num = 0;}
+            }
+        }
+        // Custom slot mode done
+        InvUtils.swap(num, false);
+        remainingDelay = delay.get();
     }
+
+    //////////////////////////////////////////////
+    //                                          //
+    //             code end thingy              //
+    //                                          //
+    //////////////////////////////////////////////
+
     public enum SlotMode{
         All,
         Custom
@@ -65,5 +105,3 @@ public class AutoSlotSwitchModule extends Module {
         Next
     }
 }
-
-
