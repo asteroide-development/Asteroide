@@ -1,7 +1,12 @@
 # gradle
 
 .gradle/
-build/
+build/classes
+build/devlibs
+build/generated
+build/loom-cache
+build/resources
+build/tmp
 out/
 classes/
 
