@@ -27,15 +27,20 @@ public class AutoEz extends Module {
     @Override
     public void onActivate() {
         banstuff();
+        info("yes you activated");
         if(active){return;}
+        info("omg!!! it's activating now");
         MeteorClient.EVENT_BUS.subscribe(this);
         active = true;
     }
 
     @EventHandler
     private void onPlayerDeath(PlayerDeathEvent event){
+        info("yes uwu someone died");
         if(!isActive()){return;}
+        info("daddy");
         if(!event.isTarget()){return;}
+        info("look someone else died");
         PlayerEntity victim = event.getPlayer();
         msg(messages.get().get(randomNum(0,messages.get().size() - 1))
             .replace("{player}", victim.getGameProfile().getName())
