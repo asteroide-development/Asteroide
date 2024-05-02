@@ -9,6 +9,7 @@ import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.orbit.EventHandler;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.util;
+import net.minecraft.command.StorageDataObject;
 
 import java.util.List;
 
