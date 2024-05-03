@@ -219,7 +219,7 @@ public class util {
             out.append(",Passengers:[{id:command_block_minecart, Tags:[\"oawiudoawiudoawidu\"], Command:\"").append(commands.get(i)).append('"');
         }
         for (int i = 0; i < commands.size(); i++){
-            out.append("\"}]");
+            out.append("}]");
         }
         out.append("}]}");
         return out;
