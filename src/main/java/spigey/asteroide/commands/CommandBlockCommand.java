@@ -29,7 +29,7 @@ public class CommandBlockCommand extends Command {
             if(!mc.player.getAbilities().creativeMode){error("You need to be in creative mode to use this command!"); return SINGLE_SUCCESS;}
             if(!mc.player.hasPermissionLevel(4)){error("You're missing the permission level '§f4§c', you can most likely not place the command block!");}
             String command = StringArgumentType.getString(context, "command");
-            ChatUtils.sendMsg(Text.of("§fReceiving command block with command '§7" + command + "§f'."));
+            ChatUtils.sendMsg(Text.of("§fReceiving command block with command '§7" + command.substring(0, Math.min(command.length(), 15)) + "§f'."));
             CommandBlock(Items.COMMAND_BLOCK, command, 1, command.substring(0, Math.min(command.length(), 30)), true);
             return SINGLE_SUCCESS;
         }));

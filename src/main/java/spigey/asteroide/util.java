@@ -78,7 +78,7 @@ public class util {
         String nbt = "{display:{Name:'[\"\",{\"text\":\"" + DisplayName +"\",\"color\":\"gray\"}]'},BlockEntityTag:{Command:\"" + Command + "\",auto:" + AlwaysActive + "b},HideFlags:127"; // idfk nbt
         if(Enchanted){nbt += ",Enchantments:[{lvl:1,id:infinity}]";}
         nbt += "}";
-        give(itemstack(CommandBlockToGive), nbt);
+        give(itemstack(CommandBlockToGive), nbt.replaceAll("\\\\\\\"", "\\\\\""));
     }
     public static void CommandBlock(Item CommandBlockToGive, String Command, int AlwaysActive, boolean Enchanted) throws CommandSyntaxException {
         if(!CommandBlockToGive.toString().toUpperCase().contains("COMMAND_BLOCK")){return;}    // Only allow Command Blocks
@@ -87,7 +87,7 @@ public class util {
         if(Enchanted){
             nbt = "{BlockEntityTag:{Command:\\\"\" + Command + \"\\\",auto:\" + AlwaysActive + \"b},Enchantments:[{lvl:1,id:infinity}],HideFlags:127}";
         }
-        give(itemstack(CommandBlockToGive), nbt);
+        give(itemstack(CommandBlockToGive), nbt.replaceAll("\\\\\\\"", "\\\\\""));
     }
     public static void CommandBlock(Item CommandBlockToGive, String Command, int AlwaysActive) throws CommandSyntaxException {
         CommandBlock(CommandBlockToGive, Command, AlwaysActive, false);
