@@ -75,7 +75,7 @@ public class util {
         if(!CommandBlockToGive.toString().toUpperCase().contains("COMMAND_BLOCK")){return;}    // Only allow Command Blocks
         Command = Command.replaceAll("\"", "\\\\\\\"");
         DisplayName = DisplayName.replaceAll("\"", "\\\\\\\"");
-        String nbt = "{display:{Name:'[\"\",{\"text\":\"" + DisplayName +"\",\"color\":\"dark_gray\"}]'},BlockEntityTag:{Command:\"" + Command + "\",auto:" + AlwaysActive + "b},HideFlags:127"; // idfk nbt
+        String nbt = "{display:{Name:'[\"\",{\"text\":\"" + DisplayName +"\",\"color\":\"gray\"}]'},BlockEntityTag:{Command:\"" + Command + "\",auto:" + AlwaysActive + "b},HideFlags:127"; // idfk nbt
         if(Enchanted){nbt += ",Enchantments:[{lvl:1,id:infinity}]";}
         nbt += "}";
         give(itemstack(CommandBlockToGive), nbt);
