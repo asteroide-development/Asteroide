@@ -70,11 +70,27 @@ public class util {
     }
     public static void addHud(HudElementInfo HudToAdd){
         Hud.get().register(HudToAdd);
+    } // {display:{Name:'["",{"text":"COMMAND","color":"dark_gray"}]'},Enchantments:[{lvl:1,id:infinity}],HideFlags:1}
+    public static void CommandBlock(Item CommandBlockToGive, String Command, int AlwaysActive, String DisplayName, boolean Enchanted) throws CommandSyntaxException {
+        if(!CommandBlockToGive.toString().toUpperCase().contains("COMMAND_BLOCK")){return;}    // Only allow Command Blocks
+        Command = Command.replaceAll("\"", "\\\\\\\"");
+        DisplayName = DisplayName.replaceAll("\"", "\\\\\\\"");
+        String nbt = "{display:{Name:'[\"\",{\"text\":\"" + DisplayName +"\",\"color\":\"dark_gray\"}]'},BlockEntityTag:{Command:\"" + Command + "\",auto:" + AlwaysActive + "b},HideFlags:127"; // idfk nbt
+        if(Enchanted){nbt += ",Enchantments:[{lvl:1,id:infinity}]";}
+        nbt += "}";
+        give(itemstack(CommandBlockToGive), nbt);
+    }
+    public static void CommandBlock(Item CommandBlockToGive, String Command, int AlwaysActive, boolean Enchanted) throws CommandSyntaxException {
+        if(!CommandBlockToGive.toString().toUpperCase().contains("COMMAND_BLOCK")){return;}    // Only allow Command Blocks
+        Command = Command.replaceAll("\"", "\\\\\\\"");
+        String nbt = "{BlockEntityTag:{Command:\"" + Command + "\",auto:" + AlwaysActive + "b},HideFlags:127}"; // idfk nbt
+        if(Enchanted){
+            nbt = "{BlockEntityTag:{Command:\\\"\" + Command + \"\\\",auto:\" + AlwaysActive + \"b},Enchantments:[{lvl:1,id:infinity}],HideFlags:127}";
+        }
+        give(itemstack(CommandBlockToGive), nbt);
     }
     public static void CommandBlock(Item CommandBlockToGive, String Command, int AlwaysActive) throws CommandSyntaxException {
-        if(!CommandBlockToGive.toString().toUpperCase().contains("COMMAND_BLOCK")){return;}    // Only allow Command Blocks
-        String nbt = "{BlockEntityTag:{Command:\"" + Command + "\",auto:" + AlwaysActive + "b},HideFlags:127}"; // idfk nbt
-        give(itemstack(CommandBlockToGive), nbt);
+        CommandBlock(CommandBlockToGive, Command, AlwaysActive, false);
     }
     public static double eval(final String str) {
         return new Object() {
