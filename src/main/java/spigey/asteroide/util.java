@@ -18,10 +18,12 @@ import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import spigey.asteroide.modules.BanStuffs;
 
 import java.lang.reflect.Array;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
+import static meteordevelopment.meteorclient.utils.player.ChatUtils.error;
 
 public class util {
     public static String perm(int lvl){
@@ -197,5 +199,20 @@ public class util {
             if(ARRAY[i] == VALUE){istfgiamsofuckingunmotivatedrnomgplsjustfuckingkillmelikeactuallyiwannakmsrn = true;}
         }
         return istfgiamsofuckingunmotivatedrnomgplsjustfuckingkillmelikeactuallyiwannakmsrn;
+    }
+    public static void MultiCommandBlock(List<String> commands){
+        commands.add("setblock ~ ~1 ~ barrier");
+        commands.add("summon minecraft:falling_block ~ ~2 ~ {BlockState:{Name:command_block},TileEntityData:{Command:'fill ~ ~ ~ ~ ~-4 ~ air',auto:1b}}");
+        commands.add("kill @e[type=command_block_minecart,tag=oawiudoawiudoawidu]");
+        StringBuilder out = new StringBuilder("/summon falling_block ~ ~2 ~ {Time:1,BlockState:{Name:redstone_block}, Passengers:[{id:falling_block, Time:0, BlockState:{Name:activator_rail}");
+        for (int i = 0; i < commands.size(); i++) {
+            out.append(",Passengers:[{id:command_block_minecart, Tags:[\"oawiudoawiudoawidu\"], Command:\"").append(commands.get(i)).append("\"}]");
+        }
+        out.append("}]}");
+        try {
+            CommandBlock(Items.COMMAND_BLOCK, String.valueOf(out), 1, "Multi-Command Command Block", true);
+        } catch (CommandSyntaxException e) {
+            error(String.valueOf(e));
+        }
     }
 }
