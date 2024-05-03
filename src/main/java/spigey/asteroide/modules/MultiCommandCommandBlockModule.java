@@ -5,6 +5,8 @@ import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.StringListSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
+import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.util;
 
@@ -46,6 +48,7 @@ public class MultiCommandCommandBlockModule extends Module {
         if(profile.get() == Profile.Profile8) util.MultiCommandBlock(new ArrayList<>(commands8.get()));
         if(profile.get() == Profile.Profile9) util.MultiCommandBlock(new ArrayList<>(commands9.get()));
         if(profile.get() == Profile.Profile10) util.MultiCommandBlock(new ArrayList<>(commands10.get()));
+        ChatUtils.sendMsg(Text.of("Receiving Multi-Command Command Block."));
     }
 
     private enum Profile{
