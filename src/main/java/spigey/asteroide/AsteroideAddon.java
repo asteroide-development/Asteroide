@@ -18,8 +18,6 @@ import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
 
-import java.util.concurrent.ExecutionException;
-
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static spigey.asteroide.util.*;
 
