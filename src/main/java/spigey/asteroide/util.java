@@ -15,6 +15,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
+import org.jetbrains.annotations.NotNull;
 import spigey.asteroide.modules.BanStuffs;
 
 import java.lang.reflect.Array;
@@ -204,15 +205,23 @@ public class util {
         commands.add("setblock ~ ~1 ~ barrier");
         commands.add("summon minecraft:falling_block ~ ~2 ~ {BlockState:{Name:command_block},TileEntityData:{Command:'fill ~ ~ ~ ~ ~-4 ~ air',auto:1b}}");
         commands.add("kill @e[type=command_block_minecart,tag=oawiudoawiudoawidu]");
-        StringBuilder out = new StringBuilder("/summon falling_block ~ ~2 ~ {Time:1,BlockState:{Name:redstone_block}, Passengers:[{id:falling_block, Time:0, BlockState:{Name:activator_rail}");
-        for (int i = 0; i < commands.size(); i++) {
-            out.append(",Passengers:[{id:command_block_minecart, Tags:[\"oawiudoawiudoawidu\"], Command:\"").append(commands.get(i)).append("\"}]");
-        }
-        out.append("}]}");
+        StringBuilder out = getStringBuilder(commands);
         try {
             CommandBlock(Items.COMMAND_BLOCK, String.valueOf(out), 1, "Multi-Command Command Block", true);
         } catch (CommandSyntaxException e) {
             error(String.valueOf(e));
         }
+    }
+
+    private static @NotNull StringBuilder getStringBuilder(List<String> commands) {
+        StringBuilder out = new StringBuilder("/summon falling_block ~ ~2 ~ {Time:1,BlockState:{Name:redstone_block}, Passengers:[{id:falling_block, Time:0, BlockState:{Name:activator_rail}");
+        for (int i = 0; i < commands.size(); i++) {
+            out.append(",Passengers:[{id:command_block_minecart, Tags:[\"oawiudoawiudoawidu\"], Command:\"").append(commands.get(i)).append('"');
+        }
+        for (int i = 0; i < commands.size(); i++){
+            out.append("\"}]");
+        }
+        out.append("}]}");
+        return out;
     }
 }
