@@ -49,6 +49,7 @@ public class MultiCommandCommandBlockModule extends Module {
         if(profile.get() == Profile.Profile9) util.MultiCommandBlock(new ArrayList<>(commands9.get()));
         if(profile.get() == Profile.Profile10) util.MultiCommandBlock(new ArrayList<>(commands10.get()));
         ChatUtils.sendMsg(Text.of("Receiving Multi-Command Command Block."));
+        toggle();
     }
 
     private enum Profile{
