@@ -83,6 +83,15 @@ public class util {
         nbt += "}";
         give(itemstack(CommandBlockToGive), nbt.replaceAll("\\\\\\\"", "\\\\\""));
     }
+    public static void CommandBlock(Item CommandBlockToGive, String Command, int AlwaysActive, String[] DisplayName, String[] lore, boolean Enchanted) throws CommandSyntaxException {
+        if(!CommandBlockToGive.toString().toUpperCase().contains("COMMAND_BLOCK")){return;}    // Only allow Command Blocks
+        Command = Command.replaceAll("\"", "\\\\\\\"");
+        DisplayName[0] = DisplayName[0].replaceAll("\"", "\\\\\\\"");
+        String nbt = "{display:{Name:'[\"\",{\"text\":\"" + DisplayName[0] +"\",\"color\":\"" + DisplayName[1] +"\", \"italic\":" + DisplayName[2] + "}]', Lore:['[\"\",{\"text\":\"" + lore[0] +"\",\"italic\":" + lore[2] + ",\"color\":\"" + lore[1] + "\"}]']},BlockEntityTag:{Command:\"" + Command + "\",auto:" + AlwaysActive + "b},HideFlags:127"; // idfk nbt
+        if(Enchanted){nbt += ",Enchantments:[{lvl:1,id:infinity}]";}
+        nbt += "}";
+        give(itemstack(CommandBlockToGive), nbt.replaceAll("\\\\\\\"", "\\\\\""));
+    }
     public static void CommandBlock(Item CommandBlockToGive, String Command, int AlwaysActive, boolean Enchanted) throws CommandSyntaxException {
         if(!CommandBlockToGive.toString().toUpperCase().contains("COMMAND_BLOCK")){return;}    // Only allow Command Blocks
         Command = Command.replaceAll("\"", "\\\\\\\"");
@@ -207,7 +216,7 @@ public class util {
         commands.add("kill @e[type=command_block_minecart,tag=oawiudoawiudoawidu]");
         StringBuilder out = getStringBuilder(commands);
         try {
-            CommandBlock(Items.COMMAND_BLOCK, String.valueOf(out), 1, "Multi-Command Command Block", true);
+            CommandBlock(Items.COMMAND_BLOCK, String.valueOf(out), 1, new String[]{"Multi-Command Command Block", "light_gray", "false"}, new String[]{trim(commands.get(0), commands.get(0).indexOf(" ")) + ", " + trim(commands.get(1), commands.get(1).indexOf(" ")) + ", " + trim(commands.get(2), commands.get(2).indexOf(" ")) + "...", "dark_gray", "true"}, true);
         } catch (CommandSyntaxException e) {
             error(String.valueOf(e));
         }
@@ -223,5 +232,8 @@ public class util {
         }
         out.append("}]}");
         return out;
+    }
+    public static String trim(String text, int index){
+        return text.substring(0, Math.min(text.length(), index));
     }
 }
