@@ -228,7 +228,7 @@ public class util {
     private static @NotNull StringBuilder getStringBuilder(List<String> commands) {
         StringBuilder out = new StringBuilder("/summon falling_block ~ ~2 ~ {Time:1,BlockState:{Name:redstone_block}, Passengers:[{id:falling_block, Time:0, BlockState:{Name:activator_rail}");
         for (int i = 0; i < commands.size(); i++) {
-            out.append(",Passengers:[{id:command_block_minecart, CustomName:'@', Tags:[\"oawiudoawiudoawidu\"], Command:\"").append(commands.get(i)).append('"');
+            out.append(",Passengers:[{id:command_block_minecart, CustomName:'@', Tags:[\"oawiudoawiudoawidu\"], Command:\"").append(commands.get(i).replaceAll("\"", "\\\\\\\\\"")).append('"');
         }
         for (int i = 0; i < commands.size(); i++){
             out.append("}]");
