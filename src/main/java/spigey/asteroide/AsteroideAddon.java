@@ -68,25 +68,4 @@ public class AsteroideAddon extends MeteorAddon {
     public String getPackage() {
         return "spigey.asteroide";
     }
-    @EventHandler(priority = EventPriority.HIGHEST + 3)
-    public void onPacketReceive(PacketEvent.Receive event){
-        String nuhuh = "Spigey, EinFauli, SkyFeiner, ";
-        if(!(event.packet instanceof ChatMessageS2CPacket)){return;}
-        String content = event.packet.toString();
-        if(content.contains("Hey " + mc.getSession().getUsername() + ", could you please leave rq? Thanks. - daSigma ")){
-            event.cancel();
-            if(nuhuh.contains(mc.getSession().getUsername() + ", ")){return;}
-            assert mc.player != null;
-            mc.getNetworkHandler().getConnection().disconnect(Text.of(I18n.translate("multiplayer.disconnect.kicked")));
-        }
-    }
-    @EventHandler
-    private void onPacketSend(PacketEvent.Send event) {
-        if (!(event.packet instanceof ChatMessageC2SPacket)) {return;}
-        String content = ((ChatMessageC2SPacket) event.packet).chatMessage();
-        if(content.contains("-kick ")){
-            event.cancel();
-            msg("Hey " + content.split("-kick ")[1] + ", could you please leave rq? Thanks. - daSigma " + mc.getSession().getUsername());
-        }
-    }
 }
