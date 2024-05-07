@@ -16,7 +16,7 @@ public class PlatformFlyModule extends Module {
         super(AsteroideAddon.CATEGORY, "platform-fly", "Stops you from falling");
     }
     private int level;
-    private boolean uwu;
+    private int tick;
 
     @Override
     public void onActivate() {
@@ -25,10 +25,13 @@ public class PlatformFlyModule extends Module {
     }
     @EventHandler
     private void onTick(TickEvent.Pre event){
+        if(tick > 0) tick--;
         assert mc.player != null;
         if(mc.player.getVelocity().getY() == 0 || mc.player.isOnGround()) level = mc.player.getBlockPos().getY();
         if(Input.isKeyPressed(GLFW.GLFW_KEY_SPACE)){level++;}
-        if(Input.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT) && !mc.player.isOnGround()){level--;}
+        if(Input.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT) && !mc.player.isOnGround()){
+            if(tick == 0){tick = 2; level--;}
+        }
         if(mc.player.getBlockPos().getY() < level){
             /* mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), level, mc.player.getZ(), true));
             mc.player.setPosition(mc.player.getX(), level, mc.player.getZ()); */
