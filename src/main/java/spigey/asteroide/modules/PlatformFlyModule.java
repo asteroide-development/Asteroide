@@ -22,6 +22,7 @@ public class PlatformFlyModule extends Module {
     private void onKey(KeyEvent event){
         if(event.action != KeyAction.Press) return;
         if(mc.options.sneakKey.matchesKey(event.key, 0)){level--; return;}
+        if(!mc.options.jumpKey.matchesKey(event.key, 0)) return;
         assert mc.player != null;
         level = mc.player.getBlockPos().getY();
     }
