@@ -34,7 +34,11 @@ public class PlatformFlyModule extends Module {
         if(mc.player.getBlockPos().getY() < level){
             /* mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), level, mc.player.getZ(), true));
             mc.player.setPosition(mc.player.getX(), level, mc.player.getZ()); */
-            mc.player.setVelocity(mc.player.getVelocity().x, 0, mc.player.getVelocity().z);
+            if(mc.player.getVelocity().y < 0) mc.player.setVelocity(mc.player.getVelocity().x, 0, mc.player.getVelocity().z);
+            if(mc.player.getBlockPos().getY() < level){
+                mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), level, mc.player.getZ(), true));
+                mc.player.setPosition(mc.player.getX(), level, mc.player.getZ());
+            }
         }
     }
 }
