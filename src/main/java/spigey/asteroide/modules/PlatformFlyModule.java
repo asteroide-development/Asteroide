@@ -24,16 +24,17 @@ public class PlatformFlyModule extends Module {
         if(event.action != KeyAction.Press) return;
         if(mc.options.sneakKey.matchesKey(event.key, 0)){level--; return;}
         if(!mc.options.jumpKey.matchesKey(event.key, 0)){level++; return;}
-        /* assert mc.player != null;
-        if(mc.player.isOnGround()) level = mc.player.getBlockPos().getY(); */
+        assert mc.player != null;
+        if(mc.player.isOnGround()) level = mc.player.getBlockPos().getY();
     }
     @EventHandler
     private void onTick(TickEvent.Pre event){
         assert mc.player != null;
         if(mc.player.isOnGround()) return;
         if(mc.player.getBlockPos().getY() < level){
-            mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), level, mc.player.getZ(), true));
-            mc.player.setPosition(mc.player.getX(), level, mc.player.getZ());
+            /* mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), level, mc.player.getZ(), true));
+            mc.player.setPosition(mc.player.getX(), level, mc.player.getZ()); */
+            mc.player.setVelocity(mc.player.getVelocity().x, 0, mc.player.getVelocity().z);
         }
     }
 }
