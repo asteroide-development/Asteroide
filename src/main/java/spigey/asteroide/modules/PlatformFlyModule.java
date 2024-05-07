@@ -26,7 +26,7 @@ public class PlatformFlyModule extends Module {
     @EventHandler
     private void onTick(TickEvent.Pre event){
         assert mc.player != null;
-        level = mc.player.getBlockPos().getY();
+        if(!(mc.player.getVelocity().getY() < 0)) level = mc.player.getBlockPos().getY();
         if(Input.isKeyPressed(GLFW.GLFW_KEY_SPACE)){level++;}
         if(Input.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)){level--;}
         if(mc.player.getBlockPos().getY() < level){
