@@ -22,7 +22,7 @@ public class PlatformFlyModule extends Module {
     }
     @EventHandler
     private void onKey(KeyEvent event){
-        if(event.action != KeyAction.Press) return;
+        if(event.action != KeyAction.Press && event.action != KeyAction.Repeat) return;
         if(mc.options.sneakKey.matchesKey(event.key, 0)){level--; mc.player.setVelocity(mc.player.getVelocity().x, -1, mc.player.getVelocity().z); return;}
         if(!mc.options.jumpKey.matchesKey(event.key, 0)){level++; return;}
         assert mc.player != null;
