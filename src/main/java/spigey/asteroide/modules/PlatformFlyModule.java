@@ -21,7 +21,7 @@ public class PlatformFlyModule extends Module {
     @EventHandler
     private void onKey(KeyEvent event){
         if(event.action != KeyAction.Press) return;
-        if(mc.options.sneakKey.matchesKey(event.key, 0)) level--;
+        if(mc.options.sneakKey.matchesKey(event.key, 0)){level--; return;}
         assert mc.player != null;
         level = mc.player.getBlockPos().getY();
     }
@@ -29,7 +29,7 @@ public class PlatformFlyModule extends Module {
     private void onTick(TickEvent.Pre event){
         assert mc.player != null;
         if(mc.player.isOnGround()) return;
-        if(mc.player.getBlockPos().getY() == level) mc.player.jump();
+        if(mc.player.getBlockPos().getY() < level) mc.player.jump();
     }
 }
 
