@@ -5,6 +5,7 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import spigey.asteroide.AsteroideAddon;
 
 public class PlatformFlyModule extends Module {
@@ -22,15 +23,18 @@ public class PlatformFlyModule extends Module {
     private void onKey(KeyEvent event){
         if(event.action != KeyAction.Press) return;
         if(mc.options.sneakKey.matchesKey(event.key, 0)){level--; return;}
-        if(!mc.options.jumpKey.matchesKey(event.key, 0)) return;
+        if(!mc.options.jumpKey.matchesKey(event.key, 0)){level++; return;}
         assert mc.player != null;
-        level = mc.player.getBlockPos().getY();
+        if(mc.player.isOnGround()) level = mc.player.getBlockPos().getY();
     }
     @EventHandler
     private void onTick(TickEvent.Pre event){
         assert mc.player != null;
         if(mc.player.isOnGround()) return;
-        if(mc.player.getBlockPos().getY() < level) mc.player.jump();
+        if(mc.player.getBlockPos().getY() < level){
+            mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), level, mc.player.getZ(), true));
+            mc.player.setPosition(mc.player.getX(), level, mc.player.getZ());
+        }
     }
 }
 
