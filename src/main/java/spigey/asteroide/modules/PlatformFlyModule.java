@@ -13,6 +13,7 @@ public class PlatformFlyModule extends Module {
         super(AsteroideAddon.CATEGORY, "platform-fly", "Stops you from falling");
     }
     private int level;
+    private boolean uwu;
 
     @Override
     public void onActivate() {
@@ -22,7 +23,7 @@ public class PlatformFlyModule extends Module {
     @EventHandler
     private void onKey(KeyEvent event){
         if(event.action != KeyAction.Press) return;
-        if(mc.options.sneakKey.matchesKey(event.key, 0)){level--; return;}
+        if(mc.options.sneakKey.matchesKey(event.key, 0)){level--; uwu = true; return;}
         if(!mc.options.jumpKey.matchesKey(event.key, 0)){level++; return;}
         assert mc.player != null;
         if(mc.player.isOnGround()) level = mc.player.getBlockPos().getY();
@@ -35,6 +36,11 @@ public class PlatformFlyModule extends Module {
             /* mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), level, mc.player.getZ(), true));
             mc.player.setPosition(mc.player.getX(), level, mc.player.getZ()); */
             if(mc.player.getVelocity().y < 0) mc.player.setVelocity(mc.player.getVelocity().x, 0, mc.player.getVelocity().z);
+            if(uwu){
+                mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), level, mc.player.getZ(), true));
+                mc.player.setPosition(mc.player.getX(), level, mc.player.getZ());
+                uwu = false;
+            }
         }
     }
 }
