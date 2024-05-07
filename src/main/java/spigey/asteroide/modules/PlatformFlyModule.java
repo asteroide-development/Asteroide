@@ -26,13 +26,13 @@ public class PlatformFlyModule extends Module {
     @EventHandler
     private void onTick(TickEvent.Pre event){
         assert mc.player != null;
-        if(!(mc.player.getVelocity().getY() < 0)) level = mc.player.getBlockPos().getY();
+        if(mc.player.getVelocity().getY() == 0) level = mc.player.getBlockPos().getY();
         if(Input.isKeyPressed(GLFW.GLFW_KEY_SPACE)){level++;}
-        if(Input.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)){level--;}
-        if(mc.player.getBlockPos().getY() < level){
+        if(Input.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT) && !mc.player.isOnGround()){level--;}
+        if(mc.player.getBlockPos().getY() <= level){
             /* mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), level, mc.player.getZ(), true));
             mc.player.setPosition(mc.player.getX(), level, mc.player.getZ()); */
-            if(mc.player.getVelocity().y < 0) mc.player.setVelocity(mc.player.getVelocity().x, 0, mc.player.getVelocity().z);
+            if(mc.player.getVelocity().y < 0) mc.player.setVelocity(mc.player.getVelocity().x, 0.0739, mc.player.getVelocity().z);
         }
     }
 }
