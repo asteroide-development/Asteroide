@@ -1,7 +1,11 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.events.meteor.KeyEvent;
+import meteordevelopment.meteorclient.events.world.CollisionShapeEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.misc.AutoRespawn;
@@ -11,44 +15,46 @@ import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.shape.VoxelShapes;
 import org.lwjgl.glfw.GLFW;
 import spigey.asteroide.AsteroideAddon;
+import spigey.asteroide.util;
+
+import static meteordevelopment.meteorclient.MeteorClient.mc;
+
 
 public class PlatformFlyModule extends Module {
     public PlatformFlyModule() {
-        super(AsteroideAddon.CATEGORY, "platform-fly", "Stops you from falling");
+        super(AsteroideAddon.CATEGORY, "platform-fly", "Lets you fly by stopping you from falling");
     }
-    private int level;
-    private int tick;
-    private boolean plskms;
-    private final Module thing = Modules.get().get(AirJump.class);
-
-    @Override
-    public void onActivate() {
-        assert mc.player != null;
-        level = mc.player.getBlockPos().getY();
-        plskms = thing.isActive();
-        if(!thing.isActive()){thing.toggle();}
-    }
-
-    @Override
-    public void onDeactivate() {
-        if(!plskms && thing.isActive()){thing.toggle();}
-    }
-
+    private final SettingGroup sgGeneral = settings.getDefaultGroup();
+    private final Setting<Boolean> allowJumping = sgGeneral.add(new BoolSetting.Builder()
+        .name("Ease Jumping")
+        .description("Makes getting up easier")
+        .defaultValue(true)
+        .build()
+    );
+    private final Setting<Boolean> allowSneaking = sgGeneral.add(new BoolSetting.Builder()
+        .name("Allow Sneaking")
+        .description("Allows sneaking while in the air")
+        .defaultValue(false)
+        .build()
+    );
     @EventHandler
-    private void onTick(TickEvent.Pre event){
-        if(tick > 0) tick--;
+    private void onCollisionShape(CollisionShapeEvent event){
         assert mc.player != null;
-        if(mc.player.getVelocity().getY() == 0 || mc.player.isOnGround()) level = mc.player.getBlockPos().getY();
-        if(Input.isKeyPressed(GLFW.GLFW_KEY_SPACE)){level++;}
-        if(Input.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT) && !mc.player.isOnGround()){
-            if(tick == 0){tick = 2; level--;}
-        }
-        if(mc.player.getBlockPos().getY() < level){
-            /* mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), level, mc.player.getZ(), true));
-            mc.player.setPosition(mc.player.getX(), level, mc.player.getZ()); */
-            if(mc.player.getVelocity().y < 0) mc.player.setVelocity(mc.player.getVelocity().x, 0, mc.player.getVelocity().z);
+        boolean sneaking = mc.options.sneakKey.isPressed();
+        boolean jumping = mc.options.jumpKey.isPressed();
+        if(sneaking && !allowSneaking.get()){return;}
+        if(jumping && allowJumping.get() && (util.randomNum(1,5) == 3)){mc.player.jump();} // I was too lazy to add a proper delay
+        int PlayerX = mc.player.getBlockPos().getX();
+        int PlayerY = mc.player.getBlockPos().getY();
+        int PlayerZ = mc.player.getBlockPos().getZ();
+        BlockPos pos = event.pos;
+        BlockPos lock = new BlockPos(PlayerX, PlayerY - 1, PlayerZ);
+        if(lock.equals(pos)){
+            event.shape = VoxelShapes.fullCube();
         }
     }
 }
