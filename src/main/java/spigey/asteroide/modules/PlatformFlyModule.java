@@ -30,9 +30,9 @@ public class PlatformFlyModule extends Module {
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<Boolean> allowJumping = sgGeneral.add(new BoolSetting.Builder()
-        .name("Ease Jumping")
+        .name("Ease Jumping (Buggy)")
         .description("Makes getting up easier")
-        .defaultValue(true)
+        .defaultValue(false)
         .build()
     );
     private final Setting<Boolean> allowSneaking = sgGeneral.add(new BoolSetting.Builder()
