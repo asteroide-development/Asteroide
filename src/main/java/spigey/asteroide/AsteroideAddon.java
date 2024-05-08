@@ -1,13 +1,7 @@
 package spigey.asteroide;
 
-import meteordevelopment.meteorclient.events.packets.PacketEvent;
-import meteordevelopment.orbit.EventHandler;
-import meteordevelopment.orbit.EventPriority;
-import net.minecraft.client.resource.language.I18n;
+import com.google.gson.Gson;
 import net.minecraft.item.Items;
-import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
-import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
-import net.minecraft.text.Text;
 import spigey.asteroide.commands.*;
 import spigey.asteroide.hud.*;
 import spigey.asteroide.modules.*;
@@ -18,13 +12,13 @@ import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
 
-import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static spigey.asteroide.util.*;
 
 public class AsteroideAddon extends MeteorAddon {
     public static final Logger LOG = LogUtils.getLogger();
     public static final Category CATEGORY = new Category("Asteroide", Items.MAGMA_BLOCK.getDefaultStack());
     public static final HudGroup HUD = new HudGroup("Asteroide");
+    public static final Gson gson = new Gson();
     @Override
     public void onInitialize() {
         LOG.info("\nLoaded Asteroide v0.1.4-fix\n");
@@ -43,6 +37,8 @@ public class AsteroideAddon extends MeteorAddon {
         // addModule(new AutoEz());
         addModule(new MultiCommandCommandBlockModule());
         addModule(new PlatformFlyModule());
+        addModule(new BungeeSpoofModule());
+        addModule(new BetterCollisionsModule());
 
         // Commands
         addCommand(new CrashAll());
