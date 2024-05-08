@@ -1,7 +1,7 @@
 package spigey.asteroide.mixin;
 
 import com.google.gson.JsonObject;
-import spigey.asteroide.modules.BungeeSpoofModule;
+import spigey.asteroide.modules.BetterBungeeSpoofModule;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.network.Http;
 import net.minecraft.network.NetworkState;
@@ -31,7 +31,7 @@ public abstract class HandshakeC2SMixin {
 
     @Inject(method = "<init>(ILjava/lang/String;ILnet/minecraft/network/packet/c2s/handshake/ConnectionIntent;)V", at = @At("RETURN"))
     private void onHandshakeC2SPacket(int i, String string, int j, ConnectionIntent connectionIntent, CallbackInfo ci) {
-        BungeeSpoofModule bungeeSpoofModule = Modules.get().get(BungeeSpoofModule.class);
+        BetterBungeeSpoofModule bungeeSpoofModule = Modules.get().get(BetterBungeeSpoofModule.class);
         if (!bungeeSpoofModule.isActive()) return;
         if (this.getNewNetworkState() != NetworkState.LOGIN) return;
         String spoofedUUID = mc.getSession().getUuidOrNull().toString();

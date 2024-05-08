@@ -7,8 +7,8 @@ import meteordevelopment.meteorclient.settings.StringSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import spigey.asteroide.AsteroideAddon;
 
-public class BungeeSpoofModule extends Module {
-    public BungeeSpoofModule() {
+public class BetterBungeeSpoofModule extends Module {
+    public BetterBungeeSpoofModule() {
         super(AsteroideAddon.CATEGORY, "BungeeSpoof", "Lets you join BungeeCord servers with an exposed backend");
     }
     SettingGroup sgGeneral = settings.getDefaultGroup();
