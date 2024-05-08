@@ -50,7 +50,7 @@ public class AntiAnnouncement extends Module {
             for(int i = 0; i < messages.get().size(); i++){
                 if(content.toLowerCase().contains(messages.get().get(i).toLowerCase())){event.cancel();}
             }
-            if(content.replaceAll(" ", "").replaceAll("\\n", "") == "" && mtmsg.get()){event.cancel();}
+            if(content.replaceAll(" ", "").replaceAll("\\n", "").replaceAll("\n", "").equals("") && mtmsg.get()){event.cancel();}
         }
     }
 }
