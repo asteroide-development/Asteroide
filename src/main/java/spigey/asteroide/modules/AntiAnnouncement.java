@@ -42,7 +42,7 @@ public class AntiAnnouncement extends Module {
                     event.cancel();
                 }
             }
-            if (content.replaceAll(" ", "") == "" && mtmsg.get()) {
+            if (content.replaceAll(" ", "").replaceAll("\n", "") == "" && mtmsg.get()) {
                 event.cancel();
             }
         } else if(event.packet instanceof ChatMessageS2CPacket){
