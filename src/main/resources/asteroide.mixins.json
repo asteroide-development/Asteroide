@@ -5,5 +5,8 @@
   "client": [],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "HandshakeC2SMixin"
+  ]
 }
