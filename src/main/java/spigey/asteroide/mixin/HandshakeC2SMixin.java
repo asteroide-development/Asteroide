@@ -32,6 +32,7 @@ public abstract class HandshakeC2SMixin {
     @Inject(method = "<init>(ILjava/lang/String;ILnet/minecraft/network/packet/c2s/handshake/ConnectionIntent;)V", at = @At("RETURN"))
     private void onHandshakeC2SPacket(int i, String string, int j, ConnectionIntent connectionIntent, CallbackInfo ci) {
         BetterBungeeSpoofModule bungeeSpoofModule = Modules.get().get(BetterBungeeSpoofModule.class);
+        assert bungeeSpoofModule != null;
         if (!bungeeSpoofModule.isActive()) return;
         if (this.getNewNetworkState() != NetworkState.LOGIN) return;
         String spoofedUUID = mc.getSession().getUuidOrNull().toString();
