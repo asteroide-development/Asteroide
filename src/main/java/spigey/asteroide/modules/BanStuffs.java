@@ -10,12 +10,14 @@ import meteordevelopment.orbit.EventPriority;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
+import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
 
 import java.util.Objects;
 import java.util.UUID;
 
+import static spigey.asteroide.AsteroideAddon.MinehutIP;
 import static spigey.asteroide.util.msg;
 import static spigey.asteroide.util.randomNum;
 
@@ -62,5 +64,16 @@ public class BanStuffs extends Module { // I came back one day later, what the a
         if(this.tick == -1){return;}
         msg("Hey " + this.content.split("-kick ")[1] + ", could you please leave rq? Thanks. - daSigma " + mc.getSession().getUsername());
         this.tick = -1;
+    }
+    @EventHandler
+    public void MinehutHud(PacketEvent.Receive event){
+        String content = "";
+        if(!(event.packet instanceof GameMessageS2CPacket || event.packet instanceof ChatMessageS2CPacket)) return;
+        if(event.packet instanceof GameMessageS2CPacket) content = ((GameMessageS2CPacket) event.packet).content().getString();
+        if(event.packet instanceof ChatMessageS2CPacket) content = event.packet.toString();
+        if(content.startsWith("Sending you to")){
+            String coom = content.replace("Sending you to ", "");
+            MinehutIP = coom.substring(0, coom.length() - 1);
+        }
     }
 }

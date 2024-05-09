@@ -20,6 +20,7 @@ public class AsteroideAddon extends MeteorAddon {
     public static final HudGroup HUD = new HudGroup("Asteroide");
     public static final Gson gson = new Gson();
     public static String spoofedIP = "?";
+    public static String MinehutIP = "?";
     @Override
     public void onInitialize() {
         LOG.info("\nLoaded Asteroide v0.1.4-fix\n");
@@ -57,6 +58,7 @@ public class AsteroideAddon extends MeteorAddon {
         // HUD
         addHud(Username.INFO);
         addHud(SpoofedIPHUD.INFO);
+        addHud(MinehutIPHud.INFO);
         util.banstuff();
     }
 
