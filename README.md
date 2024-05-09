@@ -33,7 +33,7 @@
 1. **Install the Fabric Loader**:
 
     - Visit the Fabric Loader website at [https://fabricmc.net/use](https://fabricmc.net/use).
-    - Select your Minecraft version from the dropdown menu.
+    - Select 1.20.4 from the dropdown menu.
     - Click the "Download Installer" button for the corresponding operating system (Windows, macOS, or Linux).
     - Run the installer and follow the on-screen instructions to install the Fabric Loader.
 
