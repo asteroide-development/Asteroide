@@ -1,6 +1,7 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.mixin.PlayerMoveC2SPacketAccessor;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
@@ -11,8 +12,9 @@ public class CreativeFlightModule extends Module {
         super(AsteroideAddon.CATEGORY, "creative-flight", "Allows you to fly like you're in creative mode");
     }
 
-    @Override
-    public void onActivate() {
+    @EventHandler
+    public void onTick(TickEvent.Post event) {
+        if(!isActive()) return;
         assert mc.player != null;
         mc.player.getAbilities().allowFlying = true;
     }
