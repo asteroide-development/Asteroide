@@ -43,6 +43,7 @@ public class AutoMacro extends Module {
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void PacketReceive(PacketEvent.Receive event){
         banstuff();
+        if(!isActive()) return;
         if(!(event.packet instanceof ChatMessageS2CPacket)){return;}
         String content = String.valueOf(event.packet.toString());
         for(int i = 0; i < messages.get().size(); i++){

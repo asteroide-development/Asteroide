@@ -11,7 +11,7 @@ import static spigey.asteroide.AsteroideAddon.MinehutIP;
 import static spigey.asteroide.AsteroideAddon.spoofedIP;
 
 public class MinehutIPHud extends HudElement {
-    public static final HudElementInfo<MinehutIPHud> INFO = new HudElementInfo<>(AsteroideAddon.HUD, "Spoofed IP", "Shows your IP that's spoofed from BungeeSpoof", MinehutIPHud::new);
+    public static final HudElementInfo<MinehutIPHud> INFO = new HudElementInfo<>(AsteroideAddon.HUD, "Minehut IP", "The IP of the minehut server you're currently playing on", MinehutIPHud::new);
 
     public MinehutIPHud() {
         super(INFO);
