@@ -55,10 +55,10 @@ public class PhaseCommand extends Command {
                 double x = mc.player.getX();
                 double y = mc.player.getY();
                 double z = mc.player.getZ();
-                if(owo.equals("north")) x += blocks;
-                if(owo.equals("east")) z += blocks;
-                if(owo.equals("south")) x -= blocks;
-                if(owo.equals("west")) z -= blocks;
+                if(owo.equals("east")) x += blocks;
+                if(owo.equals("south")) z += blocks;
+                if(owo.equals("west")) x -= blocks;
+                if(owo.equals("north")) z -= blocks;
                 mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, true));
                 mc.player.setPosition(x, y, z);
             }
