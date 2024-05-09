@@ -40,6 +40,8 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new PlatformFlyModule());
         addModule(new BetterBungeeSpoofModule());
         addModule(new BetterCollisionsModule());
+        addModule(new CreativeFlightModule());
+        addModule(new AutoFuckModule());
 
         // Commands
         addCommand(new CrashAll());
