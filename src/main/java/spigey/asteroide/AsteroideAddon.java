@@ -50,6 +50,7 @@ public class AsteroideAddon extends MeteorAddon {
         addCommand(new FuckServerCommand());
         addCommand(new MeCommand());
         addCommand(new CommandBlockCommand());
+        addCommand(new PhaseCommand());
 
         // HUD
         addHud(Username.INFO);

@@ -241,4 +241,15 @@ public class util {
     public static String trim(String text, int index){
         return text.substring(0, Math.min(text.length(), index));
     }
+    public static String PlayerDir(double yaw) {
+        int direction = (int) Math.floorMod((int) Math.round(yaw / 90.0), 4);
+        return switch (direction) {
+            case 0 -> "south";
+            case 1 -> "west";
+            case 2 -> "north";
+            case 3 -> "east";
+            default -> "wtf";
+        };
+    }
+
 }
