@@ -35,7 +35,7 @@ public class BetterCollisionsModule extends Module {
         .build()
     );
     private final Setting<Double> boxsize = sgGeneral.add(new DoubleSetting.Builder()
-        .name("Collision Height")
+        .name("Collision Height IN DEVELOPMENT")
         .description("Height of the collision box")
         .defaultValue(1)
         .min(0)
