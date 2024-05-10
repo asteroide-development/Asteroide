@@ -50,7 +50,7 @@ public class ChestStealerModule extends Module {
             ItemStack uwu = slots.get(i).getStack();
             ClickSlotC2SPacket packet = new ClickSlotC2SPacket(((GenericContainerScreen) mc.currentScreen).getScreenHandler().syncId, 1, i, 0, SlotActionType.QUICK_MOVE, uwu, Int2ObjectMaps.singleton(i, ItemStack.EMPTY));
             assert mc.player != null;
-            if(Objects.equals(String.valueOf(uwu), "0 air")){return;}
+            if(uwu.getCount() < 1){return;}
             mc.player.networkHandler.sendPacket(packet);
             tick = delay.get();
         }
