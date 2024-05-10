@@ -35,8 +35,8 @@ public class MinehutAutoJoinRandomModule extends Module {
         assert mc.player != null;
         ItemStack stack = mc.player.getInventory().getMainHandStack();
         NbtCompound tag = stack.getNbt();
-        if(tag == null) return;
-        if(!NbtHelper.toFormattedString(tag).equals("{PublicBukkitValues: {\"lobby:lobby-item\": \"MAIN_MENU\"}, Unbreakable: 1b, HideFlags: 6, display: {Name: '{\"bold\":true,\"color\":\"yellow\",\"extra\":[{\"color\":\"gray\",\"text\":\" (Right-Click)\"}],\"text\":\"Main Menu\"}'}}")) return;
+        assert tag != null;
+        if(!NbtHelper.toFormattedString(tag).contains("lobby:lobby-item")) return;
         // if(!Objects.equals(mc.currentScreen.getTitle().toString(), "literal{Where to?}")) return;
         Utils.rightClick();
         assert mc.currentScreen != null;
