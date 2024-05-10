@@ -52,7 +52,6 @@ public class ChestStealerModule extends Module {
             i++;
             ItemStack uwu = slots.get(i).getStack();
             ClickSlotC2SPacket packet = getPacket(uwu);
-
             assert mc.player != null;
             if(uwu.getCount() < 1){return;}
             mc.player.networkHandler.sendPacket(packet);

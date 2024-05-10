@@ -16,17 +16,31 @@ import static spigey.asteroide.util.CommandBlock;
 
 public class BypassCommand extends Command {
     public BypassCommand() {
-        super("cmdblock", "Gives you a command block with the specified command inside");
+        super("bypass", "Lets you bypass most chat filters");
     }
 
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.executes(context -> {
-            error("You have to specify a message!"); // .cmdblock /say Asteroide on Crack!
+            error("You have to specify a message!");
             return SINGLE_SUCCESS;
         });
         builder.then(argument("text", StringArgumentType.greedyString()).executes(context -> {
-            String copy = "placeholder";
+            String copy = StringArgumentType.getString(context, "text")
+                .replaceAll("a", "а")
+                .replaceAll("c", "с")
+                .replaceAll("d", "ԁ")
+                .replaceAll("e", "е")
+                .replaceAll("h", "һ")
+                .replaceAll("i", "і")
+                .replaceAll("ј", "j")
+                .replaceAll("n", "ո")
+                .replaceAll("o", "о")
+                .replaceAll("p", "р")
+                .replaceAll("u", "ս")
+                .replaceAll("v", "ν")
+                .replaceAll("y", "у");
+            ChatUtils.sendMsg(Text.of("Done creating the bypassed message! Click the Button below to copy."));
             ChatUtils.sendMsg(util.getCopyButton(copy));
             return SINGLE_SUCCESS;
         }));
