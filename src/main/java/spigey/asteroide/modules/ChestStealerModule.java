@@ -5,6 +5,9 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
@@ -21,6 +24,13 @@ public class ChestStealerModule extends Module {
     public ChestStealerModule() {
         super(AsteroideAddon.CATEGORY, "", "");
     }
+    private final SettingGroup sgGeneral = settings.getDefaultGroup();
+    private final Setting<Boolean> experimental = sgGeneral.add(new BoolSetting.Builder()
+        .name("Enable experimental features")
+        .description("Enables some features that are still in development")
+        .defaultValue(false)
+        .build()
+    );
     @EventHandler
     private void onTick(TickEvent.Post event){
         if(mc.currentScreen instanceof GenericContainerScreen) {
@@ -37,6 +47,7 @@ public class ChestStealerModule extends Module {
     @EventHandler
     private void onPacketSend(PacketEvent.Send event){
         if(!(event.packet instanceof ClickSlotC2SPacket)) return;
+        if(!experimental.get()) return;
         info(String.valueOf(((ClickSlotC2SPacket) event.packet).getSyncId()) + ", " + ((ClickSlotC2SPacket) event.packet).getRevision() + ", " + ((ClickSlotC2SPacket) event.packet).getSlot() + ", " + ((ClickSlotC2SPacket) event.packet).getButton() + ", " + ((ClickSlotC2SPacket) event.packet).getActionType() + ", " + ((ClickSlotC2SPacket) event.packet).getModifiedStacks());
         // 2, 1, 0, 0, QUICK_MOVE, {0=>0 air, 62=>1 chest}
     }
