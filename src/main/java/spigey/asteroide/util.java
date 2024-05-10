@@ -8,6 +8,7 @@ import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.misc.AutoRespawn;
+import meteordevelopment.meteorclient.utils.misc.text.MeteorClickEvent;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,6 +16,11 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 import spigey.asteroide.modules.BanStuffs;
 
@@ -251,5 +257,19 @@ public class util {
             default -> "wtf";
         };
     }
-
+    public static MutableText getCopyButton(String copy){
+        MutableText Button = Text.literal("[COPY]");
+        Button.setStyle(Button.getStyle()
+            .withFormatting(Formatting.GREEN)
+            .withClickEvent(new MeteorClickEvent(
+                ClickEvent.Action.COPY_TO_CLIPBOARD,
+                copy
+            ))
+            .withHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_TEXT,
+                Text.literal("Click to Copy")
+            ))
+        );
+        return Button;
+    }
 }
