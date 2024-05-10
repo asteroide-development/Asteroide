@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.settings.IntSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -25,32 +26,35 @@ public class ChestStealerModule extends Module {
         super(AsteroideAddon.CATEGORY, "", "");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
-    private final Setting<Boolean> experimental = sgGeneral.add(new BoolSetting.Builder()
-        .name("Enable experimental features")
-        .description("Enables some features that are still in development")
-        .defaultValue(false)
+    private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
+        .name("delay")
+        .description("The delay before taking another item")
+        .defaultValue(2)
+        .min(0)
+        .sliderMax(10)
+        .max(100)
         .build()
     );
+    private int tick;
+    private int i = -1;
+    DefaultedList<Slot> slots;
     @EventHandler
     private void onTick(TickEvent.Post event){
         if(mc.currentScreen instanceof GenericContainerScreen) {
-            DefaultedList<Slot> slots = ((GenericContainerScreen) mc.currentScreen).getScreenHandler().slots; // what the fuck am I doing rn
-            for(int i = 0; i < (slots.size() - 37); i++){
-                ItemStack uwu = slots.get(i).getStack();
-                // Int2ObjectMap<ItemStack> modifiedStacks = new Int2ObjectArrayMap<>();
-                ClickSlotC2SPacket packet = new ClickSlotC2SPacket(((GenericContainerScreen) mc.currentScreen).getScreenHandler().syncId, 1, i, 0, SlotActionType.QUICK_MOVE, uwu, Int2ObjectMaps.singleton(i, ItemStack.EMPTY));
-                assert mc.player != null;
-                mc.player.networkHandler.sendPacket(packet);
-            }
+            slots = ((GenericContainerScreen) mc.currentScreen).getScreenHandler().slots;
+            if(tick > 0){tick--; return;}
+            if(!((i + 1) < (slots.size() - 36))){i = -1; return;}
+            i++;
+            ItemStack uwu = slots.get(i).getStack();
+            ClickSlotC2SPacket packet = new ClickSlotC2SPacket(((GenericContainerScreen) mc.currentScreen).getScreenHandler().syncId, 1, i, 0, SlotActionType.QUICK_MOVE, uwu, Int2ObjectMaps.singleton(i, ItemStack.EMPTY));
+            assert mc.player != null;
+            mc.player.networkHandler.sendPacket(packet);
         }
     }
-    @EventHandler
-    private void onPacketSend(PacketEvent.Send event){
-        if(!(event.packet instanceof ClickSlotC2SPacket)) return;
-        if(!experimental.get()) return;
-        info(String.valueOf(((ClickSlotC2SPacket) event.packet).getSyncId()) + ", " + ((ClickSlotC2SPacket) event.packet).getRevision() + ", " + ((ClickSlotC2SPacket) event.packet).getSlot() + ", " + ((ClickSlotC2SPacket) event.packet).getButton() + ", " + ((ClickSlotC2SPacket) event.packet).getActionType() + ", " + ((ClickSlotC2SPacket) event.packet).getModifiedStacks());
-        // 2, 1, 0, 0, QUICK_MOVE, {0=>0 air, 62=>1 chest}
-    }
+    /* @EventHandler
+    private void onPacketSend(PacketEvent.Sent event){
+        if(event.packet instanceof)
+    } */
 }
 
 
