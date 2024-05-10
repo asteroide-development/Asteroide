@@ -12,6 +12,7 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
+import net.minecraft.client.gui.screen.ingame.ShulkerBoxScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
@@ -42,8 +43,9 @@ public class ChestStealerModule extends Module {
     DefaultedList<Slot> slots;
     @EventHandler
     private void onTick(TickEvent.Post event){
-        if(mc.currentScreen instanceof GenericContainerScreen) {
-            slots = ((GenericContainerScreen) mc.currentScreen).getScreenHandler().slots;
+        if(mc.currentScreen instanceof GenericContainerScreen || mc.currentScreen instanceof ShulkerBoxScreen) {
+            if(mc.currentScreen instanceof GenericContainerScreen) slots = ((GenericContainerScreen) mc.currentScreen).getScreenHandler().slots;
+            if(mc.currentScreen instanceof ShulkerBoxScreen) slots = ((ShulkerBoxScreen) mc.currentScreen).getScreenHandler().slots;
             if(tick > 0){tick--; return;}
             if(!((i + 1) < (slots.size() - 36))){i = -1; return;}
             i++;
