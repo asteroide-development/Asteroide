@@ -14,6 +14,7 @@ import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
+import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.collection.DefaultedList;
@@ -51,10 +52,12 @@ public class ChestStealerModule extends Module {
             mc.player.networkHandler.sendPacket(packet);
         }
     }
-    /* @EventHandler
+    @EventHandler
     private void onPacketSend(PacketEvent.Sent event){
-        if(event.packet instanceof)
-    } */
+        if(!(event.packet instanceof CloseHandledScreenC2SPacket)) return;
+        tick = 0;
+        i = -1;
+    }
 }
 
 
