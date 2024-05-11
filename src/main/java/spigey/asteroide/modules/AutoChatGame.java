@@ -157,11 +157,12 @@ public class AutoChatGame extends Module {
             for (int i = 0; i < isit.length; i++) {
                 if (!isit[i]) {
                     yes = false;
+                    break;
                 }
             }
             for (int i = 0; i < variablegame.get().size(); i++) {
                 if (!experimental.get()) {
-                    return;
+                    break;
                 }
                 if (content.toLowerCase().contains(variablegame.get().get(i))) {
                     yes = true;
@@ -205,7 +206,7 @@ public class AutoChatGame extends Module {
                         } else if (dometh) {
                             mode = "meth";
                         }
-                        ChatUtils.sendMsg(Text.of("§7[§9Chatgame§7]§f " + mode + ": " + quote + content.split(quote)[1] + quote + "!"));
+                        ChatUtils.sendPlayerMsg("§7[§9Chatgame§7]§f " + mode + ": " + quote + content.split(quote)[1] + quote + "!");
                     }
                 }
                 if (mode.get() == Mode.Precise) {
