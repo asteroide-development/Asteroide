@@ -31,7 +31,7 @@ public class AutoLoginModule extends Module {
     private final Setting<String> blacklist = sgGeneral.add(new StringSetting.Builder()
         .name("message-blacklist")
         .description("Do not login/register if the message contains this string") // why does this seem so ai generated :sob:
-        .defaultValue("login")                                                            // copy n paste when
+        .defaultValue("not found")                                                            // copy n paste when
         .build()
     );
     private final Setting<String> password = sgGeneral.add(new StringSetting.Builder()
