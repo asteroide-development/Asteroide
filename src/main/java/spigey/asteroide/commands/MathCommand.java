@@ -12,18 +12,20 @@ import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
 public class MathCommand extends Command {
     public MathCommand() {
-        super("math", "Solves math equations for you");
+        super("math", "Solves math equations for you", "c", "meth");
     }
 
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.executes(context -> {
-            error("You have to specify an equation!");
+            ChatUtils.sendMsg(Text.of("§cYou have to specify an equation!"));
             return SINGLE_SUCCESS;
         });
         builder.then(argument("equation", StringArgumentType.greedyString()).executes(context -> {
-            String farquaad = StringArgumentType.getString(context, "equation");
-            ChatUtils.sendMsg(Text.literal(String.valueOf(util.meth(farquaad))));
+            String farquaad = String.valueOf(StringArgumentType.getString(context, "equation"));
+            try{farquaad = String.valueOf(util.meth(farquaad));} catch(Exception L){ChatUtils.sendMsg(Text.of("§c" + L)); return SINGLE_SUCCESS;}
+            if(farquaad.endsWith(".0")) farquaad = farquaad.replace(".0", "");
+            ChatUtils.sendMsg(Text.of(farquaad));
             return SINGLE_SUCCESS;
         }));
     }
