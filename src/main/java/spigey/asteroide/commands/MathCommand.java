@@ -25,7 +25,8 @@ public class MathCommand extends Command {
             String farquaad = String.valueOf(StringArgumentType.getString(context, "equation"));
             try{farquaad = String.valueOf(util.meth(farquaad));} catch(Exception L){ChatUtils.sendMsg(Text.of("§c" + L)); return SINGLE_SUCCESS;}
             if(farquaad.endsWith(".0")) farquaad = farquaad.replace(".0", "");
-            ChatUtils.sendMsg(Text.of(farquaad));
+            ChatUtils.sendMsg(Text.of("The solution is §e" + farquaad));
+            ChatUtils.sendMsg(util.getSendButton(util.getCopyButton(farquaad), farquaad));
             return SINGLE_SUCCESS;
         }));
     }
