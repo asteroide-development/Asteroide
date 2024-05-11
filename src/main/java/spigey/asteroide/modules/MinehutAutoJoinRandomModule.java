@@ -30,6 +30,7 @@ public class MinehutAutoJoinRandomModule extends Module {
     @EventHandler
     private void onTick(TickEvent.Post event){
         assert mc.player != null;
+        if(mc.isInSingleplayer()) return;
         if(!(Objects.requireNonNull(mc.getCurrentServerEntry()).address).toLowerCase().contains("minehut")) return;
         // if(mc.currentScreen == null) return;
         assert mc.player != null;
