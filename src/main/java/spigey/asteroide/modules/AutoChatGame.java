@@ -109,7 +109,7 @@ public class AutoChatGame extends Module {
         this.tick = -1;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST + 2)
+    @EventHandler(priority = EventPriority.HIGHEST + 20)
     private void PacketReceive(PacketEvent.Receive event) {
         try {
             if (!(event.packet instanceof GameMessageS2CPacket)) {
