@@ -40,8 +40,8 @@ public class BypassCommand extends Command {
                 .replaceAll("u", "ս")
                 .replaceAll("v", "ν")
                 .replaceAll("y", "у");
-            ChatUtils.sendMsg(Text.of("Done creating the bypassed message! Click the Button below to copy."));
-            ChatUtils.sendMsg(util.getCopyButton(copy));
+            ChatUtils.sendMsg(Text.of("Done creating the bypassed message!"));
+            ChatUtils.sendMsg(util.getSendButton(util.getCopyButton(copy), copy));
             return SINGLE_SUCCESS;
         }));
     }
