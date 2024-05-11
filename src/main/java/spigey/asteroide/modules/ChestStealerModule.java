@@ -43,19 +43,33 @@ public class ChestStealerModule extends Module {
     private int i = -1;
     DefaultedList<Slot> slots;
     @EventHandler
-    private void onTick(TickEvent.Post event){
-        if((mc.currentScreen instanceof GenericContainerScreen) || (mc.currentScreen instanceof ShulkerBoxScreen)) {
-            if(mc.currentScreen instanceof ShulkerBoxScreen) slots = ((ShulkerBoxScreen) mc.currentScreen).getScreenHandler().slots;
-            try{if(mc.currentScreen instanceof GenericContainerScreen) slots = ((GenericContainerScreen) mc.currentScreen).getScreenHandler().slots;} catch(Exception L){/* not empty */}
-            if(tick > 0){tick--; return;}
-            if(!((i + 1) < (slots.size() - 36))){i = -1; return;}
-            i++;
-            ItemStack uwu = slots.get(i).getStack();
-            ClickSlotC2SPacket packet = getPacket(uwu);
-            assert mc.player != null;
-            if(uwu.getCount() < 1){return;}
-            mc.player.networkHandler.sendPacket(packet);
-            tick = delay.get();
+    private void onTick(TickEvent.Post event) {
+        if ((mc.currentScreen instanceof GenericContainerScreen) || (mc.currentScreen instanceof ShulkerBoxScreen)) {
+            if (mc.currentScreen instanceof ShulkerBoxScreen) {
+                slots = ((ShulkerBoxScreen) mc.currentScreen).getScreenHandler().slots;
+            } else {
+                try {
+                    slots = ((GenericContainerScreen) mc.currentScreen).getScreenHandler().slots;
+                } catch (Exception ignored) {}
+            }
+
+            if (tick > 0) { tick--; return; }
+
+            while ((i + 1) < (slots.size() - 36)) {
+                i++;
+                ItemStack uwu = slots.get(i).getStack();
+                if (!uwu.isEmpty()) {
+                    ClickSlotC2SPacket packet = getPacket(uwu);
+                    assert mc.player != null;
+                    mc.player.networkHandler.sendPacket(packet);
+                    tick = delay.get();
+                    return;
+                }
+            }
+
+            if (!((i + 1) < (slots.size() - 36))) {
+                i = -1;
+            }
         }
     }
 
