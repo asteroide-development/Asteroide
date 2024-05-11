@@ -3,7 +3,7 @@
   "id": "asteroide",
   "version": "${version}",
   "name": "Asteroide",
-  "description": "Simple and small additions for Meteor",
+  "description": "A powerful addon aiming to enhance meteor client",
   "authors": [
     "Spigey"
   ],
