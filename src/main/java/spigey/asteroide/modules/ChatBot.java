@@ -66,7 +66,7 @@ public class ChatBot extends Module {
         super(AsteroideAddon.CATEGORY, "chat-bot", "Automatically answers to other people using commands");
     }
     int meth(String equation) {
-        return (int) util.eval(equation); // I was too lazy to actually change the method everywhere
+        return (int) util.meth(equation); // I was too lazy to actually change the method everywhere
     }
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void PacketReceive(PacketEvent.Receive event) {
