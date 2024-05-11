@@ -272,4 +272,50 @@ public class util {
         );
         return Button;
     }
+    public static MutableText getCopyButton(String message, String copy){
+        MutableText Button = Text.literal("[COPY]");
+        MutableText All = Text.literal(message + " ");
+        Button.setStyle(Button.getStyle()
+            .withFormatting(Formatting.GREEN)
+            .withClickEvent(new MeteorClickEvent(
+                ClickEvent.Action.COPY_TO_CLIPBOARD,
+                copy
+            ))
+            .withHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_TEXT,
+                Text.literal("Click to Copy")
+            ))
+        );
+        return All.append(Button);
+    }
+    public static MutableText getCopyButton(MutableText message, String copy){
+        MutableText Button = Text.literal("[COPY]");
+        Button.setStyle(Button.getStyle()
+            .withFormatting(Formatting.GREEN)
+            .withClickEvent(new MeteorClickEvent(
+                ClickEvent.Action.COPY_TO_CLIPBOARD,
+                copy
+            ))
+            .withHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_TEXT,
+                Text.literal("Click to Copy")
+            ))
+        );
+        return message.append(" ").append(Button);
+    }
+    public static MutableText getSendButton(MutableText message, String send){
+        MutableText Button = Text.literal("[SEND]");
+        Button.setStyle(Button.getStyle()
+            .withFormatting(Formatting.GREEN)
+            .withClickEvent(new MeteorClickEvent(
+                ClickEvent.Action.RUN_COMMAND,
+                Commands.get("say").toString(send)
+            ))
+            .withHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_TEXT,
+                Text.literal("Click to Send")
+            ))
+        );
+        return message.append(" ").append(Button);
+    }
 }
