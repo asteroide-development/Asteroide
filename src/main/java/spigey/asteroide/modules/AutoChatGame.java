@@ -101,7 +101,7 @@ public class AutoChatGame extends Module {
         super(AsteroideAddon.CATEGORY, "auto-chatgame", "Automatically answers most chat games when triggered");
     }
     int meth(String equation) {
-        return (int) util.eval(equation); // I was too lazy to actually change the method everywhere
+        return (int) util.meth(equation); // I was too lazy to actually change the method everywhere
     }
 
     @Override
