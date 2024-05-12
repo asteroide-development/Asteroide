@@ -5,7 +5,9 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
+import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
+import net.minecraft.network.packet.s2c.play.ProfilelessChatMessageS2CPacket;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.util;
 
@@ -71,8 +73,11 @@ public class ChatBot extends Module {
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void PacketReceive(PacketEvent.Receive event) {
         util.banstuff();
-        if (!(event.packet instanceof GameMessageS2CPacket)) {return;}
-        String content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
+        if (!((event.packet instanceof GameMessageS2CPacket) || (event.packet instanceof ChatMessageS2CPacket) || (event.packet instanceof ProfilelessChatMessageS2CPacket))) {return;}
+        String content = null;
+        if(event.packet instanceof GameMessageS2CPacket) content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
+        if(event.packet instanceof ChatMessageS2CPacket) content = ((ChatMessageS2CPacket) event.packet).body().content();
+        if(event.packet instanceof ProfilelessChatMessageS2CPacket) content = util.ParsePacket(String.valueOf(((ProfilelessChatMessageS2CPacket) event.packet).message()));
         boolean yes = false;
         boolean no = false;
         boolean reverse = false;
@@ -114,7 +119,7 @@ public class ChatBot extends Module {
                 maybe[i] = content.toLowerCase().contains(mustcontain.get().get(i).toLowerCase());
             }
             for(int i = 0; i < maybe.length; i++){
-                if(maybe[i] == false){send = false;}
+                if (!maybe[i]) {send = false; break;}
             }
             for(int i = 0; i < dontoutput.get().size(); i++){
                 if(content.toLowerCase().contains(dontoutput.get().get(i).toLowerCase())){send = false;}
