@@ -33,6 +33,12 @@ public class AutoFuckModule extends Module {
         .max(100)
         .build()
     );
+
+    @Override
+    public void onDeactivate() {
+        mc.options.sneakKey.setPressed(false);
+    }
+
     private int tick = -1;
     private boolean sneaking = false;
     @EventHandler
