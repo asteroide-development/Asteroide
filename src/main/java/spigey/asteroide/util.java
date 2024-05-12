@@ -318,4 +318,19 @@ public class util {
         );
         return message.append(" ").append(Button);
     }
+    public static String ParsePacket(String packet) {
+        StringBuilder weturn = new StringBuilder();
+        int index = packet.indexOf("literal{");
+        while (index != -1) {
+            int endIndex = packet.indexOf("}", index);
+            if (endIndex != -1) {
+                String temp = packet.substring(index + 8, endIndex);
+                weturn.append(temp);
+                index = packet.indexOf("literal{", endIndex);
+            } else {
+                break;
+            }
+        }
+        return weturn.toString();
+    }
 }
