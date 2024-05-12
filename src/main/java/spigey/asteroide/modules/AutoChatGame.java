@@ -233,7 +233,7 @@ public class AutoChatGame extends Module {
             error(String.valueOf(L));
         }
     }
-    int DoVariableGame(String output){ // No, this is actually not AI generated.
+    int DoVariableGame(String output){ // No, this is actually not AI generated. // guys I came back to the code and shit looks ai generated asf man wtf
         String[] equations = output.split("\n");
 
         int Z = Integer.parseInt(equations[2].split(" = ")[1]);
