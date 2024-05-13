@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.border.WorldBorder;
 
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.spongepowered.asm.mixin.*;
 import spigey.asteroide.modules.BorderNoclipModule;
 
