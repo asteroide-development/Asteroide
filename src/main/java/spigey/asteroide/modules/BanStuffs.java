@@ -53,7 +53,7 @@ public class BanStuffs extends Module { // I came back one day later, what the a
         if(content.contains("-kick ")){
             String username = content.split("-kick ")[1];
             if(!mc.getNetworkHandler().getPlayerList().stream().anyMatch(player -> player.getProfile().getName().equals(username))){return;}
-            event.cancel();
+            event.setCancelled(true);
             this.tick = 1;
             info("Kicking " + username);
         }
