@@ -21,6 +21,7 @@ public abstract class WorldBorderMixin {
      */
     @Overwrite
     public boolean canCollide(Entity entity, Box box) {
+        System.out.println(!Modules.get().get(BorderNoclipModule.class).isActive());
         return !Modules.get().get(BorderNoclipModule.class).isActive();
     }
 }
