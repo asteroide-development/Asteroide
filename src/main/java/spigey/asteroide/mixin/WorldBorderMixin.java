@@ -14,19 +14,19 @@ import static meteordevelopment.meteorclient.MeteorClient.mc;
 public abstract class WorldBorderMixin {
 
     /**
-     * @author
-     * @reason
+     * @author Spigey
+     * @reason Border Noclip
      */
     @Overwrite
     public boolean canCollide(Entity entity, Box box) {
         return !Modules.get().get(BorderNoclipModule.class).isActive();
     }
     /**
-     * @author
-     * @reason
+     * @author Spigey
+     * @reason Border Noclip
      */
     @Overwrite
     public double getDamagePerBlock(){
-        return Modules.get().get(BorderNoclipModule.class).damage.get();
+        return Modules.get().get(BorderNoclipModule.class).isActive() ? Modules.get().get(BorderNoclipModule.class).damage.get() : 0.2; // why the fuck isn't super.getDamagePerBlock() working
     }
 }
