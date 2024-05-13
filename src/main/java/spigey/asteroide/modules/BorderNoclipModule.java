@@ -20,7 +20,7 @@ public class BorderNoclipModule extends Module {
     public final Setting<Double> damage = sgGeneral.add(new DoubleSetting.Builder()
         .name("damage-per-block")
         .description("Damage dealt per block when outside the world border")
-        .defaultValue(mc.world.getWorldBorder().getDamagePerBlock())
+        .defaultValue(0)
         .min(0)
         .sliderMax(10)
         .build()
