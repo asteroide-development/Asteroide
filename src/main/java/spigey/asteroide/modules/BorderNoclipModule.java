@@ -17,6 +17,8 @@ public class BorderNoclipModule extends Module {
         super(AsteroideAddon.CATEGORY, "border-noclip", "Removes the world border collision");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
+    private double dmg = mc.world.getWorldBorder().getDamagePerBlock();
+    private double yes = 0.0;
     public final Setting<Double> damage = sgGeneral.add(new DoubleSetting.Builder()
         .name("damage-per-block")
         .description("Damage dealt per block when outside the world border")
@@ -25,6 +27,17 @@ public class BorderNoclipModule extends Module {
         .sliderMax(10)
         .build()
     );
+
+    @Override
+    public void onActivate() {
+        damage.set(yes);
+    }
+
+    @Override
+    public void onDeactivate() {
+        yes = damage.get();
+        damage.set(dmg);
+    }
 }
 
 

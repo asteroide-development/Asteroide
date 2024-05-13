@@ -13,9 +13,6 @@ import static meteordevelopment.meteorclient.MeteorClient.mc;
 @Mixin(WorldBorder.class)
 public abstract class WorldBorderMixin {
 
-    @Shadow
-    private double damagePerBlock;
-
     /**
      * @author
      * @reason
@@ -30,10 +27,6 @@ public abstract class WorldBorderMixin {
      */
     @Overwrite
     public double getDamagePerBlock(){
-        if(!Modules.get().get(BorderNoclipModule.class).isActive()) {
-            assert mc.world != null;
-            return mc.world.getWorldBorder().getDamagePerBlock();
-        }
         return Modules.get().get(BorderNoclipModule.class).damage.get();
     }
 }
