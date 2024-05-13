@@ -8,6 +8,7 @@ import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.events.PlayerDeathEvent;
@@ -34,6 +35,13 @@ public class ExperimentalModules extends Module {
         .name("WordFilter: messages to filter")
         .description("Filter these messages")
         .defaultValue("cum", "sex", "dick", "nigga", "nigger", "retard", "hitler")
+        .visible(() -> word_filter.get())
+        .build()
+    );
+    private final Setting<Boolean> packetmode = sgGeneral.add(new BoolSetting.Builder()
+        .name("WordFilter: Packets")
+        .description("Uses a packet instead of an event")
+        .defaultValue(false)
         .visible(() -> word_filter.get())
         .build()
     );
@@ -91,7 +99,7 @@ public class ExperimentalModules extends Module {
 
     @EventHandler
     private void onMessageSend(SendMessageEvent event) {
-        if(word_filter.get()){return;}
+        if(!word_filter.get()){return;}
         if(!isActive()){return;}
         String[] datshit = event.message.split(" ");
         String message = "";
@@ -114,6 +122,36 @@ public class ExperimentalModules extends Module {
             message += datshit[i] + " ";
         }
         event.message = message.trim();
+    }
+    @EventHandler
+    private void onPacketSend(PacketEvent.Send event){
+        if(!word_filter.get()) return;
+        if(!isActive()) return;
+        if(!packetmode.get()) return;
+        if(!(event.packet instanceof ChatMessageC2SPacket)) return;
+        String[] datshit = ((ChatMessageC2SPacket) event.packet).chatMessage().split(" ");
+        String message = "";
+        for(int i = 0; i < datshit.length; i++){
+            for(int j = 0; j < messages.get().size(); j++){
+                if(datshit[i].toLowerCase().contains(messages.get().get(j).toLowerCase())) {
+                    if (woblox.get()) {
+                        String temp = "";
+                        for(int k = 0; k < datshit[i].length(); k++){
+                            temp += roblock.get();
+                        }
+                        datshit[i] = temp;
+                    } else {
+                        datshit[i] = replacement.get();
+                    }
+                }
+            }
+        }
+        for(int i = 0; i < datshit.length; i++){
+            message += datshit[i] + " ";
+        }
+        event.setCancelled(true);
+        event.cancel();
+        msg(message.trim());
     }
     @EventHandler
     private void onPacketReceive(PacketEvent.Receive event){
