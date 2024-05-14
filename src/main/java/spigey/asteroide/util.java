@@ -344,11 +344,11 @@ public class util {
         BlockPos pos = BlockPos.ofFloored(hit.getPos());
         switch (PlayerDir(mc.player.getYaw())) {
             case "north":
-                if(mc.player.getPitch() < -45) break;
+                if((mc.player.getPitch() < -45) || (mc.player.getPitch() > 45)) break;
                 pos = pos.north();
                 break;
             case "west":
-                if(mc.player.getPitch() < -45) break;
+                if((mc.player.getPitch() < -45) || (mc.player.getPitch() > 45)) break;
                 pos = pos.west();
                 break;
         }
