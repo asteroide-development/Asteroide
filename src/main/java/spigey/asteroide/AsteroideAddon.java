@@ -62,6 +62,7 @@ public class AsteroideAddon extends MeteorAddon {
         addCommand(new PhaseCommand());
         addCommand(new BypassCommand());
         addCommand(new MathCommand());
+        addCommand(new ItemCountCommand());
 
         // HUD
         addHud(Username.INFO);
