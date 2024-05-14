@@ -46,7 +46,12 @@ public class WordFilterModule extends Module {
         .visible(() -> woblox.get())
         .build()
     );
-    private boolean activated = false;
+
+
+    ///////////////////////////////   CODE NOW USES A MIXIN   ///////////////////////////////
+
+
+    /* private boolean activated = false;
 
     @Override
     public void onActivate() {
@@ -101,7 +106,7 @@ public class WordFilterModule extends Module {
             return;
         }
         /* ChatMessageC2SPacket packet = new ChatMessageC2SPacket(new PacketByteBuf(Unpooled.buffer()).writeString(message.trim())); // wtf is this??
-        mc.player.networkHandler.sendPacket(packet); // I took this shit from meteor client */
+        mc.player.networkHandler.sendPacket(packet); // I took this shit from meteor client
         // ↑ that code sends something so fucked up that it crashes your client
         event.cancel();
         this.delay = 1;
@@ -116,5 +121,5 @@ public class WordFilterModule extends Module {
         if (this.delay == -1) {return;}
         msg(this.message.trim());
         this.delay = -1;
-    }
+    } */
 }
