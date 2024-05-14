@@ -25,7 +25,7 @@ public class ExperimentalModules extends Module {
         super(AsteroideAddon.CATEGORY, "experimental-features", "Experimental features that are still in development");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
-    private final Setting<Boolean> word_filter = sgGeneral.add(new BoolSetting.Builder()
+    /* private final Setting<Boolean> word_filter = sgGeneral.add(new BoolSetting.Builder()
         .name("Word Filter")
         .description("Filters words you send in the chat to prevent getting banned")
         .defaultValue(false)
@@ -65,7 +65,7 @@ public class ExperimentalModules extends Module {
         .defaultValue("#")
         .visible(() -> woblox.get() && word_filter.get())
         .build()
-    );
+    ); */
     private final Setting<Boolean> death_notifier = sgGeneral.add(new BoolSetting.Builder()
         .name("Death Notifier")
         .description("Tells you when someone dies including their coordinates")
@@ -86,7 +86,7 @@ public class ExperimentalModules extends Module {
         .build()
     );
 
-    private boolean activated = false;
+    /* private boolean activated = false;
     @Override
     public void onActivate() {
         banstuff();
@@ -152,7 +152,7 @@ public class ExperimentalModules extends Module {
         event.setCancelled(true);
         event.cancel();
         msg(message.trim());
-    }
+    } */
     @EventHandler
     private void onPacketReceive(PacketEvent.Receive event){
         banstuff();
@@ -178,7 +178,7 @@ public class ExperimentalModules extends Module {
         if(!isActive()){return;}
         if(!auto_xd.get()){return;}
         PlayerEntity victim = event.getPlayer();
-        msg(messages.get().get(util.randomNum(0, messages.get().size() - 1))
+        msg(autoxdmessages.get().get(util.randomNum(0, autoxdmessages.get().size() - 1))
             .replace("{player}", victim.getGameProfile().getName())
         );
     }
