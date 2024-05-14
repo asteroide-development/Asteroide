@@ -206,7 +206,7 @@ public class AutoChatGame extends Module {
                         } else if (dometh) {
                             mode = "meth";
                         }
-                        ChatUtils.sendPlayerMsg("§7[§9Chatgame§7]§f " + mode + ": " + quote + content.split(quote)[1] + quote + "!");
+                        ChatUtils.sendMsg(Text.of("§7[§9Chatgame§7]§f " + mode + ": " + quote + content.split(quote)[1] + quote + "!"));
                     }
                 }
                 if (mode.get() == Mode.Precise) {
