@@ -10,6 +10,8 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.misc.AutoRespawn;
 import meteordevelopment.meteorclient.utils.misc.text.MeteorClickEvent;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -21,6 +23,8 @@ import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import spigey.asteroide.modules.BanStuffs;
 
@@ -332,5 +336,23 @@ public class util {
             }
         }
         return weturn.toString();
+    }
+    public static BlockPos raycast(float distance){
+        assert mc.player != null;
+        HitResult hit = mc.player.raycast(distance, 1.0f, false);
+        if(hit.getType() != HitResult.Type.BLOCK) return mc.player.getBlockPos();
+        BlockPos pos = BlockPos.ofFloored(hit.getPos());
+        switch (PlayerDir(mc.player.getYaw())) {
+            case "north":
+                if(mc.player.getPitch() < -45) break;
+                pos = pos.north();
+                break;
+            case "west":
+                if(mc.player.getPitch() < -45) break;
+                pos = pos.west();
+                break;
+        }
+        if(mc.player.getPitch() > 45) pos = pos.down();
+        return pos;
     }
 }
