@@ -48,6 +48,7 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new AutoLoginModule());
         addModule(new InvCleanerModule());
         addModule(new BorderNoclipModule());
+        addModule(new WordFilterModule());
 
         // Commands
         addCommand(new CrashAll());

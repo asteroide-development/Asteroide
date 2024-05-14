@@ -20,26 +20,26 @@ public class WordFilterModule extends Module {
     }
 
     final SettingGroup sgGeneral = settings.getDefaultGroup();
-    private final Setting<List<String>> messages = sgGeneral.add(new StringListSetting.Builder()
+    public final Setting<List<String>> messages = sgGeneral.add(new StringListSetting.Builder()
         .name("messages to filter")
         .description("Filter these messages")
         .defaultValue("cum", "sex", "dick", "nigga", "nigger", "retard", "hitler")
         .build()
     );
-    private final Setting<Boolean> woblox = sgGeneral.add(new BoolSetting.Builder()
+    public final Setting<Boolean> woblox = sgGeneral.add(new BoolSetting.Builder()
         .name("Roblox-like Replacement")
         .description("Filters the message to look more like roblox filtering")
         .defaultValue(false)
         .build()
     );
-    private final Setting<String> replacement = sgGeneral.add(new StringSetting.Builder()
+    public final Setting<String> replacement = sgGeneral.add(new StringSetting.Builder()
         .name("filter replacement")
         .description("String to replace filtered messages with")
         .defaultValue("@$#!?&")
         .visible(() -> !woblox.get())
         .build()
     );
-    private final Setting<String> roblock = sgGeneral.add(new StringSetting.Builder()
+    public final Setting<String> roblock = sgGeneral.add(new StringSetting.Builder()
         .name("roblox-like filter replacement")
         .description("String to replace filtered messages with")
         .defaultValue("#")
