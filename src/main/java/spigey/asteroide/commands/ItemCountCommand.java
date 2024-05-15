@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
+import spigey.asteroide.env;
 
 public class ItemCountCommand extends Command {
     public ItemCountCommand() {
