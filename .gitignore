@@ -40,3 +40,7 @@ run/
 # my shit
 TODO.txt
 Changelog.md
+env.*
+src/main/java/spigey/asteroide/env.java
+env
+env.java
