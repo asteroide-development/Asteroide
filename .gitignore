@@ -40,13 +40,18 @@ run/
 # my shit
 TODO.txt
 Changelog.md
-env.*
-src/main/java/spigey/asteroide/env.java
+spigey.asteroide.env.*
+src/main/java/spigey/asteroide/spigey.asteroide.env.java
+spigey.asteroide.env
+spigey.asteroide.env.java
+src/main/java/spigey.asteroide.env.java
+src/main/java/spigey.asteroide.env
+src/main/java/spigey.asteroide.env.*
+spigey.asteroide.env.*
+spigey.asteroide.env.java
+spigey.asteroide.env
 env
-env.java
-src/main/java/env.java
-src/main/java/env
-src/main/java/env.*
-env.*
-env.java
-env
+spigey.asteroide.env
+spigey/asteroide/env
+spigey/asteroide/env.java
+spigey/asteroide/env.*
