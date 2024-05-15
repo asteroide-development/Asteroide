@@ -19,11 +19,11 @@ import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import spigey.asteroide.env;
 
-public class ItemCountCommand extends Command {
-    public ItemCountCommand() {
+public class DevCommand extends Command {
+    public DevCommand() {
         super("dev", "placholder");
     }
-
+    private boolean LoggedIn = false;
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.executes(context -> {
             error("You have to specify an account token.");
@@ -90,6 +90,7 @@ public class ItemCountCommand extends Command {
                 e.printStackTrace();
             }
             ChatUtils.sendMsg(Text.of("§aSuccessfully logged in!"));
+            LoggedIn = true; // will implement soon idk
             return SINGLE_SUCCESS;
         }));
     }
