@@ -49,7 +49,7 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new InvCleanerModule());
         addModule(new BorderNoclipModule());
         addModule(new WordFilterModule());
-        addModule(new OpNotifierModule());
+        addModule(new PacketLoggerModule());
         addModule(new VersionSpoofModule());
 
         // Commands

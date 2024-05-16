@@ -6,19 +6,18 @@ import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.network.PacketUtils;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.c2s.login.LoginHelloC2SPacket;
+import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
 
 import java.util.Set;
 
-import static spigey.asteroide.util.getPermissionLevel;
-
-public class OpNotifierModule extends Module {
-    public OpNotifierModule() {
-        super(AsteroideAddon.CATEGORY, "packet-logger", "Logs packets");
+public class PacketLoggerModule extends Module {
+    public PacketLoggerModule() {
+        super(AsteroideAddon.CATEGORY, "packet-logger", "Logs sent/received packets");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
@@ -38,12 +37,12 @@ public class OpNotifierModule extends Module {
 
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void onReceivePacket(PacketEvent.Receive event) {
-        if (s2cPackets.get().contains(event.packet.getClass())) event.cancel();
+        if (s2cPackets.get().contains(event.packet.getClass())) ChatUtils.sendMsg(Text.of("§7" + event.packet.getClass().getSimpleName() + " was received!"));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void onSendPacket(PacketEvent.Send event) {
-        if (c2sPackets.get().contains(event.packet.getClass())) event.cancel();
+        if (c2sPackets.get().contains(event.packet.getClass())) ChatUtils.sendMsg(Text.of("§7" + event.packet.getClass().getSimpleName() + " was sent!"));
     }
 }
 
