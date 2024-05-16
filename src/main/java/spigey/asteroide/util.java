@@ -10,6 +10,7 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.misc.AutoRespawn;
 import meteordevelopment.meteorclient.utils.misc.text.MeteorClickEvent;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -354,5 +355,8 @@ public class util {
         }
         if(mc.player.getPitch() > 45) pos = pos.down();
         return pos;
+    }
+    public static List<Text> PlayerList(ServerInfo server){
+        return server.playerListSummary;
     }
 }

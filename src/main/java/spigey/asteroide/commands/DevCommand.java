@@ -13,11 +13,17 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
+import static spigey.asteroide.util.PlayerList;
+import static spigey.asteroide.util.give;
+
 import spigey.asteroide.env;
+import spigey.asteroide.nbt.CrashBeehive;
 
 public class DevCommand extends Command {
     public DevCommand() {
@@ -91,6 +97,10 @@ public class DevCommand extends Command {
             }
             ChatUtils.sendMsg(Text.of("§aSuccessfully logged in!"));
             LoggedIn = true; // will implement soon idk
+            return SINGLE_SUCCESS;
+        }));
+        builder.then(literal("PlayerList").executes(ctx ->{
+            List<Text> temp = PlayerList(mc.getCurrentServerEntry());
             return SINGLE_SUCCESS;
         }));
     }
