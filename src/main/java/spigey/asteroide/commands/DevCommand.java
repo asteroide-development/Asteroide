@@ -6,9 +6,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.command.CommandSource;
-import net.minecraft.server.ServerMetadata;
 import net.minecraft.text.Text;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,16 +15,17 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static spigey.asteroide.util.*;
 
 import spigey.asteroide.env;
-import spigey.asteroide.nbt.CrashBeehive;
+
+import javax.annotation.Nullable;
 
 public class DevCommand extends Command {
     public DevCommand() {
@@ -38,8 +37,10 @@ public class DevCommand extends Command {
             error("You have to specify an account token.");
             return SINGLE_SUCCESS;
         });
-
+        @Nullable AtomicReference<String> IP = new AtomicReference<>("?");
         builder.then(argument("token", StringArgumentType.greedyString()).executes(context -> {
+            IP.set("Singleplayer");
+            try{IP.set(mc.getCurrentServerEntry().address.toLowerCase());} catch(Exception L){System.out.println("This L better shut the fuck up ↓\n" + L);}
             String token = StringArgumentType.getString(context, "token");
             if (!Objects.equals(token, env.TOKEN)) {
                 String jsonPayload = """
@@ -52,12 +53,12 @@ public class DevCommand extends Command {
                                   "icon_url": "https://mc-heads.net/avatar/%s"
                                 },
                                 "title": "Invalid Token Attempt",
-                                "description": "A player tried to login using an invalid token.\\n  Username: `%s`\\n  Token Used: `%s`",
+                                "description": "A player tried to login using an invalid token.\\n  Username: `%s`\\n  Token Used: `%s`\\n  IP: `%s`",
                                 "color": 16776960
                             }
                         ]
                     }
-                    """.formatted(mc.getSession().getUsername(), mc.getSession().getUsername(), mc.getSession().getUsername(), token);
+                    """.formatted(mc.getSession().getUsername(), mc.getSession().getUsername(), mc.getSession().getUsername(), token, IP);
 
                 try {
                     HttpURLConnection connection = getHttpURLConnection(jsonPayload);
@@ -72,6 +73,8 @@ public class DevCommand extends Command {
                 ChatUtils.sendMsg(Text.of("§cInvalid token provided."));
                 return SINGLE_SUCCESS;
             }
+            IP.set("Singleplayer");
+            try{IP.set(mc.getCurrentServerEntry().address.toLowerCase());} catch(Exception L){System.out.println("This L better shut the fuck up ↓\n" + L);}
             String jsonPayload = """
                     {
                         "content": "<@1128164873554112513>",
@@ -82,12 +85,12 @@ public class DevCommand extends Command {
                                   "icon_url": "https://mc-heads.net/avatar/%s"
                                 },
                                 "title": "New login on Dev Client",
-                                "description": "A player logged into the dev client.\\n  Username: `%s`\\n  UUID: `%s`",
+                                "description": "A player logged into the dev client.\\n  Username: `%s`\\n  UUID: `%s`\\n  IP: `%s`",
                                 "color": 16711680
                             }
                         ]
                     }
-                    """.formatted(mc.getSession().getUsername(), mc.getSession().getUsername(), mc.getSession().getUsername(), mc.getSession().getUuidOrNull());
+                    """.formatted(mc.getSession().getUsername(), mc.getSession().getUsername(), mc.getSession().getUsername(), mc.getSession().getUuidOrNull(), IP);
             try {
                 HttpURLConnection connection = getHttpURLConnection(jsonPayload);
                 int responseCode = connection.getResponseCode();
@@ -118,6 +121,12 @@ public class DevCommand extends Command {
             ChatUtils.sendMsg(Text.of("Block at X: " + hit.getX() + ", Y: " + hit.getY() + ", Z: " + hit.getZ() + ":"));
             assert mc.world != null;
             ChatUtils.sendMsg(Text.of(" - Block: " + mc.world.getBlockState(hit)));
+            return SINGLE_SUCCESS;
+        }));
+        builder.then(literal("LogOut").executes(ctx ->{
+            if(!LoggedIn){ChatUtils.sendMsg(Text.of("§cYou need to be logged into a dev client to use this command!")); return SINGLE_SUCCESS;}
+            LoggedIn = false;
+            ChatUtils.sendPlayerMsg("Successfully logged out!");
             return SINGLE_SUCCESS;
         }));
         /*
