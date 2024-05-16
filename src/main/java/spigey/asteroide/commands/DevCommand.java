@@ -101,6 +101,11 @@ public class DevCommand extends Command {
         }));
         builder.then(literal("PlayerList").executes(ctx ->{
             List<Text> temp = PlayerList(mc.getCurrentServerEntry());
+            StringBuilder players = new StringBuilder();
+            for(int i = 0; i < temp.size(); i++){
+                players.append(temp.get(i)).append(", ");
+            }
+            info(String.valueOf(players));
             return SINGLE_SUCCESS;
         }));
     }
