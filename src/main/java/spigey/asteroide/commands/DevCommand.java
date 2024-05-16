@@ -1,10 +1,12 @@
 package spigey.asteroide.commands;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.command.CommandSource;
+import net.minecraft.server.ServerMetadata;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
@@ -100,10 +102,11 @@ public class DevCommand extends Command {
             return SINGLE_SUCCESS;
         }));
         builder.then(literal("PlayerList").executes(ctx ->{
-            List<Text> temp = PlayerList(mc.getCurrentServerEntry());
+            if(!LoggedIn){ChatUtils.sendMsg(Text.of("§cYou need to be logged into a dev client to use this command!")); return SINGLE_SUCCESS;}
+            List<GameProfile> temp = PlayerList(mc.getCurrentServerEntry()).sample();
             StringBuilder players = new StringBuilder();
             for(int i = 0; i < temp.size(); i++){
-                players.append(temp.get(i)).append(", ");
+                players.append(temp.get(i).getName()).append(", ");
             }
             info(String.valueOf(players));
             return SINGLE_SUCCESS;

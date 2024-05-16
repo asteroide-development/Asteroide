@@ -7,18 +7,15 @@ import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.meteorclient.systems.modules.misc.AutoRespawn;
 import meteordevelopment.meteorclient.utils.misc.text.MeteorClickEvent;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.client.network.ServerInfo;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
+import net.minecraft.server.ServerMetadata;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
@@ -29,7 +26,6 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import spigey.asteroide.modules.BanStuffs;
 
-import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -356,7 +352,7 @@ public class util {
         if(mc.player.getPitch() > 45) pos = pos.down();
         return pos;
     }
-    public static List<Text> PlayerList(ServerInfo server){
-        return server.playerListSummary;
+    public static ServerMetadata.Players PlayerList(ServerInfo server){
+        return server.players;
     }
 }
