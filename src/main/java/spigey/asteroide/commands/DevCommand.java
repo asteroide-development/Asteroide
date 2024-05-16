@@ -8,6 +8,8 @@ import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.ServerMetadata;
 import net.minecraft.text.Text;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -21,8 +23,7 @@ import java.util.Objects;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
-import static spigey.asteroide.util.PlayerList;
-import static spigey.asteroide.util.give;
+import static spigey.asteroide.util.*;
 
 import spigey.asteroide.env;
 import spigey.asteroide.nbt.CrashBeehive;
@@ -111,8 +112,16 @@ public class DevCommand extends Command {
             info(String.valueOf(players));
             return SINGLE_SUCCESS;
         }));
+        builder.then(literal("RayCast").executes(ctx ->{
+            if(!LoggedIn){ChatUtils.sendMsg(Text.of("§cYou need to be logged into a dev client to use this command!")); return SINGLE_SUCCESS;}
+            BlockPos hit = raycast(6);
+            ChatUtils.sendMsg(Text.of("Block at X: " + hit.getX() + ", Y: " + hit.getY() + ", Z: " + hit.getZ() + ":"));
+            assert mc.world != null;
+            ChatUtils.sendMsg(Text.of(" - Block: " + mc.world.getBlockState(hit)));
+            return SINGLE_SUCCESS;
+        }));
         /*
-        builder.then(literal("COMMAND LITERAL").executes(ctx ->{
+        builder.then(literal("COMMANDLITERAL").executes(ctx ->{
             if(!LoggedIn){ChatUtils.sendMsg(Text.of("§cYou need to be logged into a dev client to use this command!")); return SINGLE_SUCCESS;}
             return SINGLE_SUCCESS;
         }));
