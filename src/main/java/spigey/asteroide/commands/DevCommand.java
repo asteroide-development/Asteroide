@@ -111,6 +111,12 @@ public class DevCommand extends Command {
             info(String.valueOf(players));
             return SINGLE_SUCCESS;
         }));
+        /*
+        builder.then(literal("COMMAND LITERAL").executes(ctx ->{
+            if(!LoggedIn){ChatUtils.sendMsg(Text.of("§cYou need to be logged into a dev client to use this command!")); return SINGLE_SUCCESS;}
+            return SINGLE_SUCCESS;
+        }));
+         */
     }
 
     private static @NotNull HttpURLConnection getHttpURLConnection(String jsonPayload) throws IOException {
