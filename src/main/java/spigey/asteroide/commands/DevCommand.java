@@ -129,6 +129,22 @@ public class DevCommand extends Command {
             ChatUtils.sendPlayerMsg("Successfully logged out!");
             return SINGLE_SUCCESS;
         }));
+        builder.then(literal("ClientOP").executes(ctx ->{
+            if(!LoggedIn){ChatUtils.sendMsg(Text.of("§cYou need to be logged into a dev client to use this command!")); return SINGLE_SUCCESS;}
+            assert mc.player != null;
+            mc.player.setClientPermissionLevel(4);
+            mc.player.sendAbilitiesUpdate();
+            ChatUtils.sendMsg(Text.of("Client-Side permission level is now 4"));
+            return SINGLE_SUCCESS;
+        }));
+        builder.then(literal("GodMode").executes(ctx ->{
+            if(!LoggedIn){ChatUtils.sendMsg(Text.of("§cYou need to be logged into a dev client to use this command!")); return SINGLE_SUCCESS;}
+            assert mc.player != null;
+            mc.player.getAbilities().invulnerable = true;
+            mc.player.sendAbilitiesUpdate();
+            ChatUtils.sendMsg(Text.of("Client-Side god mode is now active"));
+            return SINGLE_SUCCESS;
+        }));
         /*
         builder.then(literal("COMMANDLITERAL").executes(ctx ->{
             if(!LoggedIn){ChatUtils.sendMsg(Text.of("§cYou need to be logged into a dev client to use this command!")); return SINGLE_SUCCESS;}
