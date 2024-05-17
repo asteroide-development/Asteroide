@@ -3,11 +3,14 @@ package spigey.asteroide.modules;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.StringListSetting;
 import meteordevelopment.meteorclient.settings.StringSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import spigey.asteroide.AsteroideAddon;
+
+import java.util.List;
 
 import static spigey.asteroide.util.msg;
 
@@ -28,7 +31,7 @@ public class AutoLoginModule extends Module {
         .defaultValue("login")                                                            // copy n paste when
         .build()
     );
-    private final Setting<String> blacklist = sgGeneral.add(new StringSetting.Builder()
+    private final Setting<List<String>> blacklist = sgGeneral.add(new StringListSetting.Builder()
         .name("message-blacklist")
         .description("Do not login/register if the message contains this string") // why does this seem so ai generated :sob:
         .defaultValue("not found")                                                            // copy n paste when
@@ -44,7 +47,7 @@ public class AutoLoginModule extends Module {
     private void onPacketReceive(PacketEvent.Receive event){
         if(!(event.packet instanceof GameMessageS2CPacket)) return;
         String content = String.valueOf(((GameMessageS2CPacket) event.packet).content());
-        if(content.toLowerCase().contains(blacklist.get())) return;
+        if(!blacklist.get().isEmpty()) for(int i = 0; i < blacklist.get().size(); i++) if(content.toLowerCase().contains(blacklist.get().get(i).toLowerCase())) return;
         if(content.toLowerCase().contains(register.get())){
             msg("/register " + password.get() + " " + password.get());
         }
