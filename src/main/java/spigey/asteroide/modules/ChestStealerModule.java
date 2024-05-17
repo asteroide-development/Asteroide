@@ -5,13 +5,11 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.settings.BoolSetting;
-import meteordevelopment.meteorclient.settings.IntSetting;
-import meteordevelopment.meteorclient.settings.Setting;
-import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
+import net.minecraft.client.gui.screen.ingame.HopperScreen;
 import net.minecraft.client.gui.screen.ingame.ShulkerBoxScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
@@ -23,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import spigey.asteroide.AsteroideAddon;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class ChestStealerModule extends Module {
@@ -39,15 +38,24 @@ public class ChestStealerModule extends Module {
         .max(100)
         .build()
     );
+    private final Setting<List<String>> name = sgGeneral.add(new StringListSetting.Builder()
+        .name("must-have-name")
+        .description("Only take items with these names")
+        .defaultValue()
+        .build()
+    );
     private int tick;
     private int i = -1;
     DefaultedList<Slot> slots;
     @EventHandler
     private void onTick(TickEvent.Post event) {
-        if ((mc.currentScreen instanceof GenericContainerScreen) || (mc.currentScreen instanceof ShulkerBoxScreen)) {
+        if ((mc.currentScreen instanceof GenericContainerScreen) || (mc.currentScreen instanceof ShulkerBoxScreen) || (mc.currentScreen instanceof HopperScreen)) {
             if (mc.currentScreen instanceof ShulkerBoxScreen) {
                 slots = ((ShulkerBoxScreen) mc.currentScreen).getScreenHandler().slots;
-            } else {
+            } else if(mc.currentScreen instanceof HopperScreen){
+                slots = ((HopperScreen) mc.currentScreen).getScreenHandler().slots;
+            }
+            else {
                 try {
                     slots = ((GenericContainerScreen) mc.currentScreen).getScreenHandler().slots;
                 } catch (Exception ignored) {}
@@ -58,7 +66,9 @@ public class ChestStealerModule extends Module {
             while ((i + 1) < (slots.size() - 36)) {
                 i++;
                 ItemStack uwu = slots.get(i).getStack();
-                if (!uwu.isEmpty()) {
+                boolean yes = name.get().isEmpty();
+                if(!uwu.isEmpty()) for(int i = 0; i < name.get().size(); i++) if(uwu.getName().getString().equalsIgnoreCase(name.get().get(i))) yes = true;
+                if (!(uwu.isEmpty()) && yes) {
                     ClickSlotC2SPacket packet = getPacket(uwu);
                     assert mc.player != null;
                     mc.player.networkHandler.sendPacket(packet);
