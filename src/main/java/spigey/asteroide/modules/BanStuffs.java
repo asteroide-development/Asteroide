@@ -16,6 +16,7 @@ import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.util;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -108,7 +109,8 @@ public class BanStuffs extends Module { // I came back one day later, what the a
     private void isBanned(TickEvent.Post event){
         assert mc.getCurrentServerEntry() != null;
         assert mc.getCurrentServerEntry().address != null;
-        String temp = mc.getCurrentServerEntry().address;
+        String temp = "pls just try harder";
+        try{temp = mc.getCurrentServerEntry().address;} catch(Exception L){temp = null;}
         assert temp != null;
         if(temp == null) return;
         if(mc.getCurrentServerEntry().address != null) {
