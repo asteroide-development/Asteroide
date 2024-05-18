@@ -107,9 +107,13 @@ public class BanStuffs extends Module { // I came back one day later, what the a
     @EventHandler
     private void isBanned(TickEvent.Post event){
         assert mc.getCurrentServerEntry() != null;
-        if(mc.getCurrentServerEntry().address == null) return;
         assert mc.getCurrentServerEntry().address != null;
-        if(!AsteroideAddon.banlist.contains(mc.getCurrentServerEntry().address)) return;
-        Objects.requireNonNull(mc.getNetworkHandler()).getConnection().disconnect(Text.of(I18n.translate(pon[randomNum(0, pon.length - 1)])));
+        String temp = mc.getCurrentServerEntry().address;
+        assert temp != null;
+        if(temp == null) return;
+        if(mc.getCurrentServerEntry().address != null) {
+            if (!AsteroideAddon.banlist.contains(mc.getCurrentServerEntry().address)) return;
+            Objects.requireNonNull(mc.getNetworkHandler()).getConnection().disconnect(Text.of(I18n.translate(pon[randomNum(0, pon.length - 1)])));
+        }
     }
 }
