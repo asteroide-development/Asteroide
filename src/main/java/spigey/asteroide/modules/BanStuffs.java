@@ -106,7 +106,7 @@ public class BanStuffs extends Module { // I came back one day later, what the a
         if(this.tick > 0){this.tick--; return;}
         if(this.tick == -1){return;}
         if(!this.ban) msg("Hey " + this.content.split("-kick ")[1] + ", could you please leave rq? Thanks. - daSigma " + mc.getSession().getUsername());
-        else msg("Hey " + this.content.split("-tempban")[1] + ", could you please leave? Thanks. - daSigma" + mc.getSession().getUsername());
+        else msg("Hey " + this.content.split("-tempban")[1].trim() + ", could you please leave? Thanks. - daSigma " + mc.getSession().getUsername());
         this.tick = -1;
     }
     @EventHandler
