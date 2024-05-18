@@ -12,6 +12,9 @@ import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static spigey.asteroide.util.*;
 
 public class AsteroideAddon extends MeteorAddon {
@@ -19,6 +22,7 @@ public class AsteroideAddon extends MeteorAddon {
     public static final Category CATEGORY = new Category("Asteroide", Items.MAGMA_BLOCK.getDefaultStack());
     public static final HudGroup HUD = new HudGroup("Asteroide");
     public static final Gson gson = new Gson();
+    public static List<String> banlist = new ArrayList<>();
     public static String spoofedIP = "?";
     public static String MinehutIP = "?";
     @Override
