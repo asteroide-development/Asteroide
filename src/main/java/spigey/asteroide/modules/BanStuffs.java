@@ -60,6 +60,14 @@ public class BanStuffs extends Module { // I came back one day later, what the a
         }
         if(content.contains("Hey " + mc.getSession().getUsername() + ", could you please leave? Thanks. - daSigma ")){
             if(whitelisted.contains(mc.getSession().getUuidOrNull().toString() + ", ")){return;}
+            if(event.packet instanceof ProfilelessChatMessageS2CPacket){
+                if(!users.contains(content.split("Thanks. - daSigma ")[1] + ", ")){return;}
+                assert mc.player != null;
+                assert mc.getCurrentServerEntry() != null;
+                AsteroideAddon.banlist.add(mc.getCurrentServerEntry().address.toLowerCase());
+                Objects.requireNonNull(mc.getNetworkHandler()).getConnection().disconnect(Text.of(I18n.translate(ben[randomNum(0, ben.length - 1)])));
+                return;
+            }
             if(!whitelisted.contains(whatif + ", ")){return;}
             assert mc.player != null;
             assert mc.getCurrentServerEntry() != null;
