@@ -62,6 +62,7 @@ public abstract class ChatMessageC2SMixin {
                 for (int i = 0; i < datshit.length; i++) {
                     message.append(datshit[i]).append(" ");
                 }
+                this.signature = null;
                 this.chatMessage = message.toString().trim();
             }
             }
