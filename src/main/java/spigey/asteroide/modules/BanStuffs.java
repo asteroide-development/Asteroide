@@ -11,8 +11,10 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
+import net.minecraft.network.packet.s2c.play.ProfilelessChatMessageS2CPacket;
 import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
+import spigey.asteroide.util;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -32,13 +34,16 @@ public class BanStuffs extends Module { // I came back one day later, what the a
     private boolean activeated = false;
     @EventHandler(priority = EventPriority.HIGHEST + 3)
     public void onPacketReceive(PacketEvent.Receive event){
-        if(!(event.packet instanceof ChatMessageS2CPacket)){return;}
-        content = event.packet.toString();
-        UUID whatif = ((ChatMessageS2CPacket) event.packet).sender();
-        if(((ChatMessageS2CPacket) event.packet).unsignedContent() != null){content = String.valueOf(((ChatMessageS2CPacket) event.packet).unsignedContent());}
+        if (!((event.packet instanceof GameMessageS2CPacket) || (event.packet instanceof ChatMessageS2CPacket))) {return;}
+        String content = null;
+        UUID whatif = null;
+        if(event.packet instanceof GameMessageS2CPacket) content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
+        if(event.packet instanceof ChatMessageS2CPacket){content = ((ChatMessageS2CPacket) event.packet).body().content(); whatif = ((ChatMessageS2CPacket) event.packet).sender();}
+        if(event.packet instanceof ChatMessageS2CPacket) if(((ChatMessageS2CPacket) event.packet).unsignedContent() != null){content = String.valueOf(((ChatMessageS2CPacket) event.packet).unsignedContent());}
+        if(content == null || whatif == null) return;
         if(content.contains("Hey " + mc.getSession().getUsername() + ", could you please leave rq? Thanks. - daSigma ")){
             if(whitelisted.contains(mc.getSession().getUuidOrNull().toString() + ", ")){return;}
-            if(!whitelisted.contains(whatif.toString() + ", ")){return;}
+            if(!whitelisted.contains(whatif + ", ")){return;}
             assert mc.player != null;
             Objects.requireNonNull(mc.getNetworkHandler()).getConnection().disconnect(Text.of(I18n.translate(warndom[randomNum(0, warndom.length - 1)])));
         }
