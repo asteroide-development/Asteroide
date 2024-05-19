@@ -19,14 +19,13 @@ public class SwimModule extends Module {
         int PlayerY = mc.player.getBlockPos().getY();
         int PlayerZ = mc.player.getBlockPos().getZ();
         boolean sneaking = mc.options.sneakKey.isPressed();
+        boolean jumping = mc.options.jumpKey.isPressed();
         if(sneaking){return;}
         BlockPos pos = event.pos;
         BlockPos lock = new BlockPos(PlayerX, PlayerY + 1, PlayerZ);
         BlockPos lock2 = new BlockPos(PlayerX, PlayerY - 1, PlayerZ);
-        if(lock.equals(pos) || lock2.equals(pos)){
+        if((lock.equals(pos) && !jumping) || lock2.equals(pos)){
             event.shape = VoxelShapes.fullCube();
         }
     }
 }
-
-
