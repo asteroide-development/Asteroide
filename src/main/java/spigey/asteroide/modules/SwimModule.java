@@ -26,6 +26,7 @@ public class SwimModule extends Module {
         BlockPos lock2 = new BlockPos(PlayerX, PlayerY - 1, PlayerZ);
         if((lock.equals(pos) && !jumping) || lock2.equals(pos)){
             event.shape = VoxelShapes.fullCube();
+            mc.player.setSwimming(true);
         }
     }
 }
