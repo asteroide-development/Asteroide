@@ -58,20 +58,10 @@ public class util {
     public static int getPermissionLevel(){
         assert mc.player != null;
         int perm = 0;
-        if(mc.player.hasPermissionLevel(4)){
-            perm = 4;
-        } else if(mc.player.hasPermissionLevel(3)){
-            perm = 3;
-        } else if(mc.player.hasPermissionLevel(2)){
-            perm = 2;
-        } else if(mc.player.hasPermissionLevel(1)){
-            perm = 1;
-        } else if(mc.player.hasPermissionLevel(0)){
-            perm = 0;
-        } else {
-            perm = -1;
+        while(mc.player.hasPermissionLevel(perm)){
+            perm++;
         }
-        return perm;
+        return perm - 1;
     }
     public static void addModule(meteordevelopment.meteorclient.systems.modules.Module ModuleToAdd){
         Modules.get().add(ModuleToAdd);
