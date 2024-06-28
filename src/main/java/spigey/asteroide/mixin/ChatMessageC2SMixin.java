@@ -69,6 +69,6 @@ public abstract class ChatMessageC2SMixin {
                 }
             }
         }
-        if(Modules.get().get(EncryptChatModule.class).isActive() && String.format("STRT\"%s\"%s", util.encrypt(chatMessage, Modules.get().get(EncryptChatModule.class).encryptionKey.get()), Modules.get().get(EncryptChatModule.class).encryptionKey.get()).length() <= 256) this.chatMessage = String.format("STRT\"%s\"%s", util.encrypt(chatMessage, Modules.get().get(EncryptChatModule.class).encryptionKey.get()), Modules.get().get(EncryptChatModule.class).encryptionKey);
+        if(Modules.get().get(EncryptChatModule.class).isActive() && Modules.get().get(EncryptChatModule.class).encrypt.get() && String.format("STRT\"%s\"%s", util.encrypt(chatMessage, Modules.get().get(EncryptChatModule.class).encryptionKey.get()), Modules.get().get(EncryptChatModule.class).encryptionKey.get()).length() <= 256) this.chatMessage = String.format("STRT\"%s\"%s", util.encrypt(chatMessage, Modules.get().get(EncryptChatModule.class).encryptionKey.get()), Modules.get().get(EncryptChatModule.class).encryptionKey);
     }
 }

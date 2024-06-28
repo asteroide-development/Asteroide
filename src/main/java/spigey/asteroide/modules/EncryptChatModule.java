@@ -17,7 +17,7 @@ import spigey.asteroide.util;
 
 public class EncryptChatModule extends Module {
     public EncryptChatModule() {
-        super(AsteroideAddon.CATEGORY, "encrypt-chat", "Encrypts your chat messages so only asteroide users can read them");
+        super(AsteroideAddon.CATEGORY, "chat-encryption", "Encrypts your chat messages so only asteroide users can read them");
     }
 
     final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -25,6 +25,13 @@ public class EncryptChatModule extends Module {
         .name("encryption key")
         .description("Key to encrypt chat messages with")
         .defaultValue("SF98lhNAIzsd3U8s")
+        .build()
+    );
+
+    public final Setting<Boolean> encrypt = sgGeneral.add(new BoolSetting.Builder()
+        .name("encrypt messages")
+        .description("Encrypts your messages when enabled")
+        .defaultValue(true)
         .build()
     );
 
@@ -39,7 +46,8 @@ public class EncryptChatModule extends Module {
         } else if (event.packet instanceof ChatMessageS2CPacket packet) {
             String content = packet.body().content();
             if (content.contains("STRT\"")) {
-                handlePacket(packet.unsignedContent(), false);
+                handlePacket(packet.body().content(), false);
+                info(mc.world.getPlayerByUuid(packet.sender()).getName().getString());
             }
         } else if (event.packet instanceof ProfilelessChatMessageS2CPacket packet) {
             String content = packet.message().getString();
@@ -56,6 +64,14 @@ public class EncryptChatModule extends Module {
         int start = message.indexOf("STRT\"") + 5;
         if (start >= 0 && (message.indexOf("\"", start)) >= 0) {
             mc.getNetworkHandler().onGameMessage(new GameMessageS2CPacket(Text.literal(String.format("§e§l%s§r§e%s §7(Decrypted)", message.substring(0, start - 5), util.decrypt(split[1], split[2]))), overlay));
+        }
+    }
+
+    private void handlePacket(String content, boolean overlay) throws Exception {
+        String[] split = content.split("\"");
+        int start = content.indexOf("STRT\"") + 5;
+        if (start >= 0 && (content.indexOf("\"", start)) >= 0) {
+            mc.getNetworkHandler().onGameMessage(new GameMessageS2CPacket(Text.literal(String.format("§e§l%s§r§e%s §7(Decrypted)", content.substring(0, start - 5), util.decrypt(split[1], split[2]))), overlay));
         }
     }
 }
