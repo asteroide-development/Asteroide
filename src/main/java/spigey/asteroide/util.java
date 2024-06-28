@@ -26,6 +26,15 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import spigey.asteroide.modules.BanStuffs;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.spec.KeySpec;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -342,7 +351,29 @@ public class util {
         if(mc.player.getPitch() > 45) pos = pos.down();
         return pos;
     }
-    public static ServerMetadata.Players PlayerList(ServerInfo server){
-        return server.players;
+
+    public static String withoutStyle(Text text){
+        StringBuilder sb = new StringBuilder();
+        for(Text str : text.withoutStyle()) sb.append(str.getString());
+        return sb.toString();
+    }
+
+    private static SecretKey getKey(String key) throws Exception {
+        byte[] salt = "fixed-salt".getBytes(StandardCharsets.UTF_8);
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        KeySpec spec = new PBEKeySpec(key.toCharArray(), salt, 65536, 256);
+        return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
+    }
+
+    public static String encrypt(String plainText, String key) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        cipher.init(Cipher.ENCRYPT_MODE, getKey(key), new GCMParameterSpec(128, new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 69, 42}));
+        return Base64.getEncoder().encodeToString(cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    public static String decrypt(String cipherText, String key) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        cipher.init(Cipher.DECRYPT_MODE, getKey(key), new GCMParameterSpec(128, new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 69, 42}));
+        return new String(cipher.doFinal(Base64.getDecoder().decode(cipherText)), StandardCharsets.UTF_8);
     }
 }

@@ -21,7 +21,7 @@ public class CommandBlockCommand extends Command {
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.executes(context -> {
-            error("You have to specify a command! F.e: " + Config.get().prefix.get() + "cmdblock /say Asteroide on Crack!"); // .cmdblock /say Asteroide on Crack!
+            error("You have to specify a command! f.e: " + Config.get().prefix.get() + "cmdblock /say Asteroide on Crack!"); // .cmdblock /say Asteroide on Crack!
             return SINGLE_SUCCESS;
         });
         builder.then(argument("command", StringArgumentType.greedyString()).executes(context -> {

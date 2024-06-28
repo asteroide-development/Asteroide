@@ -6,6 +6,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.command.CommandSource;
+import net.minecraft.server.ServerMetadata;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -107,10 +108,11 @@ public class DevCommand extends Command {
         }));
         builder.then(literal("PlayerList").executes(ctx ->{
             if(!LoggedIn){ChatUtils.sendMsg(Text.of("§cYou need to be logged into a dev client to use this command!")); return SINGLE_SUCCESS;}
-            List<GameProfile> temp = PlayerList(mc.getCurrentServerEntry()).sample();
+            ServerMetadata.Players temp = mc.getCurrentServerEntry().players;
             StringBuilder players = new StringBuilder();
-            for(int i = 0; i < temp.size(); i++){
-                players.append(temp.get(i).getName()).append(", ");
+            assert mc.player != null;
+            for(String player : mc.player.getServer().getPlayerNames()){
+                players.append(player).append(", ");
             }
             info(String.valueOf(players));
             return SINGLE_SUCCESS;

@@ -25,6 +25,8 @@ public class AsteroideAddon extends MeteorAddon {
     public static List<String> banlist = new ArrayList<>();
     public static String spoofedIP = "?";
     public static String MinehutIP = "?";
+    public static String trackedPlayer = null;
+    public static double[] lastPos = {0, 0, 0};
     @Override
     public void onInitialize() {
         LOG.info("\nLoaded Asteroide v0.1.4-fix\n");
@@ -56,6 +58,9 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new PacketLoggerModule());
         addModule(new VersionSpoofModule());
         addModule(new OPNotifierModule());
+        addModule(new TrackerModule());
+        addModule(new AimbotModule());
+        addModule(new EncryptChatModule());
         // addModule(new SwimModule());
 
         // Commands
@@ -72,6 +77,8 @@ public class AsteroideAddon extends MeteorAddon {
         addCommand(new MathCommand());
         addCommand(new DevCommand());
         addCommand(new CalcCommand());
+        addCommand(new WhereIsCommand());
+        addCommand(new TrackerCommand());
 
         // HUD
         addHud(Username.INFO);
