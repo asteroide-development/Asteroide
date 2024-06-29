@@ -12,6 +12,13 @@ import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +34,20 @@ public class AsteroideAddon extends MeteorAddon {
     public static String MinehutIP = "?";
     public static String trackedPlayer = null;
     public static double[] lastPos = {0, 0, 0};
+    public static List<String> trolls = new ArrayList<>();
     @Override
     public void onInitialize() {
         LOG.info("\nLoaded Asteroide v0.1.4-fix\n");
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("trolls.txt");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                trolls.add(line);
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading trolls.txt: " + e.getMessage());
+            e.printStackTrace();
+        }
         // Modules
         addModule(new AutoKys());
         addModule(new ServerCrashModule());
@@ -62,6 +80,7 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new AimbotModule());
         addModule(new EncryptChatModule());
         addModule(new DistributeModule());
+        addModule(new TrollModule());
         // addModule(new SwimModule());
 
         // Commands
