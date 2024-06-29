@@ -63,11 +63,11 @@ public class DistributeModule extends Module {
     private void onTick(TickEvent.Post event){
         if(tick > 0){tick--; return;}
         if(tick < 0) return;
-        if(display.isEmpty() || user.isEmpty()){
-            for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) display.add(player.getDisplayName() == null ? player.getProfile().getName() : player.getDisplayName().getString());
-            for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) user.add(player.getProfile().getName());
-            if(display.isEmpty() || user.isEmpty()) return;
-        }
+        user = new ArrayList<>();
+        display = new ArrayList<>();
+        for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) display.add(player.getDisplayName() == null ? player.getProfile().getName() : player.getDisplayName().getString());
+        for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) user.add(player.getProfile().getName());
+        if(display.isEmpty() || user.isEmpty()) return;
         if(idx >= display.size()) idx = 0;
         String gift = display.get(idx).toLowerCase();
         boolean yes = false;
@@ -75,8 +75,9 @@ public class DistributeModule extends Module {
             yes = true;
             for (String s : ranks.get()) {if (gift.toLowerCase().contains(s.toLowerCase())) yes = false;}
             for (String s : users.get()) {if (user.get(idx).toLowerCase().contains(s.toLowerCase())) yes = false;}
+            if(user.get(idx).contains("§")) yes = false;
             if(!yes) {if(idx >= display.size()){idx = 0;}else{idx++;} return;}
-            if(display.isEmpty() || user.isEmpty()){ toggle(); return;}
+            if(display.isEmpty()){ toggle(); return;}
         }
         ChatUtils.sendPlayerMsg(String.format("/%s", command.get().get(new Random().nextInt(command.get().size())).replace("{name}", user.get(idx)).replace("/", "")));
         idx++;
