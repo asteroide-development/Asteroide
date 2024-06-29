@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.ServerMetadata;
 import net.minecraft.text.Text;
@@ -16,6 +17,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -103,18 +105,15 @@ public class DevCommand extends Command {
                 e.printStackTrace();
             }
             ChatUtils.sendMsg(Text.of("§aSuccessfully logged in!"));
-            LoggedIn = true; // will implement soon idk
+            LoggedIn = true; // will implement soon idk // what?
             return SINGLE_SUCCESS;
         }));
         builder.then(literal("PlayerList").executes(ctx ->{
             if(!LoggedIn){ChatUtils.sendMsg(Text.of("§cYou need to be logged into a dev client to use this command!")); return SINGLE_SUCCESS;}
-            ServerMetadata.Players temp = mc.getCurrentServerEntry().players;
             StringBuilder players = new StringBuilder();
             assert mc.player != null;
-            for(String player : mc.player.getServer().getPlayerNames()){
-                players.append(player).append(", ");
-            }
-            info(String.valueOf(players));
+            for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) players.append(player.getDisplayName() == null ? player.getProfile().getName() : player.getDisplayName()).append(", ");
+            info(players.toString());
             return SINGLE_SUCCESS;
         }));
         builder.then(literal("RayCast").executes(ctx ->{
@@ -128,7 +127,7 @@ public class DevCommand extends Command {
         builder.then(literal("LogOut").executes(ctx ->{
             if(!LoggedIn){ChatUtils.sendMsg(Text.of("§cYou need to be logged into a dev client to use this command!")); return SINGLE_SUCCESS;}
             LoggedIn = false;
-            ChatUtils.sendPlayerMsg("Successfully logged out!");
+            ChatUtils.sendMsg(Text.of("Successfully logged out!"));
             return SINGLE_SUCCESS;
         }));
         builder.then(literal("ClientOP").executes(ctx ->{

@@ -61,6 +61,7 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new TrackerModule());
         addModule(new AimbotModule());
         addModule(new EncryptChatModule());
+        addModule(new DistributeModule());
         // addModule(new SwimModule());
 
         // Commands
