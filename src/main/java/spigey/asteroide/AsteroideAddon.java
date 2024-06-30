@@ -35,6 +35,7 @@ public class AsteroideAddon extends MeteorAddon {
     public static String trackedPlayer = null;
     public static double[] lastPos = {0, 0, 0};
     public static List<String> trolls = new ArrayList<>();
+    public static List<String> notInsults = new ArrayList<>();
     @Override
     public void onInitialize() {
         LOG.info("\nLoaded Asteroide v0.1.4-fix\n");
@@ -44,10 +45,16 @@ public class AsteroideAddon extends MeteorAddon {
             while ((line = reader.readLine()) != null) {
                 trolls.add(line);
             }
-        } catch (IOException e) {
-            System.err.println("Error reading trolls.txt: " + e.getMessage());
-            e.printStackTrace();
-        }
+        } catch (Exception e) {/**/}
+
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("notinsults.txt");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                notInsults.add(line);
+            }
+        } catch (Exception e) {/**/}
+
         // Modules
         addModule(new AutoKys());
         addModule(new ServerCrashModule());

@@ -18,15 +18,15 @@ public class TrollModule extends Module {
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<String> command = sgGeneral.add(new StringSetting.Builder()
-            .name("command")
-            .description("Command to use.")
-            .defaultValue("/msg")
+            .name("message")
+            .description("Command/Message to use.")
+            .defaultValue("/msg {name} {troll}")
             .build()
     );
     private final Setting<List<String>> quotes = sgGeneral.add(new StringListSetting.Builder()
         .name("additional quotes")
         .description("More quotes to use.")
-        .defaultValue("kys")
+        .defaultValue("so sigma!!")
         .build()
     );
     private final Setting<List<String>> users = sgGeneral.add(new StringListSetting.Builder()
@@ -46,6 +46,13 @@ public class TrollModule extends Module {
         .min(1)
         .sliderMax(100)
         .defaultValue(30)
+        .build()
+    );
+
+    private final Setting<Trolls> type = sgGeneral.add(new EnumSetting.Builder<Trolls>()
+        .name("troll type")
+        .description("Whether it should insult or annoy people.")
+        .defaultValue(Trolls.Trolls)
         .build()
     );
 
@@ -85,10 +92,15 @@ public class TrollModule extends Module {
             if(display.isEmpty()){ toggle(); return;}
         }
         List<String> troll = new ArrayList<>();
-        troll.addAll(AsteroideAddon.trolls);
-        troll.addAll(quotes.get());
-        ChatUtils.sendPlayerMsg(String.format("/%s %s %s", command.get().replace("/", ""), user.get(idx), troll.get(new Random().nextInt(troll.size()))));
+        if(type.get() == Trolls.Insults) troll.addAll(AsteroideAddon.trolls); troll.addAll(quotes.get());
+        if(type.get() == Trolls.Trolls) troll.addAll(AsteroideAddon.notInsults); troll.addAll(quotes.get());
+        ChatUtils.sendPlayerMsg(command.get().replaceAll("\\{name}", user.get(idx)).replaceAll("\\{troll}", troll.get(new Random().nextInt(troll.size()))));
         idx++;
         tick = delay.get();
+    }
+
+    private enum Trolls{
+        Insults,
+        Trolls
     }
 }
