@@ -4,6 +4,7 @@ import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.config.Config;
+import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
@@ -52,6 +53,8 @@ public class AimbotModule extends Module {
         .build()
     );
 
+    private final Setting<Boolean> targetFriends = sgGeneral.add(new BoolSetting.Builder().name("target friends").description("Also targets friends when enabled.").defaultValue(false).build());
+
 
 
     @EventHandler
@@ -67,7 +70,7 @@ public class AimbotModule extends Module {
         Entity closestEntity = null;
         double closestDistance = Double.MAX_VALUE;
         for (Entity e : mc.world.getEntities()) {
-            if (e != mc.player && e.isAlive() && mc.player.distanceTo(e) <= range.get() && entities.get().contains(e.getType())) {
+            if (e != mc.player && e.isAlive() && mc.player.distanceTo(e) <= range.get() && entities.get().contains(e.getType()) && (Friends.get().shouldAttack((PlayerEntity) e) || targetFriends.get())) {
                 double distance = mc.player.distanceTo(e);
                 if (distance < closestDistance) {
                     closestEntity = e;

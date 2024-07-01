@@ -25,7 +25,4 @@ public class BorderNoclipModule extends Module {
         .sliderMax(10)
         .build()
     );
-
 }
-
-

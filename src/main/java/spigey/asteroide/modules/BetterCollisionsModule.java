@@ -27,23 +27,6 @@ public class BetterCollisionsModule extends Module {
         .description("What blocks should be added collision box.")
         .build()
     );
-
-    private final Setting<BetterCollisionsModule.BlockCollisionShapes> mode = sgGeneral.add(new EnumSetting.Builder<BetterCollisionsModule.BlockCollisionShapes>()
-        .name("Collision Shape")
-        .description("Shape of the block collisions")
-        .defaultValue(BlockCollisionShapes.FullCube)
-        .build()
-    );
-    private final Setting<Double> boxsize = sgGeneral.add(new DoubleSetting.Builder()
-        .name("Collision Height IN DEVELOPMENT")
-        .description("Height of the collision box")
-        .defaultValue(1)
-        .min(0)
-        .sliderMax(3)
-        .visible(() -> mode.get() == BlockCollisionShapes.CuboidINDEVELOPMENT)
-        .build()
-    );
-
     private final Setting<Boolean> magma = sgGeneral.add(new BoolSetting.Builder()
         .name("magma")
         .description("Prevents you from walking over magma blocks.")
@@ -70,8 +53,7 @@ public class BetterCollisionsModule extends Module {
         if (mc.world == null || mc.player == null) return;
         if (!event.state.getFluidState().isEmpty()) return;
         if (blocks.get().contains(event.state.getBlock())) {
-            if(mode.get() == BlockCollisionShapes.FullCube) event.shape = VoxelShapes.fullCube();
-            if(mode.get() == BlockCollisionShapes.CuboidINDEVELOPMENT) event.shape = VoxelShapes.cuboid(1.0, 1.0, 1.0, 16.0, boxsize.get() * 16, 16.0);
+            event.shape = VoxelShapes.fullCube();
         } else if (magma.get() && !mc.player.isSneaking()
             && event.state.isAir()
             && mc.world.getBlockState(event.pos.down()).getBlock() == Blocks.MAGMA_BLOCK) {
@@ -101,11 +83,6 @@ public class BetterCollisionsModule extends Module {
                 event.cancel();
             }
         }
-    }
-
-    private enum BlockCollisionShapes {
-        FullCube,
-        CuboidINDEVELOPMENT
     }
     public boolean ignoreBorder() {
         return  isActive() && ignoreBorder.get();

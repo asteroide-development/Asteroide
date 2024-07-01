@@ -34,7 +34,6 @@ public class BedrockSpoofMixin {
     @Inject(method = "<init>(ILjava/lang/String;ILnet/minecraft/network/packet/c2s/handshake/ConnectionIntent;)V", at = @At("RETURN"))
     private void spoofProtocolVersion(int i, String string, int j, ConnectionIntent connectionIntent, CallbackInfo ci) {
         if(!(Modules.get().get(VersionSpoofModule.class).isActive())) return;
-        this.protocolVersion = Modules.get().get(VersionSpoofModule.class).spoofedVersion.get();
+        this.protocolVersion = VersionSpoofModule.readable(Modules.get().get(VersionSpoofModule.class).spoofedVersion.get());
     }
 }
-

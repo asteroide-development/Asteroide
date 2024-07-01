@@ -6,6 +6,7 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.network.packet.c2s.play.PlayerSessionC2SPacket;
+import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
 
@@ -17,10 +18,10 @@ public class OPNotifierModule extends Module {
     }
     int tick = -1;
     @EventHandler
-    private void onPacketSend(PacketEvent.Send event){
+    private void onPacketSend(PacketEvent.Receive event){
         if(!isActive()) return;
-        if(!(event.packet instanceof PlayerSessionC2SPacket)) return;
-        tick = 6;
+        if(!(event.packet instanceof PlayerListS2CPacket)) return;
+        if(String.valueOf(event.packet).contains("PlayerListS2CPacket{actions=[INITIALIZE_CHAT], ")) tick = 6;
     }
     @EventHandler
     private void onTick(TickEvent.Post event){

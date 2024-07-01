@@ -75,9 +75,9 @@ public class ChatBot extends Module {
         util.banstuff();
         if (!((event.packet instanceof GameMessageS2CPacket) || (event.packet instanceof ChatMessageS2CPacket) || (event.packet instanceof ProfilelessChatMessageS2CPacket))) {return;}
         String content = null;
-        if(event.packet instanceof GameMessageS2CPacket) content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
+        if(event.packet instanceof GameMessageS2CPacket) content = ((GameMessageS2CPacket) event.packet).content().getString();
         if(event.packet instanceof ChatMessageS2CPacket) content = ((ChatMessageS2CPacket) event.packet).body().content();
-        if(event.packet instanceof ProfilelessChatMessageS2CPacket) content = util.ParsePacket(String.valueOf(((ProfilelessChatMessageS2CPacket) event.packet).message()));
+        if(event.packet instanceof ProfilelessChatMessageS2CPacket) content = ((ProfilelessChatMessageS2CPacket) event.packet).message().getString();
         boolean yes = false;
         boolean no = false;
         boolean reverse = false;

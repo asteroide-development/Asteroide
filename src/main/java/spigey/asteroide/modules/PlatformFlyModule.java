@@ -26,7 +26,7 @@ import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 public class PlatformFlyModule extends Module {
     public PlatformFlyModule() {
-        super(AsteroideAddon.CATEGORY, "platform-fly", "Lets you walk on air");
+        super(AsteroideAddon.CATEGORY, "air-walk", "Lets you walk on air");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<Boolean> allowJumping = sgGeneral.add(new BoolSetting.Builder()
@@ -41,6 +41,7 @@ public class PlatformFlyModule extends Module {
         .defaultValue(false)
         .build()
     );
+
     @EventHandler
     private void onCollisionShape(CollisionShapeEvent event){
         assert mc.player != null;
@@ -53,9 +54,7 @@ public class PlatformFlyModule extends Module {
         int PlayerZ = mc.player.getBlockPos().getZ();
         BlockPos pos = event.pos;
         BlockPos lock = new BlockPos(PlayerX, PlayerY - 1, PlayerZ);
-        if(lock.equals(pos)){
-            event.shape = VoxelShapes.fullCube();
-        }
+        if(lock.equals(pos)) event.shape = VoxelShapes.fullCube();
     }
 }
 

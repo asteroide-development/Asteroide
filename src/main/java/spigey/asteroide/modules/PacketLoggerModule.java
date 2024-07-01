@@ -1,6 +1,7 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.events.world.CollisionShapeEvent;
 import meteordevelopment.meteorclient.settings.PacketListSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
@@ -38,6 +39,7 @@ public class PacketLoggerModule extends Module {
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void onReceivePacket(PacketEvent.Receive event) {
         if (s2cPackets.get().contains(event.packet.getClass())) ChatUtils.sendMsg(Text.of("§7" + event.packet.getClass().getSimpleName() + " was received!"));
+        // new CollisionShapeEvent();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST + 1)

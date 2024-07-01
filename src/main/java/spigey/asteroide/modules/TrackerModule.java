@@ -5,6 +5,7 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.config.Config;
+import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.render.color.Color;
@@ -40,6 +41,13 @@ public class TrackerModule extends Module {
         .min(0)
         .max(100)
         .sliderMax(3)
+        .build()
+    );
+
+    private final Setting<Boolean> render = sgGeneral.add(new BoolSetting.Builder()
+        .name("render")
+        .description("Renders a yellow box on the tracked player when enabled.")
+        .defaultValue(true)
         .build()
     );
 
@@ -82,7 +90,7 @@ public class TrackerModule extends Module {
         for (int i = 0; i < 3; i++) {
             last[i] = MathHelper.lerp(partialTicks * interpolation.get(), last[i], i == 1 ? entity.getY() + 1.62 : geminiwtf[i]);
         }
-        draw(event, entity);
+        if(render.get()) draw(event, entity);
         mc.player.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, new Vec3d(last[0], last[1], last[2]));
     }
 
