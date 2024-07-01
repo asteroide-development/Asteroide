@@ -117,6 +117,7 @@ public class TrollModule extends Module {
                 troll.get(new Random().nextInt(troll.size()))
                     .replaceAll("\\[NAME]", name)
                     .replaceAll("\\[SERVER]", ip)
+                    .replaceAll("\\[SELF]", mc.getGameProfile().getName())
         ));
         idx++;
         tick = delay.get();
