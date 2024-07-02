@@ -8,7 +8,6 @@ import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
-import spigey.asteroide.util;
 
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;

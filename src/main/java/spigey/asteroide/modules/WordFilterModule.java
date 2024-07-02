@@ -1,18 +1,10 @@
 package spigey.asteroide.modules;
 
-import meteordevelopment.meteorclient.MeteorClient;
-import meteordevelopment.meteorclient.events.packets.PacketEvent;
-import meteordevelopment.meteorclient.events.world.TickEvent;
-import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.orbit.EventHandler;
 import spigey.asteroide.AsteroideAddon;
 
 import java.util.List;
-
-import static spigey.asteroide.util.banstuff;
-import static spigey.asteroide.util.msg;
 
 public class WordFilterModule extends Module {
     public WordFilterModule() {

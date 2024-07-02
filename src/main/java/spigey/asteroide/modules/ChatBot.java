@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Random;
 
 import static spigey.asteroide.util.msg;
-import spigey.asteroide.util.*;
 
 public class ChatBot extends Module {
 

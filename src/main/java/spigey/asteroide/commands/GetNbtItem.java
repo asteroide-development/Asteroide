@@ -3,7 +3,6 @@ package spigey.asteroide.commands;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.commands.Command;
 import net.minecraft.command.CommandSource;
-import net.minecraft.item.Items;
 import spigey.asteroide.nbt.CrashBeehive;
 import spigey.asteroide.nbt.GrieferKit;
 import spigey.asteroide.nbt.SpawnerKit;
@@ -12,7 +11,6 @@ import spigey.asteroide.nbt.SpawnerKit;
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static spigey.asteroide.util.give;
-import static spigey.asteroide.util.itemstack;
 
 public class GetNbtItem extends Command {
     public GetNbtItem() {

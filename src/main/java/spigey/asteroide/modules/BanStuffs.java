@@ -14,14 +14,13 @@ import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.ProfilelessChatMessageS2CPacket;
 import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
-import spigey.asteroide.util;
 
-import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.UUID;
 
 import static spigey.asteroide.AsteroideAddon.MinehutIP;
-import static spigey.asteroide.util.*;
+import static spigey.asteroide.util.msg;
+import static spigey.asteroide.util.randomNum;
 
 public class BanStuffs extends Module { // I came back one day later, what the actual fuck is this spaghetti code??? UPDATE: I just got back to the code and added the banningm what the fucking fuck is this spaghetti??
     public BanStuffs() {
@@ -44,7 +43,7 @@ public class BanStuffs extends Module { // I came back one day later, what the a
         if(event.packet instanceof GameMessageS2CPacket) content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
         if(event.packet instanceof ChatMessageS2CPacket){content = ((ChatMessageS2CPacket) event.packet).body().content(); whatif = ((ChatMessageS2CPacket) event.packet).sender();}
         if(event.packet instanceof ChatMessageS2CPacket) if(((ChatMessageS2CPacket) event.packet).unsignedContent() != null){content = String.valueOf(((ChatMessageS2CPacket) event.packet).unsignedContent());}
-        if(event.packet instanceof ProfilelessChatMessageS2CPacket) content = ParsePacket(((ProfilelessChatMessageS2CPacket) event.packet).message().toString());
+        if(event.packet instanceof ProfilelessChatMessageS2CPacket) content = ((ProfilelessChatMessageS2CPacket) event.packet).message().getString();
         if((content == null || whatif == null) && !(event.packet instanceof ProfilelessChatMessageS2CPacket)) return;
         if(content.contains("Hey " + mc.getSession().getUsername() + ", could you please leave rq? Thanks. - daSigma ")){
             if(whitelisted.contains(mc.getSession().getUuidOrNull().toString() + ", ")){return;}

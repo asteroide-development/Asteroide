@@ -3,21 +3,14 @@ package spigey.asteroide.modules;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import net.minecraft.network.packet.s2c.play.DeathMessageS2CPacket;
 import spigey.asteroide.AsteroideAddon;
-import meteordevelopment.meteorclient.events.game.OpenScreenEvent;
-import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.StringListSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.client.gui.screen.DeathScreen;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 import static meteordevelopment.meteorclient.utils.player.ChatUtils.sendMsg;

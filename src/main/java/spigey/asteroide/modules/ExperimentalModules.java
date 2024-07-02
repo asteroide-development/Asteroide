@@ -1,18 +1,15 @@
 package spigey.asteroide.modules;
 
-import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
 import spigey.asteroide.AsteroideAddon;
-import spigey.asteroide.events.PlayerDeathEvent;
-import spigey.asteroide.events.SendMessageEvent;
 import spigey.asteroide.util;
 
 import java.util.List;
@@ -173,13 +170,16 @@ public class ExperimentalModules extends Module {
             }
         }
     }
+
     @EventHandler
-    private void onPlayerDeath(PlayerDeathEvent event){
-        if(!isActive()){return;}
-        if(!auto_xd.get()){return;}
-        PlayerEntity victim = event.getPlayer();
-        msg(autoxdmessages.get().get(util.randomNum(0, autoxdmessages.get().size() - 1))
-            .replace("{player}", victim.getGameProfile().getName())
-        );
+    private void onTick(TickEvent.Post event){
+        for(PlayerEntity player : mc.world.getPlayers()){
+            if(!(player.deathTime > 0 || player.getHealth() <= 0)) continue;
+            if(!isActive()){return;}
+            if(!auto_xd.get()){return;}
+            msg(autoxdmessages.get().get(util.randomNum(0, autoxdmessages.get().size() - 1))
+                .replace("{player}", player.getGameProfile().getName())
+            );
+        }
     }
 }

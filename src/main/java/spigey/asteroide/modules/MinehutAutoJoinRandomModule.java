@@ -27,8 +27,16 @@ public class MinehutAutoJoinRandomModule extends Module {
         super(AsteroideAddon.CATEGORY, "minehut-auto-join", "Automatically joins random minehut servers when in the lobby");
     }
 
+    private int tick = 0;
+
+    @Override
+    public void onActivate() {
+        tick = 5;
+    }
+
     @EventHandler
     private void onTick(TickEvent.Post event){
+        if(tick > 0) {tick--; return;}
         assert mc.player != null;
         if(mc.isInSingleplayer()) return;
         if(!(Objects.requireNonNull(mc.getCurrentServerEntry()).address).toLowerCase().contains("minehut")) return;
@@ -47,11 +55,11 @@ public class MinehutAutoJoinRandomModule extends Module {
         DefaultedList<Slot> slots = ((GenericContainerScreen) mc.currentScreen).getScreenHandler().slots;
         ClickSlotC2SPacket packet = new ClickSlotC2SPacket(1, 55, 49, 0, SlotActionType.PICKUP, slots.get(49).getStack(), Int2ObjectMaps.singleton(49, ItemStack.EMPTY));
         mc.getNetworkHandler().sendPacket(packet);
+        tick = 5;
     }
 }
 
 
-/* SLOT     49
-/* REVISION 55
-/* SYNC ID  1
-*/
+// SLOT     49
+// REVISION 55
+// SYNC ID  1

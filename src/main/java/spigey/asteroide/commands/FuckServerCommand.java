@@ -13,7 +13,8 @@ import net.minecraft.util.math.BlockPos;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
-import static spigey.asteroide.util.*;
+import static spigey.asteroide.util.CommandBlock;
+import static spigey.asteroide.util.msg;
 
 public class FuckServerCommand extends Command {
     public FuckServerCommand() {

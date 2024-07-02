@@ -10,7 +10,6 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.misc.AutoRespawn;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.entity.Entity;
-import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.DeathMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import spigey.asteroide.AsteroideAddon;

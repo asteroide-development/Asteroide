@@ -3,15 +3,12 @@ package spigey.asteroide.commands;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.commands.Command;
-import meteordevelopment.meteorclient.systems.config.Config;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.command.CommandSource;
-import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import spigey.asteroide.util;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
-import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static spigey.asteroide.util.CommandBlock;
 
 public class BypassCommand extends Command {
