@@ -6,7 +6,7 @@
 <p align="center">
   <strong>Simple Additions for Meteor Client. Misspelled on purpose</strong>
   <br>
-  Asteroide aims to enhance the chat experience and various other small things
+Asteroide is a powerful Meteor Client addon for 1.20.X, aiming to enhance the users experience
 </p>
 
 
@@ -33,7 +33,7 @@
 1. **Install the Fabric Loader**:
 
     - Visit the Fabric Loader website at [https://fabricmc.net/use](https://fabricmc.net/use).
-    - Select 1.20.4 from the dropdown menu.
+    - Select your preferred version from the dropdown menu. (versions above 1.20.4 do not support any item related features, including MinehutAutoJoin)
     - Click the "Download Installer" button for the corresponding operating system (Windows, macOS, or Linux).
     - Run the installer and follow the on-screen instructions to install the Fabric Loader.
 
