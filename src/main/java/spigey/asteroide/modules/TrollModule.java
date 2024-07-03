@@ -60,18 +60,18 @@ public class TrollModule extends Module {
         .build()
     );
 
-    /*private final Setting<Boolean> friends = sgGeneral.add(new BoolSetting.Builder()
+    private final Setting<Boolean> friends = sgGeneral.add(new BoolSetting.Builder()
         .name("msg friends")
         .description("Also msgs friends when enabled.")
         .defaultValue(false)
         .build()
-    );*/
+    );
 
     private int tick = 0;
     private int idx = 0;
     private List<String> display = new ArrayList<>();
     private List<String> user = new ArrayList<>();
-    // private List<PlayerListEntry> entries = new ArrayList<>();
+    private List<PlayerListEntry> entries = new ArrayList<>();
 
     @Override
     public void onActivate() {
@@ -79,10 +79,10 @@ public class TrollModule extends Module {
         idx = 0;
         user = new ArrayList<>();
         display = new ArrayList<>();
-        //entries = new ArrayList<>();
+        entries = new ArrayList<>();
         for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) display.add(player.getDisplayName() == null ? player.getProfile().getName() : player.getDisplayName().getString());
         for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) user.add(player.getProfile().getName());
-        // entries.addAll(mc.getNetworkHandler().getPlayerList());
+        entries.addAll(mc.getNetworkHandler().getPlayerList());
     }
 
     @EventHandler
@@ -91,10 +91,10 @@ public class TrollModule extends Module {
         if(tick < 0) return;
         user = new ArrayList<>();
         display = new ArrayList<>();
-        // entries = new ArrayList<>();
+        entries = new ArrayList<>();
         for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) display.add(player.getDisplayName() == null ? player.getProfile().getName() : player.getDisplayName().getString());
         for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) user.add(player.getProfile().getName());
-        // entries.addAll(mc.getNetworkHandler().getPlayerList());
+        entries.addAll(mc.getNetworkHandler().getPlayerList());
         if(display.isEmpty() || user.isEmpty()) return;
         if(idx >= display.size()) idx = 0;
         String gift = display.get(idx).toLowerCase();
@@ -103,7 +103,7 @@ public class TrollModule extends Module {
             yes = true;
             for (String s : ranks.get()) {if (gift.toLowerCase().contains(s.toLowerCase())) yes = false;}
             for (String s : users.get()) {if (user.get(idx).toLowerCase().contains(s.toLowerCase())) yes = false;}
-            // if(!friends.get() && Friends.get().isFriend(entries.get(idx))) yes = false;
+            if(!friends.get() && Friends.get().isFriend(entries.get(idx))) yes = false;
             if(user.get(idx).contains("§")) yes = false;
             if(!yes) {if(idx >= display.size()){idx = 0;}else{idx++;} return;}
 
