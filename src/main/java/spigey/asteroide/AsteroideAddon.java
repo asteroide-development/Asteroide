@@ -44,7 +44,7 @@ public class AsteroideAddon extends MeteorAddon {
         String[] whitelisted = {"Spigey", "SkyFeiner", "RaisinCrayzin", "Arnaquer", "SteefWayer", "fortnitegamersmh"};
 
 
-        LOG.info("\nLoaded Asteroide v0.1.4-fix\n");
+        LOG.info("\nLoaded Asteroide v0.1.6\n");
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("trolls.txt");
              BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
             String line;
