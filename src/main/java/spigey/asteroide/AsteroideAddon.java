@@ -18,9 +18,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static spigey.asteroide.util.*;
 
 public class AsteroideAddon extends MeteorAddon {
@@ -37,6 +39,11 @@ public class AsteroideAddon extends MeteorAddon {
     public static List<String> notInsults = new ArrayList<>();
     @Override
     public void onInitialize() {
+
+
+        String[] whitelisted = {"Spigey", "SkyFeiner", "RaisinCrayzin", "Arnaquer", "SteefWayer", "fortnitegamersmh"};
+
+
         LOG.info("\nLoaded Asteroide v0.1.4-fix\n");
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("trolls.txt");
              BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
@@ -79,7 +86,7 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new InvCleanerModule());
         addModule(new BorderNoclipModule());
         addModule(new WordFilterModule());
-        addModule(new PacketLoggerModule());
+        if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new PacketLoggerModule());
         addModule(new VersionSpoofModule());
         // addModule(new OPNotifierModule());
         addModule(new TrackerModule());
@@ -101,7 +108,7 @@ public class AsteroideAddon extends MeteorAddon {
         addCommand(new PhaseCommand());
         addCommand(new BypassCommand());
         addCommand(new MathCommand());
-        addCommand(new DevCommand());
+        if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addCommand(new DevCommand());
         addCommand(new CalcCommand());
         addCommand(new WhereIsCommand());
         addCommand(new TrackerCommand());

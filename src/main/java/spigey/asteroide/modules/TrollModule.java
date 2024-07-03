@@ -75,6 +75,7 @@ public class TrollModule extends Module {
 
     @Override
     public void onActivate() {
+        if(mc.getCurrentServerEntry() == null) return;
         tick = 1;
         idx = 0;
         user = new ArrayList<>();
@@ -87,6 +88,7 @@ public class TrollModule extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Post event){
+        if(mc.getCurrentServerEntry() == null) return;
         if(tick > 0){tick--; return;}
         if(tick < 0) return;
         user = new ArrayList<>();

@@ -6,7 +6,7 @@
 <p align="center">
   <strong>Simple Additions for Meteor Client. Misspelled on purpose</strong>
   <br>
-Asteroide is a powerful Meteor Client addon for 1.20.X, aiming to enhance the users experience
+Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance the users experience.
 </p>
 
 
@@ -46,7 +46,7 @@ Asteroide is a powerful Meteor Client addon for 1.20.X, aiming to enhance the us
 3. **Install Asteroide**:
 
     - Locate your Minecraft installation folder:
-        - Windows: `%appdata%\.minecraft`
+        - Windows: `%AppData%/.minecraft`
         - macOS: `~/Library/Application Support/minecraft`
         - Linux: `~/.minecraft`
     - Create a new folder named `mods` inside your Minecraft installation folder if it doesn't already exist.
