@@ -37,6 +37,7 @@ public class AsteroideAddon extends MeteorAddon {
     public static double[] lastPos = {0, 0, 0};
     public static List<String> trolls = new ArrayList<>();
     public static List<String> notInsults = new ArrayList<>();
+    public static boolean slotttt = false;
     @Override
     public void onInitialize() {
 
@@ -94,7 +95,8 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new EncryptChatModule());
         addModule(new DistributeModule());
         addModule(new TrollModule());
-        // addModule(new SwimModule());
+        if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new DevModule());
+            // addModule(new SwimModule());
 
         // Commands
         addCommand(new CrashAll());

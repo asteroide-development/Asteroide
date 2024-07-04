@@ -22,6 +22,7 @@ import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static spigey.asteroide.util.raycast;
 
+import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.env;
 
 import javax.annotation.Nullable;
@@ -140,6 +141,11 @@ public class DevCommand extends Command {
             mc.player.getAbilities().invulnerable = true;
             mc.player.sendAbilitiesUpdate();
             ChatUtils.sendMsg(Text.of("Client-Side god mode is now active"));
+            return SINGLE_SUCCESS;
+        }));
+        builder.then(literal("Slot").executes(ctx ->{
+            ChatUtils.sendMsg(Text.of("§7Enabled slot inspection!"));
+            AsteroideAddon.slotttt = true;
             return SINGLE_SUCCESS;
         }));
         /*

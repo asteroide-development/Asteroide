@@ -53,13 +53,13 @@ public class MinehutAutoJoinRandomModule extends Module {
         assert mc.currentScreen != null;
         if(!(mc.currentScreen instanceof GenericContainerScreen)) return;
         DefaultedList<Slot> slots = ((GenericContainerScreen) mc.currentScreen).getScreenHandler().slots;
-        ClickSlotC2SPacket packet = new ClickSlotC2SPacket(1, 55, 49, 0, SlotActionType.PICKUP, slots.get(49).getStack(), Int2ObjectMaps.singleton(49, ItemStack.EMPTY));
+        ClickSlotC2SPacket packet = new ClickSlotC2SPacket(1, 58, 26, 0, SlotActionType.PICKUP, slots.get(26).getStack(), Int2ObjectMaps.singleton(26, ItemStack.EMPTY));
         mc.getNetworkHandler().sendPacket(packet);
         tick = 5;
     }
 }
 
 
-// SLOT     49
-// REVISION 55
-// SYNC ID  1
+// SLOT     49 | 26
+// REVISION 55 | 58
+// SYNC ID  1  | 1?
