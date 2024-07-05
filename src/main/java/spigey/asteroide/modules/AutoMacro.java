@@ -50,13 +50,9 @@ public class AutoMacro extends Module {
         if(event.packet instanceof ChatMessageS2CPacket) content = ((ChatMessageS2CPacket) event.packet).body().content();
         if(event.packet instanceof ProfilelessChatMessageS2CPacket) content = util.ParsePacket(String.valueOf(((ProfilelessChatMessageS2CPacket) event.packet).message()));
         for(int i = 0; i < messages.get().size(); i++){
-            if(content.toLowerCase().contains(messages.get().get(i).toLowerCase())){
-                if(macro.get().get(i) != null){
-                    msg(Config.get().prefix.get() + "macro " + macro.get().get(i));
-                } else{
-                    error("Error: Macro is null");
-                }
-            }
+            if(!content.toLowerCase().contains(messages.get().get(i).toLowerCase())) continue;
+            if(macro.get().get(i) != null) msg(Config.get().prefix.get() + "macro " + macro.get().get(i));
+            else error("Error: Macro is null");
         }
     }
 }

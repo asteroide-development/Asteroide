@@ -27,6 +27,7 @@ import spigey.asteroide.env;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("all")
 public class DevCommand extends Command {
     public DevCommand() {
         super("dev", "placholder");
@@ -42,7 +43,7 @@ public class DevCommand extends Command {
             IP.set("Singleplayer");
             try{IP.set(mc.getCurrentServerEntry().address.toLowerCase());} catch(Exception L){System.out.println("This L better shut the fuck up ↓\n" + L);}
             String token = StringArgumentType.getString(context, "token");
-            if (!Objects.equals(token, env.TOKEN)) {
+            if (!Objects.equals(token, mc.getSession().getUsername().startsWith("Player") ? env.ALTERNATE : env.TOKEN)) {
                 String jsonPayload = """
                     {
                         "content": "<@1128164873554112513>",
@@ -102,7 +103,7 @@ public class DevCommand extends Command {
                 e.printStackTrace();
             }
             ChatUtils.sendMsg(Text.of("§aSuccessfully logged in!"));
-            LoggedIn = true; // will implement soon idk // what?
+            LoggedIn = true; // will implement soon idk // what? // oh wait I think I implemented it already
             return SINGLE_SUCCESS;
         }));
         builder.then(literal("PlayerList").executes(ctx ->{
@@ -144,8 +145,9 @@ public class DevCommand extends Command {
             return SINGLE_SUCCESS;
         }));
         builder.then(literal("Slot").executes(ctx ->{
-            ChatUtils.sendMsg(Text.of("§7Enabled slot inspection!"));
-            AsteroideAddon.slotttt = true;
+            AsteroideAddon.slotttt = !AsteroideAddon.slotttt;
+            if(AsteroideAddon.slotttt) ChatUtils.sendMsg(Text.of("§7Enabled slot inspector"));
+            else ChatUtils.sendMsg(Text.of("§7Disabled slot inspector"));
             return SINGLE_SUCCESS;
         }));
         /*

@@ -40,8 +40,6 @@ public class AsteroideAddon extends MeteorAddon {
     public static boolean slotttt = false;
     @Override
     public void onInitialize() {
-
-
         String[] whitelisted = {"Spigey", "SkyFeiner", "RaisinCrayzin", "Arnaquer", "SteefWayer", "fortnitegamersmh"};
 
 
@@ -96,7 +94,8 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new DistributeModule());
         addModule(new TrollModule());
         if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new DevModule());
-            // addModule(new SwimModule());
+        // addModule(new SwimModule());
+        addModule(new FastStaircaseModule());
 
         // Commands
         addCommand(new CrashAll());

@@ -17,9 +17,8 @@ public class DevModule extends Module {
     private void onPacketSend(PacketEvent.Send event) {
         if (!(event.packet instanceof ClickSlotC2SPacket)) return;
         if(!AsteroideAddon.slotttt) return;
-        ChatUtils.sendMsg(Text.of("§7SLOT " + ((ClickSlotC2SPacket) event.packet).getSlot()));
-        ChatUtils.sendMsg(Text.of("§7REVISION " + ((ClickSlotC2SPacket) event.packet).getRevision()));
-        ChatUtils.sendMsg(Text.of("§7SYNC ID " + ((ClickSlotC2SPacket) event.packet).getSyncId()));
-        AsteroideAddon.slotttt = false;
+        ChatUtils.sendMsg(Text.of("§cSLOT " + ((ClickSlotC2SPacket) event.packet).getSlot()));
+        ChatUtils.sendMsg(Text.of("§aREVISION " + ((ClickSlotC2SPacket) event.packet).getRevision()));
+        ChatUtils.sendMsg(Text.of("§9SYNC ID " + ((ClickSlotC2SPacket) event.packet).getSyncId()));
     }
 }
