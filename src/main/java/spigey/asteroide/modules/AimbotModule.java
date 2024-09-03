@@ -63,6 +63,7 @@ public class AimbotModule extends Module {
         if (entity == null) return;
         if(!itemInHand()) return;
         double[] geminiwtf = {entity.getX(), entity.getY(), entity.getZ()};
+        assert mc.player != null;
         mc.player.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, new Vec3d(geminiwtf[0], geminiwtf[1] + entity.getHeight() / 1.5, geminiwtf[2]));
     }
 
@@ -70,7 +71,7 @@ public class AimbotModule extends Module {
         Entity closestEntity = null;
         double closestDistance = Double.MAX_VALUE;
         for (Entity e : mc.world.getEntities()) {
-            if (e != mc.player && e.isAlive() && mc.player.distanceTo(e) <= range.get() && entities.get().contains(e.getType()) && (Friends.get().shouldAttack((PlayerEntity) e) || targetFriends.get())) {
+            if (e != mc.player && e.isAlive() && mc.player.distanceTo(e) <= range.get() && entities.get().contains(e.getType()) && (!(e instanceof PlayerEntity) || (Friends.get().shouldAttack((PlayerEntity) e) || targetFriends.get()))) {
                 double distance = mc.player.distanceTo(e);
                 if (distance < closestDistance) {
                     closestEntity = e;
@@ -84,8 +85,7 @@ public class AimbotModule extends Module {
     private enum Weapon {
         Sword,
         Axe,
-        Both,
-        Any
+        Both
     }
 
     private boolean itemInHand() {
@@ -93,7 +93,6 @@ public class AimbotModule extends Module {
             case Axe -> mc.player.getMainHandStack().getItem() instanceof AxeItem;
             case Sword -> mc.player.getMainHandStack().getItem() instanceof SwordItem;
             case Both -> mc.player.getMainHandStack().getItem() instanceof AxeItem || mc.player.getMainHandStack().getItem() instanceof SwordItem;
-            default -> true;
         };
     }
 }
