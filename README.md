@@ -12,7 +12,7 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance the use
 
 <p align="center">
 <a href="https://discord.gg/scamalerts">
-  <img alt="Discord" src="https://img.shields.io/discord/1211627879243448340?label=Discord&logo=discord&style=flat-square">
+  <img alt="Discord" src="https://img.shields.io/discord/1273656893948297348?label=Discord&logo=discord&style=flat-square">
 </a>
   <a href="https://github.com/asteroide-development/Asteroide/graphs/contributors">
     <img alt="Contributors" src="https://img.shields.io/github/contributors/asteroide-development/Asteroide?style=flat-square">
