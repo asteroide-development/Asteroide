@@ -113,7 +113,7 @@ im playing minecraft java edition
 minecraft is so cool
 bedwars is my favorite game
 i love roblox
-can we play bedwart together
+can we pley bedwart together
 lets play together on hypixel
 this server is so cool
 this roblox game is awesome
@@ -757,3 +757,211 @@ lol
 skibidi toilet kena prank kameramen haha
 so excited for skibidi toilet mega battle 13
 help theres skibidi in my base
+quick disclaimer im old enough
+NO WAY
+wait is this real
+chat?!?
+caze oh
+skigma
+its 333 lol ahahaha get pranekd
+wah wah why u sas 333 i,m so sad what i dop t o you
+NOOOOOOOOOOOOOO
+unjban me
+big bj
+i like unnamned
+lone is ew
+udplone 127.0.0.1
+im haxor look ping 127.0..1
+butterywhops
+a
+d
+z
+ik
+d
+f
+with open('quotes.txt', 'r') as file:
+quotes = [quote.strip() for quote in file.read().split('\n')]
+asd = []
+for quote in quotes:
+if not quote in asd:
+asd.append(quote)
+else:
+print(quote)
+with open('quotes.txt', 'w') as file:
+for quote in asd:
+file.write(quote + '\n')
+' OR 1=1 --
+leave pls i dont want you in my server
+bro im owner of htis server
+racism more like rap-
+hi im kena prank kameramne
+i did stuff
+im stuff
+gooning with chattgpt rn
+me when white :) me whewn black >:(
+ohio
+sweag like ohio
+havec yo u heard of huracen ,itlonm in floirda? it 6 already!
+miltion was clip farming
+ninja sux at fortnite im probabyl way better
+ninja
+ninja ninja ninja ninja ninja im 100% ninja
+noo why did yo do that
+hi if u can hel pme wriTe more brianrot quotes add skyfeinerz on discord
+hi im spiggma
+i just got diagsoed with serveret autism a i cooked
+tez kibiidi toilet or creeper
+ja wybieram z kibity toilet nie lubi creeper
+zginie ha ha ha ha
+z kibic o
+ja lubie diamond ja jesten taki bogaty jest
+jestem bogaty o nie creepery o (hi createor of the quotes here i dont speak russian but theres russian here so uhh??)
+hi quick reminder this is a rela huimna wiritng there quotes
+sto preplying to mei h ate u
+chat i htink i mgthe b e cooked
+uhhhhhhhhhh
+incompetenty
+ok so basicaly the kibid itoilet fihgts the camera man and uh
+whats s obads about 2018 i was born there to!
+826, 827, 828...
+xhook is skid 
+skididi skididi hawk tuah hawk
+will this affect the talk tuah podcast
+if she dont hawk tuah i dont htalk tuah
+nooo hse dont haw ktuah
+hi my name is [NAME]
+i like racism
+skibidi skibidi...
+cześć więc oglądam toaletę skibidi i chcę wiedzieć czy wszystko w porządku
+as a german i can confirm ur probs hewish
+maejk akemre ica gerat aigna!!!
+chgat aikm i coked chat
+merry christmas
+im having a crashout rn
+remenber when i 3-d1d you in xloxo gurits using boimbs and firsts
+rule 1 of fight club is talk aout fight club as much as possible
+so have oyu heard of cighfgt clu byet
+i play skibidi simulator
+do u remember playing ksibidi toilet touwer derenfese in 2008 too?ß i do
+mom this dtastes differnet yes i put woine omhg i m durnjk
+im so jolly
+heave you heard of sjky yet
+haiii :3
+haiiiiii >.<
+erm chat i think i gmith be gay
+omg you homoh pibix why are oyiu kkileld m,e
+Sure! Based on the pattern and randomness of the provided quotes, here’s one more for you: "OMG I JUST GOT A NEW KIBIDI TOILET IN MY BASE, HELP, I'M CRAWLING THROUGH THE SKIBIDI DIMENSION"
+ok so i was writng these quotes athen some talahon went in my room and i immediately lost all creativity
+anyways dinner is ready brb
+gi im making a ai or teh quotes now im too lay to write
+hi my ip is [IP] join .gg/gudp and hit me polz
+sorry i didnt implement [IP] yet
+typescirpt ninja scamed me bro!
+xninjaskid
+jingle balls jingle balls jingle all the sax
+amogus
+im high rn
+1 beer + 1 eer = germany
+peter what are you doing
+crack
+what the F
+hey at least im not drinking brian
+listen oyu need to get HTE theart of why youre dirnking
+ok man is this relak bro like autalY?! crakc
+Ktapult
+crakcszing
+man idk btu  i think i should start with ecstaysy
+i like shootiung squirrles
+niity nity hakw tuah wajk
+>.<
+im sowwy bzut ur kinmkda sutpid pls comit
+hi im skid
+christmas chronicals is actualy skigma movbie
+im ogna yell the nword
+wahy wont you adopt me im not ona say it hy ownt you adopt me because your eblack
+roblos
+is having saxohpone in roblos ilegal
+halo my bneame is ksibid sigk,ma and i liek sibdk toilet
+profound metla retrai diation
+Personalausweis
+53°08'32.9"N 7°36'35.5"E
+i use wa ve
+john haxxor 1337
+john diagsoed
+severe autiskm severe autiskm severe autiskm severe autiskm severe autiskm severe autiskm severe autiskm severe autiskm 
+k x3?
+im ghost with f ire
+Talent she for lively eat led sister.
+lorem ipsum!!
+i used ninjaforcer0300 on lone nad iahcke i!!
+149.101.229.38 is my ip
+hi i fbi pay 50$ ingame dolars and i wil not come to ur baes!!!
+last chikcne nugget in ghte riert
+sometimes, i dream about cheese
+the massive pile of shart in my oiel tgave ne inspiratoin again
+momma did ur steal my roblox again
+shoudl i remake aseroide
+me when he white :))
+me when he black ###### ###### ###### ###### ###### ###### ###### ###### ###### ###### bakc to work you ######!! >;:(!!
+weak aura l onoto nobo jhaha
+stonrg aura NI
+dear fried ninja why
+derogatory racial slur directed at the african american comittee group
+vercek duaoscpe producation railway appp / files  isgma.hmtrl
+9/11 is so real omg my name is abu dhabi 
+hi i'm using asteroide github/asteroide-development/Asteroide
+9mm in my hand 2mm in my pants
+YOU STUPID ##### SON OF A ##### I HATE ##### EVERY JACK### I PLAY WITH IS A STUPID ###### ####### ######
+Isopropanol
+asteroide is so sigma~
+i use sigma resources what is rtexturepack
+wursto n crack wjurst is so sigma client
+i use sigma b5  client whcih do use ise
+my brian is roted becauseo f  htis
+its muffin ime
+asdf
+fun fac american schols arent for education but for shooting rnages
+hi im training ai since 1.20h pls be done soon
+u use vs code? i use vs stu dio
+why am i still writing these...
+leve 70 gyad?? no i havel evle 3
+i say mom can we get miccy ds mom say no i say why she say zr adopted
+mom can we have mcdonalds "no yks ur adopted"
+willy mac dilly
+is 8cm good for 15 years old
+im not geting prainfd enoguh foir zthgisdfs<dogdsgjkhjkiphhhhzuhhhhhhhdfs<jhkgioflödsr<e<oisuedrhzjsd,mnfl skjhf
+im larp!
+extraterrestrial
+hello my name is aauuuurgh
+omi ich bnna den jub ARUGH
+ī̸̫̲̤̳͙̟̬̫̎͂̄̽̏̈́̆̕m̷̨̨̧͉̟͔̲̤̯̓͛̇͘͝͝ ̶̼̩̝̣͖̘͋͑̏̌͆̉͌͒̂́̇͠͠s̷̨̞̩͈͉̙̫̲̭̩̲͚͔̮̎̈͑͂̈̈́͗͆̽̚͝ǫ̷̦͈͔͌̐͗̋͘̕͜ ̵̢̡̻̥͉̝̰́̇̑͐̑̔̉̈́̓̄̔͘͠͝s̶̢͔̳̽̾̾͆̓̓̂̓͋̏́͝ç̸͇͍̝͓̖̘̫̑̒́̊̈͑͋͂̂̚a̷̢͔̺̣̟̯͆̓͒̄̇̽͛̅̀͝r̴̨̨͇̳̝̥͈̳̳͖̟̍̐́̓̑͜y̷̧̫̎́̿̌͋͐͠
+help
+bro it hink thats a sk ibid tile cuz gitta be carefzuk
+forntite iss dowm since the 14 hoirus im tewaking i might die
+mom said im not alowe to tlak ot strangers sory
+scaming is infintie money glatch
+moneymouthemokjmim hblep ii hern si hpkop wha tam i twaeaking?
+bro doner kevbab is 750$ in m y country hw yso expesnmjve
+hi i speak in americanm
+hi i speak money
+give mgelkdmoneiymatiredtewakibnggggjkdfhgwyhteufjodiexsiatpjjsutkeleasdekinfankihers
+me hate black
+cavemen nosie
+me on reallife i  am 11 yearso ld me ojn minecraft m ggnasget me on discord lil bro band for band
+say gex moire ike gay saxohpone
+i had saxohpone on roblox today with my ekite nbut nwo i reaizlised you cnat sax cats help am i crimist
+i shart my pants
+last chicken nugget in the frier
+put the fries in the bag
+this server is ravioaly aprovded
+https://tenor.com/view/cat-chicken-nugget-meme-gif-25924623
+this is elon muk
+elon  husk?
+hush ninaj befre i sax
+saxohpone saxohpone we all ove saxohpone
+i kispelled saxophone 7 tiunes
+r oblos when rminecar ft fortneit ?!!!
+how do you monday?
+can esti cu ea intro realizie hood irony dua ce depsariti
+hi google arschfick on google
+secere autudnm
