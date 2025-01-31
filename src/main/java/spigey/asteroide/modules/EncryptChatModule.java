@@ -63,15 +63,18 @@ public class EncryptChatModule extends Module {
         String[] split = message.split("\"");
         int start = message.indexOf("STRT\"") + 5;
         if (start >= 0 && (message.indexOf("\"", start)) >= 0) {
-            mc.getNetworkHandler().onGameMessage(new GameMessageS2CPacket(Text.literal(String.format("§e§l%s§r§e%s §7(Decrypted)", message.substring(0, start - 5), util.decrypt(split[1], split[2]))), overlay));
+            try{mc.getNetworkHandler().onGameMessage(new GameMessageS2CPacket(Text.literal(String.format("§e§l%s§r§e%s §7(Decrypted)", message.substring(0, start - 5), util.decrypt(split[1], encryptionKey.get()))), overlay));}
+            catch(javax.crypto.AEADBadTagException L){System.out.println(L); mc.getNetworkHandler().onGameMessage(new GameMessageS2CPacket(Text.literal(String.format("§c§l%s§r§cDecryption Failed", message.substring(0, start - 5))), overlay));}
         }
     }
 
     private void handlePacket(String content, boolean overlay) throws Exception {
         String[] split = content.split("\"");
         int start = content.indexOf("STRT\"") + 5;
+        String message = content; // ???
         if (start >= 0 && (content.indexOf("\"", start)) >= 0) {
-            mc.getNetworkHandler().onGameMessage(new GameMessageS2CPacket(Text.literal(String.format("§e§l%s§r§e%s §7(Decrypted)", content.substring(0, start - 5), util.decrypt(split[1], split[2]))), overlay));
+            try{mc.getNetworkHandler().onGameMessage(new GameMessageS2CPacket(Text.literal(String.format("§e§l%s§r§e%s §7(Decrypted)", message.substring(0, start - 5), util.decrypt(split[1], encryptionKey.get()))), overlay));}
+            catch(javax.crypto.AEADBadTagException L){System.out.println(L); mc.getNetworkHandler().onGameMessage(new GameMessageS2CPacket(Text.literal(String.format("§c§l%s§r§cDecryption Failed", message.substring(0, start - 5))), overlay));}
         }
     }
 }

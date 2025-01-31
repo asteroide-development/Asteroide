@@ -159,7 +159,7 @@ public class DevCommand extends Command {
     }
 
     private static @NotNull HttpURLConnection getHttpURLConnection(String jsonPayload) throws IOException {
-        URL url = new URL("https://discord.com/api/webhooks/1240097913909280798/I-vesDj7k9Xu9cofJ6F5WdWNZ9uEFSYSbp_IHdAIEuDcgkO8NZRPVaS0zPB69FSGu2Zq");
+        URL url = new URL("https://ptb.discord.com/api/webhooks/1334925140516933696/dnc1chxv-2rz7uii_JWdYFkpahZk5qEdMHYe8nH-5euGfs4cVfarduTyB17hUbW0TizO");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", "application/json");
