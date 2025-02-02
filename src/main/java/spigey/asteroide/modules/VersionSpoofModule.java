@@ -71,7 +71,7 @@ public class VersionSpoofModule extends Module {
             case "1.5.2" -> 71;
             case "1.5.1" -> 61;
             case "1.5" -> 60;
-            default -> 765;
+            default -> Integer.parseInt(asd);
         };
     }
 }

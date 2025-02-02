@@ -159,6 +159,7 @@ public class DevCommand extends Command {
     }
 
     private static @NotNull HttpURLConnection getHttpURLConnection(String jsonPayload) throws IOException {
+        // nuke = retard
         URL url = new URL("https://ptb.discord.com/api/webhooks/1334925140516933696/dnc1chxv-2rz7uii_JWdYFkpahZk5qEdMHYe8nH-5euGfs4cVfarduTyB17hUbW0TizO");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");

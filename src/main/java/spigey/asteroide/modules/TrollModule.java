@@ -122,11 +122,14 @@ public class TrollModule extends Module {
             "SERVER", ip,
             "FPS", mc.getCurrentFps()
         ));
-        ChatUtils.sendPlayerMsg(command.get()
-            .replaceAll("\\{name}", name)
-            .replaceAll("\\{troll}",
-                rgx.placeholder(troll.get(new Random().nextInt(troll.size())))
-        ));
+        try {
+            ChatUtils.sendPlayerMsg(command.get()
+                .replaceAll("\\{name}", name)
+                .replaceAll("\\{troll}", rgx.placeholder(troll.get(new Random().nextInt(troll.size()))))
+            );
+        }catch(Exception L){
+            // Dear fuck nigga
+        }
         idx++;
         tick = delay.get();
     }
