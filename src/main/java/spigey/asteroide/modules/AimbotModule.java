@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 
 import java.util.Comparator;
+import java.util.Random;
 import java.util.Set;
 
 public class AimbotModule extends Module {
@@ -54,7 +55,7 @@ public class AimbotModule extends Module {
     );
 
     private final Setting<Boolean> targetFriends = sgGeneral.add(new BoolSetting.Builder().name("target friends").description("Also targets friends when enabled.").defaultValue(false).build());
-
+    // this nigga shit so fucking skidded 💔
 
 
     @EventHandler

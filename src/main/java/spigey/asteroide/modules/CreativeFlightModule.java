@@ -3,10 +3,7 @@ package spigey.asteroide.modules;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.mixin.PlayerMoveC2SPacketAccessor;
-import meteordevelopment.meteorclient.settings.DoubleSetting;
-import meteordevelopment.meteorclient.settings.IntSetting;
-import meteordevelopment.meteorclient.settings.Setting;
-import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import spigey.asteroide.AsteroideAddon;
@@ -24,6 +21,14 @@ public class CreativeFlightModule extends Module {
         .sliderMax(20)
         .build()
     );
+
+    private final Setting<Boolean> nofall = sgGeneral.add(new BoolSetting.Builder()
+        .name("No-Fall")
+        .description("Enable Nofall when flying")
+        .defaultValue(true)
+        .build()
+    );
+
     @EventHandler
     public void onTick(TickEvent.Post event) {
         if(!isActive()) return;
@@ -41,6 +46,7 @@ public class CreativeFlightModule extends Module {
     private void onSendPacket(PacketEvent.Send event){
         if(!(event.packet instanceof PlayerMoveC2SPacketAccessor)) return;
         if(!isActive()) return;
+        if(!nofall.get()) return;
         ((PlayerMoveC2SPacketAccessor) event.packet).setOnGround(true);
     }
 }

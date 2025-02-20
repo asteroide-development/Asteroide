@@ -43,12 +43,12 @@ public class InvCleanerModule extends Module {
         .defaultValue()
         .build()
     );
-    private final Setting<List<String>> nbt = sgGeneral.add(new StringListSetting.Builder()
+    /*private final Setting<List<String>> nbt = sgGeneral.add(new StringListSetting.Builder()
         .name("nbt")
         .description("Also drop items that contain this nbt")
         .defaultValue()
         .build()
-    );
+    );*/
 
 
     @EventHandler
@@ -59,8 +59,8 @@ public class InvCleanerModule extends Module {
         for(int i = 0; i < mc.player.getInventory().size(); i++){
             ItemStack uwu = slots.get(i).getStack();
             assert uwu != null;
-            if(uwu.getNbt() != null){
-                if(!(items.get().contains(uwu.getItem()) || names.get().stream().anyMatch(name -> name.equalsIgnoreCase(uwu.getName().getString())) || nbt.get().contains(NbtHelper.toFormattedString(uwu.getNbt()).trim()))) continue;
+            if(1 > 2){
+                //if(!(items.get().contains(uwu.getItem()) || names.get().stream().anyMatch(name -> name.equalsIgnoreCase(uwu.getName().getString())) || nbt.get().contains(NbtHelper.toFormattedString(uwu.getNbt()).trim()))) continue;
                 InvUtils.drop().slot(i);
             } else{
                 if(!(items.get().contains(uwu.getItem()) || names.get().stream().anyMatch(name -> name.equalsIgnoreCase(uwu.getName().getString())))) continue;

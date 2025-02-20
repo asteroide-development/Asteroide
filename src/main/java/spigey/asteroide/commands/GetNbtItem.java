@@ -10,7 +10,7 @@ import spigey.asteroide.nbt.SpawnerKit;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
-import static spigey.asteroide.util.give;
+// import static spigey.asteroide.util.give;
 
 public class GetNbtItem extends Command {
     public GetNbtItem() {
@@ -19,7 +19,7 @@ public class GetNbtItem extends Command {
 
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
-        builder.then(literal("CrashHive").executes(ctx ->{
+        /*builder.then(literal("CrashHive").executes(ctx ->{
             assert mc.player != null;
             if(mc.player.getAbilities().creativeMode) {
                 give(CrashBeehive.item, CrashBeehive.nbt);
@@ -45,6 +45,7 @@ public class GetNbtItem extends Command {
             }
             if(!mc.player.getAbilities().creativeMode) { error("You need to be in creative mode to use this command");}
             return SINGLE_SUCCESS;
-        }));
+        }));*/
+        info("Goner");
     }
 }

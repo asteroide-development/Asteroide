@@ -53,7 +53,7 @@ public class AutoBack extends Module {
         }
         if(event.packet instanceof DeathMessageS2CPacket packet){
             assert mc.world != null;
-            Entity entity = mc.world.getEntityById(packet.getEntityId());
+            Entity entity = mc.world.getEntityById(packet.playerId());
             if(entity != mc.player){return;}
             msg("/back");
         }

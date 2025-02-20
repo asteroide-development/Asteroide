@@ -38,7 +38,7 @@ public class MultiCommandCommandBlockModule extends Module {
     // I used a modified version of CommandGamerPro's code converted to Java, thanks commandgamerpro
     @Override
     public void onActivate() {
-        if(profile.get() == Profile.Profile1) util.MultiCommandBlock(new ArrayList<>(commands1.get()));
+        /*if(profile.get() == Profile.Profile1) util.MultiCommandBlock(new ArrayList<>(commands1.get()));
         if(profile.get() == Profile.Profile2) util.MultiCommandBlock(new ArrayList<>(commands2.get()));
         if(profile.get() == Profile.Profile3) util.MultiCommandBlock(new ArrayList<>(commands3.get()));
         if(profile.get() == Profile.Profile4) util.MultiCommandBlock(new ArrayList<>(commands4.get()));
@@ -47,8 +47,8 @@ public class MultiCommandCommandBlockModule extends Module {
         if(profile.get() == Profile.Profile7) util.MultiCommandBlock(new ArrayList<>(commands7.get()));
         if(profile.get() == Profile.Profile8) util.MultiCommandBlock(new ArrayList<>(commands8.get()));
         if(profile.get() == Profile.Profile9) util.MultiCommandBlock(new ArrayList<>(commands9.get()));
-        if(profile.get() == Profile.Profile10) util.MultiCommandBlock(new ArrayList<>(commands10.get()));
-        ChatUtils.sendMsg(Text.of("Receiving Multi-Command Command Block."));
+        if(profile.get() == Profile.Profile10) util.MultiCommandBlock(new ArrayList<>(commands10.get()));*/
+        ChatUtils.sendMsg(Text.of("Requires Asteroide 1.20.4"));
         toggle();
     }
 

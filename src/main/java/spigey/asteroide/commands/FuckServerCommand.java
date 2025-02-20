@@ -4,16 +4,18 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.command.CommandSource;
 import net.minecraft.item.Items;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
-import static spigey.asteroide.util.CommandBlock;
+// import static spigey.asteroide.util.CommandBlock;
 import static spigey.asteroide.util.msg;
 
 public class FuckServerCommand extends Command {
@@ -26,7 +28,7 @@ public class FuckServerCommand extends Command {
         builder.executes(context -> {
             assert mc.player != null;
             if(!mc.player.getAbilities().creativeMode){error("You need to be in creative mode to use this command"); return SINGLE_SUCCESS;}
-            CommandBlock(Items.REPEATING_COMMAND_BLOCK, "/kill @e[name=!" + mc.getSession().getUsername() + "]", 1);
+            // CommandBlock(Items.REPEATING_COMMAND_BLOCK, "/kill @e[name=!" + mc.getSession().getUsername() + "]", 1);
             this.tick = 5;
             error("Please note that this does not work if command blocks are disabled on this server");
             MeteorClient.EVENT_BUS.subscribe(this);
@@ -39,11 +41,12 @@ public class FuckServerCommand extends Command {
         if(this.tick > 0){this.tick--; return;} // don't execute when it's not done waiting
         if(this.tick == -1){return;} // disable when on -1
         assert mc.player != null;
-        place(mc.player.getBlockPos().up(2));
+        /*place(mc.player.getBlockPos().up(2));
         info("Fucking the server. Fucking?!?! Sex!??!");
         msg("/gamerule sendCommandFeedback false");
         msg("/gamerule doImmediateRespawn false");
-        msg("/gamerule commandBlockOutput false");
+        msg("/gamerule commandBlockOutput false");*/
+        ChatUtils.sendMsg(Text.of("This command only works in Asteroide 1.20.4"));
         this.tick = -1; // -1 when done
     }
 

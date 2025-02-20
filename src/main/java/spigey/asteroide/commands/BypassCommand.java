@@ -11,7 +11,7 @@ import spigey.asteroide.util;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
-import static spigey.asteroide.util.CommandBlock;
+// import static spigey.asteroide.util.CommandBlock; Why was I importing this??
 
 public class BypassCommand extends Command {
     public BypassCommand() {

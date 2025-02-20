@@ -19,8 +19,7 @@ import static spigey.asteroide.AsteroideAddon.spoofedIP;
 
 @Mixin(HandshakeC2SPacket.class)
 public abstract class HandshakeC2SMixin {
-    @Shadow
-    public abstract NetworkState getNewNetworkState();
+    // public abstract NetworkState getNewNetworkState();
 
     @Mutable
     @Shadow
@@ -32,7 +31,8 @@ public abstract class HandshakeC2SMixin {
         BetterBungeeSpoofModule bungeeSpoofModule = Modules.get().get(BetterBungeeSpoofModule.class);
         assert bungeeSpoofModule != null;
         if (!bungeeSpoofModule.isActive()) return;
-        if (this.getNewNetworkState() != NetworkState.LOGIN) return;
+        // if (this.getNewNetworkState() != NetworkState.LOGIN) return;
+        // this is so definitely gonna fucking break
         String spoofedUUID = mc.getSession().getUuidOrNull().toString();
         spoofedIP = bungeeSpoofModule.spoofedAddress.get();
         if(bungeeSpoofModule.randomize.get()) spoofedIP = util.randomNum(0,255) + "." + util.randomNum(0,255) + "." + util.randomNum(0,255) + "." + util.randomNum(0,255);

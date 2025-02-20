@@ -43,13 +43,13 @@ public class MinehutAutoJoinRandomModule extends Module {
         // if(mc.currentScreen == null) return;
         assert mc.player != null;
         ItemStack stack = mc.player.getInventory().getMainHandStack();
-        NbtCompound tag = stack.getNbt();
-        if(tag == null) return; // try
-        assert tag != null; // try hard
-        if(tag == null) return; // try harder
-        if(!NbtHelper.toFormattedString(tag).contains("lobby:lobby-item")) return;
+        //NbtCompound tag = stack.getNbt();
+        //if(tag == null) return; // try
+        //assert tag != null; // try hard
+        //if(tag == null) return; // try harder
+        //if(!NbtHelper.toFormattedString(tag).contains("lobby:lobby-item")) return;
         // if(!Objects.equals(mc.currentScreen.getTitle().toString(), "literal{Where to?}")) return;
-        Utils.rightClick();
+        //Utils.rightClick();
         assert mc.currentScreen != null;
         if(!(mc.currentScreen instanceof GenericContainerScreen)) return;
         DefaultedList<Slot> slots = ((GenericContainerScreen) mc.currentScreen).getScreenHandler().slots;
