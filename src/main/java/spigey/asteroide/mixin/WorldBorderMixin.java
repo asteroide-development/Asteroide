@@ -28,6 +28,9 @@ public abstract class WorldBorderMixin {
      */
     @Overwrite
     public double getDamagePerBlock(){
-        return Modules.get().get(BorderNoclipModule.class).isActive() ? Modules.get().get(BorderNoclipModule.class).damage.get() : 0.2; // why the fuck isn't super.getDamagePerBlock() working
+        try{
+            return Modules.get().get(BorderNoclipModule.class).isActive() ? Modules.get().get(BorderNoclipModule.class).damage.get() : 0.2; // why the fuck isn't super.getDamagePerBlock() working
+        }catch(Exception L){ /**/ }
+        return 0;
     }
 }

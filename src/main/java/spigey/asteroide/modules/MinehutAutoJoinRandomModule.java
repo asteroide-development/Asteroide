@@ -53,7 +53,7 @@ public class MinehutAutoJoinRandomModule extends Module {
         assert mc.currentScreen != null;
         if(!(mc.currentScreen instanceof GenericContainerScreen)) return;
         DefaultedList<Slot> slots = ((GenericContainerScreen) mc.currentScreen).getScreenHandler().slots;
-        ClickSlotC2SPacket packet = new ClickSlotC2SPacket(1, 58, 26, 0, SlotActionType.PICKUP, slots.get(26).getStack(), Int2ObjectMaps.singleton(26, ItemStack.EMPTY));
+        ClickSlotC2SPacket packet = new ClickSlotC2SPacket(1, 55, 49, 0, SlotActionType.PICKUP, slots.get(26).getStack(), Int2ObjectMaps.singleton(26, ItemStack.EMPTY));
         mc.getNetworkHandler().sendPacket(packet);
         tick = 5;
     }

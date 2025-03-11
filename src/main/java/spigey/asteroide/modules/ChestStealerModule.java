@@ -44,6 +44,12 @@ public class ChestStealerModule extends Module {
         .defaultValue()
         .build()
     );
+    private final Setting<List<String>> contain = sgGeneral.add(new StringListSetting.Builder()
+        .name("must-contain-name")
+        .description("Only take items whose names contain these phrases")
+        .defaultValue()
+        .build()
+    );
     private int tick;
     private int i = -1;
     DefaultedList<Slot> slots;
@@ -68,6 +74,7 @@ public class ChestStealerModule extends Module {
                 ItemStack uwu = slots.get(i).getStack();
                 boolean yes = name.get().isEmpty();
                 if(!uwu.isEmpty()) for(int i = 0; i < name.get().size(); i++) if(uwu.getName().getString().equalsIgnoreCase(name.get().get(i))) yes = true;
+                if(!uwu.isEmpty()) for(int i = 0; i < contain.get().size(); i++) if(uwu.getName().getString().toLowerCase().contains(contain.get().get(i).toLowerCase())) yes = true;
                 if (!(uwu.isEmpty()) && yes) {
                     ClickSlotC2SPacket packet = getPacket(uwu);
                     assert mc.player != null;

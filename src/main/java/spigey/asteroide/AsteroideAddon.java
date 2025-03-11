@@ -40,7 +40,7 @@ public class AsteroideAddon extends MeteorAddon {
     public static boolean slotttt = false;
     @Override
     public void onInitialize() {
-        String[] whitelisted = {"Spigey", "SkyFeiner", "RaisinCrayzin", "Arnaquer", "SteefWayer", "fortnitegamersmh"};
+        String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz"};
 
 
         LOG.info("\nLoaded Asteroide v0.1.6\n");
