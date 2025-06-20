@@ -96,6 +96,7 @@ public class AsteroideAddon extends MeteorAddon {
         if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new DevModule());
         // addModule(new SwimModule());
         addModule(new FastStaircaseModule());
+        addModule(new BlockHitboxesModule());
 
         // Commands
         addCommand(new CrashAll());

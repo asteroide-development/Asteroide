@@ -1,25 +1,25 @@
 package spigey.asteroide.modules;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.client.gui.screen.ingame.HopperScreen;
 import net.minecraft.client.gui.screen.ingame.ShulkerBoxScreen;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.collection.DefaultedList;
-import org.jetbrains.annotations.NotNull;
 import spigey.asteroide.AsteroideAddon;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -50,6 +50,11 @@ public class ChestStealerModule extends Module {
         .defaultValue()
         .build()
     );
+    public final Setting<List<Item>> items = sgGeneral.add(new ItemListSetting.Builder()
+        .name("items")
+        .description("Which items to steal")
+        .build()
+    );
     private int tick;
     private int i = -1;
     DefaultedList<Slot> slots;
@@ -72,9 +77,10 @@ public class ChestStealerModule extends Module {
             while ((i + 1) < (slots.size() - 36)) {
                 i++;
                 ItemStack uwu = slots.get(i).getStack();
-                boolean yes = name.get().isEmpty();
-                if(!uwu.isEmpty()) for(int i = 0; i < name.get().size(); i++) if(uwu.getName().getString().equalsIgnoreCase(name.get().get(i))) yes = true;
-                if(!uwu.isEmpty()) for(int i = 0; i < contain.get().size(); i++) if(uwu.getName().getString().toLowerCase().contains(contain.get().get(i).toLowerCase())) yes = true;
+                boolean yes = name.get().isEmpty() && contain.get().isEmpty() && items.get().isEmpty();
+                if(!uwu.isEmpty()) for(int i = 0; i < name.get().size(); i++) if(uwu.getName().getString().equalsIgnoreCase(name.get().get(i))) {yes = true; break;}
+                if(!uwu.isEmpty()) for(int i = 0; i < contain.get().size(); i++) if(uwu.getName().getString().toLowerCase().contains(contain.get().get(i).toLowerCase())) {yes = true; break;}
+                if(!uwu.isEmpty()) for(int i = 0; i < items.get().size(); i++) if(uwu.getItem().getDefaultStack().getName().equals(items.get().get(i).getDefaultStack().getName())) {yes = true; break;}
                 if (!(uwu.isEmpty()) && yes) {
                     ClickSlotC2SPacket packet = getPacket(uwu);
                     assert mc.player != null;
@@ -90,7 +96,7 @@ public class ChestStealerModule extends Module {
         }
     }
 
-    private @NotNull ClickSlotC2SPacket getPacket(ItemStack uwu) { // intellij wtf
+    private ClickSlotC2SPacket getPacket(ItemStack uwu) { // intellij wtf
         ClickSlotC2SPacket packet = new ClickSlotC2SPacket(0, 0, 0, 0, SlotActionType.PICKUP, ItemStack.EMPTY, Int2ObjectMaps.singleton(0, ItemStack.EMPTY));
         if(mc.currentScreen instanceof GenericContainerScreen) packet = new ClickSlotC2SPacket(((GenericContainerScreen) mc.currentScreen).getScreenHandler().syncId, 1, i, 0, SlotActionType.QUICK_MOVE, uwu, Int2ObjectMaps.singleton(i, ItemStack.EMPTY));
         if(mc.currentScreen instanceof ShulkerBoxScreen) packet = new ClickSlotC2SPacket(((ShulkerBoxScreen) mc.currentScreen).getScreenHandler().syncId, 1, i, 0, SlotActionType.QUICK_MOVE, uwu, Int2ObjectMaps.singleton(i, ItemStack.EMPTY));

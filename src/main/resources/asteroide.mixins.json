@@ -10,6 +10,7 @@
     "BedrockSpoofMixin",
     "ChatMessageC2SMixin",
     "HandshakeC2SMixin",
-    "WorldBorderMixin"
+    "WorldBorderMixin",
+    "BlockOutlineMixin"
   ]
 }
