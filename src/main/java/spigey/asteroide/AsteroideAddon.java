@@ -85,7 +85,7 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new InvCleanerModule());
         addModule(new BorderNoclipModule());
         addModule(new WordFilterModule());
-        if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new PacketLoggerModule());
+        /*if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player"))*/ addModule(new PacketLoggerModule());
         addModule(new VersionSpoofModule());
         // addModule(new OPNotifierModule());
         addModule(new TrackerModule());
@@ -114,6 +114,7 @@ public class AsteroideAddon extends MeteorAddon {
         addCommand(new CalcCommand());
         addCommand(new WhereIsCommand());
         addCommand(new TrackerCommand());
+        addCommand(new BCommand());
 
         // HUD
         addHud(Username.INFO);

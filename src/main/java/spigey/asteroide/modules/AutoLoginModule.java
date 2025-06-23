@@ -21,7 +21,7 @@ public class AutoLoginModule extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<List<String>> register = sgGeneral.add(new StringListSetting.Builder()
         .name("register-triggers")
-        .description("Messages have to contain one of these Strings to trigger the register command") // why does this seem so ai generated :sob: BRO FUCK YOU MEAN THIS IS SO NOT AI GENERATED
+        .description("Messages have to contain one of these Strings to trigger the register command") // why does this seem so ai generated :sob: No it doesn't
         .defaultValue("register")
         .build()
     );

@@ -4,18 +4,14 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
-import net.minecraft.client.option.SimpleOption;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
 import spigey.asteroide.util;
+// import static spigey.asteroide.util.CommandBlock; Why was I importing this?? // Ah, because this is copied from the CommandBlock Command
 
-import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
-import static meteordevelopment.meteorclient.MeteorClient.mc;
-// import static spigey.asteroide.util.CommandBlock; Why was I importing this??
-
-public class BypassCommand extends Command {
-    public BypassCommand() {
-        super("bypass", "Lets you bypass most chat filters");
+public class BCommand extends Command {
+    public BCommand() {
+        super("b", "Lets you bypass most chat filters");
     }
 
     @Override
@@ -39,8 +35,7 @@ public class BypassCommand extends Command {
                 .replaceAll("v", "ν")
                 .replaceAll("x", "х")
                 .replaceAll("y", "у");
-            ChatUtils.sendMsg(Text.of("Done creating the bypassed message!"));
-            ChatUtils.sendMsg(util.getSendButton(util.getCopyButton(copy), copy));
+            util.msg(copy); // Very big change
             return SINGLE_SUCCESS;
         }));
     }

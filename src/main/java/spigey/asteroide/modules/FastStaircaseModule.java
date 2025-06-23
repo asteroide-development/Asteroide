@@ -12,7 +12,7 @@ import net.minecraft.registry.Registries;
 
 public class FastStaircaseModule extends Module {
     public FastStaircaseModule() {super(AsteroideAddon.CATEGORY, "fast-staircase", "Makes you walk up stairs quickly");}
-
+    // For some time i actually thought this doesn't work, until I played on a server with AC and I was so fast that I flagged the anticheat
     @EventHandler
     private void onTick(TickEvent.Post event){
         if(!isActive()){return;}

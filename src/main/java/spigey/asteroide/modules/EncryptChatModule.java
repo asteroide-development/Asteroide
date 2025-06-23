@@ -17,7 +17,7 @@ import spigey.asteroide.util;
 
 public class EncryptChatModule extends Module {
     public EncryptChatModule() {
-        super(AsteroideAddon.CATEGORY, "chat-encryption", "Encrypts your chat messages so only asteroide users can read them");
+        super(AsteroideAddon.CATEGORY, "encrypt-chat", "Encrypts your chat messages so only asteroide users can read them");
     }
 
     final SettingGroup sgGeneral = settings.getDefaultGroup();

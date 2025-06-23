@@ -9,7 +9,7 @@ import spigey.asteroide.AsteroideAddon;
 
 public class BetterBungeeSpoofModule extends Module {
     public BetterBungeeSpoofModule() {
-        super(AsteroideAddon.CATEGORY, "better-BungeeSpoof", "Lets you join BungeeCord servers with an exposed backend");
+        super(AsteroideAddon.CATEGORY, "better-bungeespoof", "Lets you join BungeeCord servers with an exposed backend");
     }
     SettingGroup sgGeneral = settings.getDefaultGroup();
     public Setting<Boolean> randomize = sgGeneral.add(new BoolSetting.Builder()

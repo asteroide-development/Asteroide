@@ -31,7 +31,7 @@ public class AutoMacro extends Module {
     );
     private final Setting<List<String>> macro = sgGeneral.add(new StringListSetting.Builder()
         .name("macro")
-        .description("macro to execute")
+        .description("macro name to execute")
         .defaultValue("testmacro")
         .build()
     );
