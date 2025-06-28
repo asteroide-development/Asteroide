@@ -1,7 +1,11 @@
 package spigey.asteroide.modules;
 
+import meteordevelopment.meteorclient.events.game.SendMessageEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.orbit.EventHandler;
+import net.minecraft.network.message.MessageSignatureData;
 import spigey.asteroide.AsteroideAddon;
 
 import java.util.List;
@@ -38,80 +42,54 @@ public class WordFilterModule extends Module {
         .visible(() -> woblox.get())
         .build()
     );
+    private final Setting<Type> typee = sgGeneral.add(new EnumSetting.Builder<Type>()
+        .name("type")
+        .description("Which way to not say the filtered words")
+        .defaultValue(Type.Censor)
+        .build()
+    );
+
+    private final Setting<Boolean> alwaysBypass = sgGeneral.add(new BoolSetting.Builder()
+        .name("always bypass")
+        .description("Always bypass any chatfilter, even if no word was mentioned")
+        .defaultValue(true)
+        .visible(() -> typee.get() == Type.Bypass)
+        .build()
+    );
 
 
     ///////////////////////////////   CODE NOW USES A MIXIN   ///////////////////////////////
 
-
-    /* private boolean activated = false;
-
-    @Override
-    public void onActivate() {
-        banstuff();
-        activated = false;
-        if (activated) {
-            info("Already activated");
-            return;
-        }
-        MeteorClient.EVENT_BUS.subscribe(this);
-        info("Subscribed! Hit that bell too.");
-        activated = true;
+    private enum Type {
+        Censor,
+        Bypass
     }
 
-    private int delay = 1;
-    String message = "";
-    boolean pleasekillme = false;
-
     @EventHandler
-    private void onPacketSend(PacketEvent.Send event) {
-        if (!(event.packet instanceof ChatMessageC2SPacket)) {
+    private void onMessageSend(SendMessageEvent event) throws Exception {
+        if(typee.get() == Type.Bypass && alwaysBypass.get()){
+            event.message = event.message.replaceAll("a", "а").replaceAll("c", "с").replaceAll("e", "е").replaceAll("h", "һ").replaceAll("i", "і").replaceAll("j", "ј").replaceAll("n", "ո").replaceAll("o", "о").replaceAll("p", "р").replaceAll("u", "ս").replaceAll("v", "ν").replaceAll("x", "х").replaceAll("y", "у");
             return;
         }
-        if (!isActive()) {
-            return;
-        }
-        String content = ((ChatMessageC2SPacket) event.packet).chatMessage();
-        String[] datshit = content.split(" ");
+        String[] datshit = event.message.split(" ");
+        StringBuilder message = new StringBuilder();
         for (int i = 0; i < datshit.length; i++) {
             for (int j = 0; j < messages.get().size(); j++) {
                 if (datshit[i].toLowerCase().contains(messages.get().get(j).toLowerCase())) {
-                    pleasekillme = true;
-                    if (woblox.get()) {
-                        String temp = "";
+                    if(typee.get() == Type.Bypass){ datshit[i] = datshit[i].replaceAll("a", "а").replaceAll("c", "с").replaceAll("e", "е").replaceAll("h", "һ").replaceAll("i", "і").replaceAll("j", "ј").replaceAll("n", "ո").replaceAll("o", "о").replaceAll("p", "р").replaceAll("u", "ս").replaceAll("v", "ν").replaceAll("x", "х").replaceAll("y", "у"); }
+                    else if (woblox.get()) {
+                        StringBuilder temp = new StringBuilder();
                         for (int k = 0; k < datshit[i].length(); k++) {
-                            temp += roblock.get();
+                            temp.append(roblock.get());
                         }
-                        datshit[i] = temp;
+                        datshit[i] = temp.toString();
                     } else {
                         datshit[i] = replacement.get();
                     }
                 }
             }
         }
-        for (int i = 0; i < datshit.length; i++) {
-            message += datshit[i] + " ";
-        }
-        if (content.trim().toLowerCase().equals(message.trim().toLowerCase())) {
-            return;
-        }
-        if (!pleasekillme) {
-            return;
-        }
-        /* ChatMessageC2SPacket packet = new ChatMessageC2SPacket(new PacketByteBuf(Unpooled.buffer()).writeString(message.trim())); // wtf is this??
-        mc.player.networkHandler.sendPacket(packet); // I took this shit from meteor client
-        // ↑ that code sends something so fucked up that it crashes your client
-        event.cancel();
-        this.delay = 1;
-        if (!activated) {
-            MeteorClient.EVENT_BUS.subscribe(this);
-        }
+        for (int i = 0; i < datshit.length; i++) message.append(datshit[i]).append(" ");
+        event.message = message.toString().trim();
     }
-
-    @EventHandler
-    private void onTick(TickEvent.Post event) {
-        if (!isActive()) {return;}
-        if (this.delay == -1) {return;}
-        msg(this.message.trim());
-        this.delay = -1;
-    } */
 }

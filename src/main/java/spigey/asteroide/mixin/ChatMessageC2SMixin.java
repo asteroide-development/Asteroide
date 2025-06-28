@@ -39,6 +39,7 @@ public abstract class ChatMessageC2SMixin {
      */
     @Inject(method = "<init>(Ljava/lang/String;Ljava/time/Instant;JLnet/minecraft/network/message/MessageSignatureData;Lnet/minecraft/network/message/LastSeenMessageList$Acknowledgment;)V", at = @At("RETURN"))
     private void onChatMessageC2SPacket(String string, Instant timestamp, long salt, MessageSignatureData signature, LastSeenMessageList.Acknowledgment acknowledgment, CallbackInfo ci) throws Exception {
+        if(1 > 0) return;
         try {
             if (mc.isInSingleplayer()) return;
             if (Modules.get().get(WordFilterModule.class).isActive()) {

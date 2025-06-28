@@ -36,7 +36,7 @@ public class AimbotModule extends Module {
         .description("Range in which entities have to be to be targeted.")
         .defaultValue(5)
         .min(0.1)
-        .max(10)
+        .max(500)
         .sliderMax(5)
         .build()
     );
@@ -86,7 +86,8 @@ public class AimbotModule extends Module {
     private enum Weapon {
         Sword,
         Axe,
-        Both
+        Both,
+        All
     }
 
     private boolean itemInHand() {
@@ -94,6 +95,7 @@ public class AimbotModule extends Module {
             case Axe -> mc.player.getMainHandStack().getItem() instanceof AxeItem;
             case Sword -> mc.player.getMainHandStack().getItem() instanceof SwordItem;
             case Both -> mc.player.getMainHandStack().getItem() instanceof AxeItem || mc.player.getMainHandStack().getItem() instanceof SwordItem;
+            case All -> true;
         };
     }
 }
