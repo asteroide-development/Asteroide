@@ -53,6 +53,12 @@ public class AimbotModule extends Module {
         .defaultValue(Weapon.Both)
         .build()
     );
+    private final Setting<Boolean> allowUp = sgGeneral.add(new BoolSetting.Builder()
+        .name("Allow changing Y")
+        .description("Allows you to look up/down")
+        .defaultValue(false)
+        .build()
+    );
 
     private final Setting<Boolean> targetFriends = sgGeneral.add(new BoolSetting.Builder().name("target friends").description("Also targets friends when enabled.").defaultValue(false).build());
     // this nigga shit so fucking skidded 💔
@@ -65,7 +71,11 @@ public class AimbotModule extends Module {
         if(!itemInHand()) return;
         double[] geminiwtf = {entity.getX(), entity.getY(), entity.getZ()};
         assert mc.player != null;
-        mc.player.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, new Vec3d(geminiwtf[0], geminiwtf[1] + entity.getHeight() / 1.5, geminiwtf[2]));
+        if(allowUp.get()) {
+            float nigger = MathHelper.wrapDegrees((float) (-Math.toDegrees(Math.atan2(geminiwtf[0] - mc.player.getX(), geminiwtf[2] - mc.player.getZ()))));
+            mc.player.setHeadYaw(nigger);
+            mc.player.setYaw(nigger);
+        } else {mc.player.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, new Vec3d(geminiwtf[0], mc.player.getEyeY(), geminiwtf[2])); }
     }
 
     private Entity getEntity(){ // AI generated cuz suicidal thoughts
