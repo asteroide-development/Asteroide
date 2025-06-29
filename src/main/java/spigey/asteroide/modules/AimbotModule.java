@@ -59,6 +59,15 @@ public class AimbotModule extends Module {
         .defaultValue(false)
         .build()
     );
+    private final Setting<Integer> percent = sgGeneral.add(new IntSetting.Builder()
+        .name("Height Percent")
+        .description("Entity Height to Focus at in Percent")
+        .defaultValue(75)
+        .sliderMin(1)
+        .sliderMax(100)
+        .visible(() -> !allowUp.get())
+        .build()
+    );
 
     private final Setting<Boolean> targetFriends = sgGeneral.add(new BoolSetting.Builder().name("target friends").description("Also targets friends when enabled.").defaultValue(false).build());
     // this nigga shit so fucking skidded 💔
@@ -75,7 +84,9 @@ public class AimbotModule extends Module {
             float nigger = MathHelper.wrapDegrees((float) (-Math.toDegrees(Math.atan2(geminiwtf[0] - mc.player.getX(), geminiwtf[2] - mc.player.getZ()))));
             mc.player.setHeadYaw(nigger);
             mc.player.setYaw(nigger);
-        } else {mc.player.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, new Vec3d(geminiwtf[0], entity.getY() + entity.getHeight() / 1.5, geminiwtf[2])); }
+        } else {
+            mc.player.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, new Vec3d(geminiwtf[0], entity.getY() + (entity.getHeight() * (percent.get() / 100.0)), geminiwtf[2]));
+        }
     }
 
     private Entity getEntity(){ // AI generated cuz suicidal thoughts
