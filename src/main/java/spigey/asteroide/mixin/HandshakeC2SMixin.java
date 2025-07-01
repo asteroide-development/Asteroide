@@ -37,7 +37,7 @@ public abstract class HandshakeC2SMixin {
             String spoofedUUID = mc.getSession().getUuidOrNull().toString();
             spoofedIP = bungeeSpoofModule.spoofedAddress.get();
             if (bungeeSpoofModule.randomize.get())
-                spoofedIP = util.randomNum(0, 255) + "." + util.randomNum(0, 255) + "." + util.randomNum(0, 255) + "." + util.randomNum(0, 255);
+                spoofedIP = util.randomNum(0, bungeeSpoofModule.range.get()) + "." + bungeeSpoofModule.range.get() + "." + bungeeSpoofModule.range.get() + "." + bungeeSpoofModule.range.get();
 
 
             String URL = "https://api.mojang.com/users/profiles/minecraft/" + mc.getSession().getUsername();

@@ -1,9 +1,6 @@
 package spigey.asteroide.modules;
 
-import meteordevelopment.meteorclient.settings.BoolSetting;
-import meteordevelopment.meteorclient.settings.Setting;
-import meteordevelopment.meteorclient.settings.SettingGroup;
-import meteordevelopment.meteorclient.settings.StringSetting;
+import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import spigey.asteroide.AsteroideAddon;
 
@@ -24,6 +21,15 @@ public class BetterBungeeSpoofModule extends Module {
         .defaultValue("127.0.0.1")
         .filter((text, c) -> (text + c).matches("^[0-9a-f\\\\.:]{0,45}$"))
         .visible(() -> !randomize.get())
+        .build()
+    );
+    public final Setting<Integer> range = sgGeneral.add(new IntSetting.Builder()
+        .name("ip range")
+        .description("range of 255 = 0.0.0.0 to 255.255.255.255")
+        .defaultValue(240)
+        .min(0)
+        .sliderMax(255)
+        .visible(randomize::get)
         .build()
     );
 }

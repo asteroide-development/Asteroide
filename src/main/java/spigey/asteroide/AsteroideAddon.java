@@ -97,6 +97,7 @@ public class AsteroideAddon extends MeteorAddon {
         // addModule(new SwimModule());
         addModule(new FastStaircaseModule());
         addModule(new BlockHitboxesModule());
+        addModule(new ClientDeleteModule());
         //if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new OPNotifierModule());
 
             // Commands
@@ -122,7 +123,12 @@ public class AsteroideAddon extends MeteorAddon {
         addHud(SpoofedIPHUD.INFO);
         addHud(MinehutIPHud.INFO);
         util.banstuff();
+
+        for(var element : Arrays.asList(1, 2, 3)){
+
+        }
     }
+
 
 
     @Override
