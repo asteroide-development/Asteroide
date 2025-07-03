@@ -112,8 +112,8 @@ public class TrollModule extends Module {
             if(display.isEmpty()){ toggle(); return;}
         }
         List<String> troll = new ArrayList<>();
-        if(type.get() == Trolls.Insults) troll.addAll(AsteroideAddon.trolls); troll.addAll(quotes.get());
-        if(type.get() == Trolls.Trolls) troll.addAll(AsteroideAddon.notInsults); troll.addAll(quotes.get());
+        if(type.get() == Trolls.Insults) { troll.addAll(AsteroideAddon.trolls); troll.addAll(quotes.get()); }
+        if(type.get() == Trolls.Trolls) { troll.addAll(AsteroideAddon.notInsults); troll.addAll(quotes.get()); }
         String ip = mc.getCurrentServerEntry().address.split("\\.")[0];
         String name = user.get(idx);
         Regex rgx = new Regex(Map.of(

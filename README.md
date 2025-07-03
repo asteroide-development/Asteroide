@@ -4,15 +4,15 @@
   <img src="https://github.com/asteroide-development/Asteroide/blob/master/icon.png?raw=true" alt="Asteroide" width="200">
 </div>
 <p align="center">
-  <strong>Simple Additions for Meteor Client. Misspelled on purpose</strong>
+  <strong>The best utility Addon.</strong>
   <br>
-Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance the users experience.
+Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance meteor, and add what was long needed.
 </p>
 
 
 <p align="center">
 <a href="https://discord.gg/QFHCFynpkY">
-  <img alt="Discord" src="https://img.shields.io/discord/1273656893948297348?label=Discord&logo=discord&style=flat-square">
+  <img alt="Discord" src="https://img.shields.io/discord/1334963147702014043?label=Discord&logo=discord&style=flat-square">
 </a>
   <a href="https://github.com/asteroide-development/Asteroide/graphs/contributors">
     <img alt="Contributors" src="https://img.shields.io/github/contributors/asteroide-development/Asteroide?style=flat-square">
@@ -22,6 +22,9 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance the use
   </a>
   <a href="https://github.com/asteroide-development/Asteroide">
     <img alt="Lines of Code" src="https://tokei.rs/b1/github/asteroide-development/Asteroide?style=flat-square">
+  </a>
+  <a href="https://github.com/asteroide-development/Asteroide/releases">
+    <img alt="Downloads" src="https://img.shields.io/github/downloads/asteroide-development/asteroide/total?color=red&style=flat-square">
   </a>
 </p>
 
