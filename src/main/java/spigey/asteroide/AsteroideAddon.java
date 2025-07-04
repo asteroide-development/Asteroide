@@ -1,6 +1,7 @@
 package spigey.asteroide;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import net.minecraft.item.Items;
 import spigey.asteroide.commands.*;
 import spigey.asteroide.hud.*;
@@ -12,15 +13,14 @@ import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
 import spigey.asteroide.utils.Regex;
+import spigey.asteroide.utils.ws;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static spigey.asteroide.util.*;
@@ -38,12 +38,18 @@ public class AsteroideAddon extends MeteorAddon {
     public static List<String> trolls = new ArrayList<>();
     public static List<String> notInsults = new ArrayList<>();
     public static boolean slotttt = false;
+    public static Set<String> users = new HashSet<>();
+    public static ws wss;
     @Override
     public void onInitialize() {
         String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz"};
 
+        try{
+            wss = new ws(new URI("ws://rtc.asteroide.cc/asws"));
+            wss.connect();
+        } catch(Exception e){ /* whoopsy daisy!! */ }
 
-        LOG.info("\nLoaded Asteroide v0.1.6\n");
+        LOG.info("\nLoaded Asteroide v0.1.8\n");
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("trolls.txt");
              BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
             String line;
@@ -117,6 +123,7 @@ public class AsteroideAddon extends MeteorAddon {
         addCommand(new WhereIsCommand());
         addCommand(new TrackerCommand());
         addCommand(new BCommand());
+        addCommand(new RTCCommand());
 
         // HUD
         addHud(Username.INFO);
