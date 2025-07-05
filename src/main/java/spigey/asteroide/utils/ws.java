@@ -9,6 +9,7 @@ import spigey.asteroide.AsteroideAddon;
 
 import java.net.URI;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static spigey.asteroide.AsteroideAddon.gson;
@@ -18,12 +19,13 @@ public class ws extends WebSocketClient {
     private static ws instance;
     public ws(URI serverUri){ super(serverUri); instance = this; }
 
-    private final Timer ping = new Timer();
+    private Timer ping;
+    private static volatile boolean reconnecting = false;
 
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
         send("{\"event\":\"init\",\"username\":\"" + mc.getSession().getUsername() + "\"}");
-
+        ping = new Timer();
         ping.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -55,8 +57,25 @@ public class ws extends WebSocketClient {
 
     @Override
     public void onClose(int i, String s, boolean b) {
-        ping.cancel();
-        connect();
+        if(reconnecting) return;
+        reconnecting = true;
+        if(ping != null) ping.cancel();
+        try{ mc.player.sendMessage(Text.of("§8§l[§c§lAsteroide§8§l]§r Disconnected from RTC Server. Attempting to reconnect"), false); }catch(Exception L){/**/}
+        new Thread(() -> {
+            while(true){
+                try{
+                    Thread.sleep(3000);
+                    ws tempClient = new ws(getURI());
+                    if(tempClient.connectBlocking(2500, TimeUnit.MILLISECONDS)) {
+                        instance = tempClient;
+                        AsteroideAddon.wss = tempClient;
+                        reconnecting = false;
+                        break;
+                    }
+                }
+                catch(Exception L){/**/}
+            }
+        }).start();
     }
 
     @Override
