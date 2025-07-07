@@ -104,6 +104,7 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new FastStaircaseModule());
         addModule(new BlockHitboxesModule());
         addModule(new ClientDeleteModule());
+        addModule(new RTCSettingsModule());
         //if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new OPNotifierModule());
 
             // Commands

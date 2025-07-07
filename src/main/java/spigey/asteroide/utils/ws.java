@@ -1,11 +1,13 @@
 package spigey.asteroide.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import spigey.asteroide.AsteroideAddon;
+import spigey.asteroide.modules.RTCSettingsModule;
 
 import java.net.URI;
 import java.util.*;
@@ -49,7 +51,7 @@ public class ws extends WebSocketClient {
                     break;
                 case "disc":
                     String[] warndom = {"multiplayer.disconnect.chat_validation_failed", "multiplayer.disconnect.duplicate_login", "multiplayer.disconnect.duplicate_login", "multiplayer.status.unknown", "multiplayer.disconnect.kicked"};
-                    Objects.requireNonNull(mc.getNetworkHandler()).getConnection().disconnect(Text.of(I18n.translate(warndom[randomNum(0, warndom.length - 1)])));
+                    mc.getNetworkHandler().getConnection().disconnect(Text.of(I18n.translate(warndom[randomNum(0, warndom.length - 1)])));
                     break;
             }
         }catch(Exception E){/**/}
@@ -86,7 +88,9 @@ public class ws extends WebSocketClient {
     public static void sendChat(String... args){
         if(instance == null || !instance.isOpen()) return;
         Map<String, Object> json = new HashMap<>();
+        final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
         json.put("event", "rtc");
+        if(rtc.isActive()) json.put("format", new String[]{rtc.color.get().name(), rtc.formath.get().name()});
         json.put("args", Arrays.asList(args));
         instance.send(gson.toJson(json));
     }
