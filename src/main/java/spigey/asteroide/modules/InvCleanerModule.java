@@ -56,16 +56,11 @@ public class InvCleanerModule extends Module {
         if(mc.currentScreen == null) return;
         if(!(mc.currentScreen instanceof InventoryScreen)) return;
         DefaultedList<Slot> slots = ((InventoryScreen) mc.currentScreen).getScreenHandler().slots;
-        for(int i = 0; i < mc.player.getInventory().size(); i++){
+        for(int i = 0; i < 45; i++){
             ItemStack uwu = slots.get(i).getStack();
             assert uwu != null;
-            if(1 > 2){
-                //if(!(items.get().contains(uwu.getItem()) || names.get().stream().anyMatch(name -> name.equalsIgnoreCase(uwu.getName().getString())) || nbt.get().contains(NbtHelper.toFormattedString(uwu.getNbt()).trim()))) continue;
-                InvUtils.drop().slot(i);
-            } else{
-                if(!(items.get().contains(uwu.getItem()) || names.get().stream().anyMatch(name -> name.equalsIgnoreCase(uwu.getName().getString())))) continue;
-                InvUtils.drop().slot(i);
-            }
+            if(!(items.get().contains(uwu.getItem()) || names.get().stream().anyMatch(name -> name.equalsIgnoreCase(uwu.getName().getString())))) continue;
+            InvUtils.drop().slot(i);
         }
     }
 }

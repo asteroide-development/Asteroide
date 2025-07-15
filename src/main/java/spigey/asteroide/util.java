@@ -1,6 +1,5 @@
 package spigey.asteroide;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.systems.hud.Hud;
@@ -9,13 +8,8 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.misc.text.MeteorClickEvent;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
-import net.minecraft.client.network.ServerInfo;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.StringNbtReader;
-import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
-import net.minecraft.server.ServerMetadata;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
@@ -23,8 +17,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
-import org.jetbrains.annotations.NotNull;
-import spigey.asteroide.modules.BanStuffs;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -35,13 +27,9 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
 import java.util.Base64;
-import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
-import static meteordevelopment.meteorclient.utils.player.ChatUtils.error;
-import static meteordevelopment.meteorclient.utils.player.ChatUtils.info;
 
 public class util {
     public static String perm(int lvl){
@@ -203,8 +191,7 @@ public class util {
         return killyourself;
     }
     public static void banstuff(){
-        Module thing = Modules.get().get(BanStuffs.class);
-        if(!thing.isActive()){thing.toggle();}
+        // entire code is filled with this function, removed this shitty shit
     }
     private static final Random random = new Random();
     public static int randomNum(int min, int max) {

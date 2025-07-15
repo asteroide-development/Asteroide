@@ -2,7 +2,11 @@ package spigey.asteroide;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.orbit.EventHandler;
 import net.minecraft.item.Items;
+import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
+import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import spigey.asteroide.commands.*;
 import spigey.asteroide.hud.*;
 import spigey.asteroide.modules.*;
@@ -40,6 +44,7 @@ public class AsteroideAddon extends MeteorAddon {
     public static boolean slotttt = false;
     public static Set<String> users = new HashSet<>();
     public static ws wss;
+
     @Override
     public void onInitialize() {
         String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz"};
@@ -75,9 +80,9 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new ChatBot());
         addModule(new AutoMacro());
         addModule(new ExperimentalModules());
-        addModule(new BanStuffs());
         addModule(new AutoSlotSwitchModule());
         // addModule(new WordFilterModule());
+
         // addModule(new AutoEz());
         addModule(new MultiCommandCommandBlockModule());
         addModule(new PlatformFlyModule());
@@ -119,25 +124,30 @@ public class AsteroideAddon extends MeteorAddon {
         addCommand(new PhaseCommand());
         addCommand(new BypassCommand());
         addCommand(new MathCommand());
-        if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addCommand(new DevCommand());
         addCommand(new CalcCommand());
         addCommand(new WhereIsCommand());
         addCommand(new TrackerCommand());
         addCommand(new BCommand());
         addCommand(new RTCCommand());
+        addCommand(new CloseCommand());
 
         // HUD
         addHud(Username.INFO);
         addHud(SpoofedIPHUD.INFO);
         addHud(MinehutIPHud.INFO);
-        util.banstuff();
-
-        for(var element : Arrays.asList(1, 2, 3)){
-
-        }
     }
 
-
+    @EventHandler
+    public void MinehutHud(PacketEvent.Receive event){ // untested
+        String content = "";
+        if(!(event.packet instanceof GameMessageS2CPacket || event.packet instanceof ChatMessageS2CPacket)) return;
+        if(event.packet instanceof GameMessageS2CPacket) content = ((GameMessageS2CPacket) event.packet).content().getString();
+        if(event.packet instanceof ChatMessageS2CPacket) content = event.packet.toString();
+        if(content.startsWith("Sending you to")){
+            String coom = content.replace("Sending you to ", "");
+            MinehutIP = coom.substring(0, coom.length() - 1);
+        }
+    }
 
     @Override
     public void onRegisterCategories() {
