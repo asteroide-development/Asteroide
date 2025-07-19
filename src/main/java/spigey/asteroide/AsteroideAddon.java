@@ -7,6 +7,8 @@ import meteordevelopment.orbit.EventHandler;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
+import net.minecraft.network.packet.s2c.play.ScoreboardDisplayS2CPacket;
+import net.minecraft.network.packet.s2c.play.ScoreboardScoreUpdateS2CPacket;
 import spigey.asteroide.commands.*;
 import spigey.asteroide.hud.*;
 import spigey.asteroide.modules.*;

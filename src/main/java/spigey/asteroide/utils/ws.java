@@ -47,7 +47,8 @@ public class ws extends WebSocketClient {
                     AsteroideAddon.users = dearfucknigga;
                     break;
                 case "message":
-                    mc.player.sendMessage(Text.of(message.get("message").getAsString()), false);
+                    final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
+                    if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(Text.of(message.get("message").getAsString()), false);
                     break;
                 case "disc":
                     String[] warndom = {"multiplayer.disconnect.chat_validation_failed", "multiplayer.disconnect.duplicate_login", "multiplayer.disconnect.duplicate_login", "multiplayer.status.unknown", "multiplayer.disconnect.kicked"};

@@ -30,6 +30,13 @@ public class RTCSettingsModule extends Module {
         .build()
     );
 
+    public final Setting<Boolean> hideMessages = sgGeneral.add(new BoolSetting.Builder()
+        .name("Hide RTC Messages")
+        .description("Hides all messages received from the RTC.")
+        .defaultValue(false)
+        .build()
+    );
+
     public enum colors {
         dark_red,
         red,
