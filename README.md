@@ -26,6 +26,9 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance meteor,
   <a href="https://github.com/asteroide-development/Asteroide/releases">
     <img alt="Downloads" src="https://img.shields.io/github/downloads/asteroide-development/asteroide/total?color=red&style=flat-square">
   </a>
+  <a href="https://discord.gg/QFzE3UzdpQ">
+    <img src="https://invidget.switchblade.xyz/QFzE3UzdpQ">
+</a>  
 </p>
 
 
@@ -36,7 +39,7 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance meteor,
 1. **Install the Fabric Loader**:
 
     - Visit the Fabric Loader website at [https://fabricmc.net/use](https://fabricmc.net/use).
-    - Select your preferred version from the dropdown menu. (versions above 1.20.4 do not support any item related features, including MinehutAutoJoin)
+    - Select your preferred version from the dropdown menu.
     - Click the "Download Installer" button for the corresponding operating system (Windows, macOS, or Linux).
     - Run the installer and follow the on-screen instructions to install the Fabric Loader.
 
