@@ -1,7 +1,7 @@
 # 🚀 Asteroide
 
 <div align="center">
-  <img src="https://github.com/asteroide-development/Asteroide/blob/master/icon.png?raw=true" alt="Asteroide" width="200">
+  <img src="https://github.com/asteroide-development/Asteroide/blob/master/icon.png?raw=true" width="200">
 </div>
 <p align="center">
   <strong>The best utility Addon.</strong>
@@ -10,7 +10,7 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance meteor,
 </p>
 
 
-<p align="center">
+<div align="center">
 <a href="https://discord.gg/QFHCFynpkY">
   <img alt="Discord" src="https://img.shields.io/discord/1334963147702014043?label=Discord&logo=discord&style=flat-square">
 </a>
@@ -29,7 +29,7 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance meteor,
   <a href="https://discord.gg/QFzE3UzdpQ">
     <img src="https://invidget.switchblade.xyz/QFzE3UzdpQ">
 </a>  
-</p>
+</div>
 
 
 ---
