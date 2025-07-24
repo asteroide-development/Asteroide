@@ -49,7 +49,7 @@ public class AsteroideAddon extends MeteorAddon {
 
     @Override
     public void onInitialize() {
-        String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz"};
+        String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz", "spoofedservers"};
 
         try{
             wss = new ws(new URI("ws://rtc.asteroide.cc/asws"));
@@ -113,6 +113,7 @@ public class AsteroideAddon extends MeteorAddon {
         addModule(new ClientDeleteModule());
         addModule(new RTCSettingsModule());
         //if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new OPNotifierModule());
+        if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new SpamTwo());
 
             // Commands
         addCommand(new CrashAll());
@@ -132,6 +133,7 @@ public class AsteroideAddon extends MeteorAddon {
         addCommand(new BCommand());
         addCommand(new RTCCommand());
         addCommand(new CloseCommand());
+
 
         // HUD
         addHud(Username.INFO);
