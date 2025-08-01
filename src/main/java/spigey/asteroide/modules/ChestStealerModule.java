@@ -8,10 +8,8 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.HopperScreen;
 import net.minecraft.client.gui.screen.ingame.ShulkerBoxScreen;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
@@ -58,35 +56,50 @@ public class ChestStealerModule extends Module {
         .build()
     );
     private int tick;
+    private int i = -1;
+    DefaultedList<Slot> slots;
     @EventHandler
     private void onTick(TickEvent.Post event) {
-        if (!(mc.currentScreen instanceof HandledScreen<?>)) return;
-        DefaultedList<Slot> slots = ((HandledScreen<?>) mc.currentScreen).getScreenHandler().slots;
-        if (slots == null || slots.isEmpty()) return;
+        if ((mc.currentScreen instanceof GenericContainerScreen) || (mc.currentScreen instanceof ShulkerBoxScreen) || (mc.currentScreen instanceof HopperScreen)) {
+            if (mc.currentScreen instanceof ShulkerBoxScreen) {
+                slots = ((ShulkerBoxScreen) mc.currentScreen).getScreenHandler().slots;
+            } else if(mc.currentScreen instanceof HopperScreen){
+                slots = ((HopperScreen) mc.currentScreen).getScreenHandler().slots;
+            }
+            else {
+                try {
+                    slots = ((GenericContainerScreen) mc.currentScreen).getScreenHandler().slots;
+                } catch (Exception ignored) {}
+            }
 
-        if (tick > 0) { tick--; return; }
+            if (tick > 0) { tick--; return; }
 
-        for(Slot slot : slots){
-            if(slot.inventory instanceof PlayerInventory) continue;
-            ItemStack uwu = slot.getStack();
-            boolean yes = name.get().isEmpty() && contain.get().isEmpty() && items.get().isEmpty();
-            if(!uwu.isEmpty()) for(int i = 0; i < name.get().size(); i++) if(uwu.getName().getString().equalsIgnoreCase(name.get().get(i))) {yes = true; break;}
-            if(!uwu.isEmpty()) for(int i = 0; i < contain.get().size(); i++) if(uwu.getName().getString().toLowerCase().contains(contain.get().get(i).toLowerCase())) {yes = true; break;}
-            if(!uwu.isEmpty()) for(int i = 0; i < items.get().size(); i++) if(uwu.getItem().getDefaultStack().getName().equals(items.get().get(i).getDefaultStack().getName())) {yes = true; break;}
-            if (!(uwu.isEmpty()) && yes) {
-                ClickSlotC2SPacket packet = getPacket(uwu, slot);
-                assert mc.player != null;
-                mc.player.networkHandler.sendPacket(packet);
-                tick = delay.get();
-                return;
+            while ((i + 1) < (slots.size() - 36)) {
+                i++;
+                ItemStack uwu = slots.get(i).getStack();
+                boolean yes = name.get().isEmpty() && contain.get().isEmpty() && items.get().isEmpty();
+                if(!uwu.isEmpty()) for(int i = 0; i < name.get().size(); i++) if(uwu.getName().getString().equalsIgnoreCase(name.get().get(i))) {yes = true; break;}
+                if(!uwu.isEmpty()) for(int i = 0; i < contain.get().size(); i++) if(uwu.getName().getString().toLowerCase().contains(contain.get().get(i).toLowerCase())) {yes = true; break;}
+                if(!uwu.isEmpty()) for(int i = 0; i < items.get().size(); i++) if(uwu.getItem().getDefaultStack().getName().equals(items.get().get(i).getDefaultStack().getName())) {yes = true; break;}
+                if (!(uwu.isEmpty()) && yes) {
+                    ClickSlotC2SPacket packet = getPacket(uwu);
+                    assert mc.player != null;
+                    mc.player.networkHandler.sendPacket(packet);
+                    tick = delay.get();
+                    if(delay.get() != 0) return;
+                }
+            }
+
+            if (!((i + 1) < (slots.size() - 36))) {
+                i = -1;
             }
         }
     }
 
-    private ClickSlotC2SPacket getPacket(ItemStack uwu, Slot slot) { // intellij wtf
+    private ClickSlotC2SPacket getPacket(ItemStack uwu) { // intellij wtf
         ClickSlotC2SPacket packet = new ClickSlotC2SPacket(0, 0, 0, 0, SlotActionType.PICKUP, ItemStack.EMPTY, Int2ObjectMaps.singleton(0, ItemStack.EMPTY));
-        if(mc.currentScreen instanceof GenericContainerScreen) packet = new ClickSlotC2SPacket(((GenericContainerScreen) mc.currentScreen).getScreenHandler().syncId, 1, slot.id, 0, SlotActionType.QUICK_MOVE, uwu, Int2ObjectMaps.singleton(slot.id, ItemStack.EMPTY));
-        if(mc.currentScreen instanceof ShulkerBoxScreen) packet = new ClickSlotC2SPacket(((ShulkerBoxScreen) mc.currentScreen).getScreenHandler().syncId, 1, slot.id, 0, SlotActionType.QUICK_MOVE, uwu, Int2ObjectMaps.singleton(slot.id, ItemStack.EMPTY));
+        if(mc.currentScreen instanceof GenericContainerScreen) packet = new ClickSlotC2SPacket(((GenericContainerScreen) mc.currentScreen).getScreenHandler().syncId, 1, i, 0, SlotActionType.QUICK_MOVE, uwu, Int2ObjectMaps.singleton(i, ItemStack.EMPTY));
+        if(mc.currentScreen instanceof ShulkerBoxScreen) packet = new ClickSlotC2SPacket(((ShulkerBoxScreen) mc.currentScreen).getScreenHandler().syncId, 1, i, 0, SlotActionType.QUICK_MOVE, uwu, Int2ObjectMaps.singleton(i, ItemStack.EMPTY));
         return packet;
     }
 
@@ -94,7 +107,7 @@ public class ChestStealerModule extends Module {
     private void onPacketSend(PacketEvent.Sent event){
         if(!(event.packet instanceof CloseHandledScreenC2SPacket)) return;
         tick = 0;
+        i = -1;
     }
 }
-
 

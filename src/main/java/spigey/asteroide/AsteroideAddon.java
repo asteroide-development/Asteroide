@@ -2,7 +2,9 @@ package spigey.asteroide;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
@@ -73,72 +75,75 @@ public class AsteroideAddon extends MeteorAddon {
             }
         } catch (Exception e) {/**/}
 
+        Modules modules = Modules.get();
+
         // Modules
-        addModule(new AutoKys());
-        addModule(new ServerCrashModule());
-        addModule(new AutoChatGame());
-        addModule(new AntiAnnouncement());
-        addModule(new AutoBack());
-        addModule(new ChatBot());
-        addModule(new AutoMacro());
-        addModule(new ExperimentalModules());
-        addModule(new AutoSlotSwitchModule());
+        modules.add(new AutoKys());
+        modules.add(new ServerCrashModule());
+        modules.add(new AutoChatGame());
+        modules.add(new AntiAnnouncement());
+        modules.add(new AutoBack());
+        modules.add(new ChatBot());
+        modules.add(new AutoMacro());
+        modules.add(new ExperimentalModules());
+        modules.add(new AutoSlotSwitchModule());
         // addModule(new WordFilterModule());
 
         // addModule(new AutoEz());
-        addModule(new MultiCommandCommandBlockModule());
-        addModule(new PlatformFlyModule());
-        addModule(new BetterBungeeSpoofModule());
-        addModule(new BetterCollisionsModule());
-        addModule(new CreativeFlightModule());
-        addModule(new AutoFuckModule());
-        addModule(new ChestStealerModule());
-        addModule(new MinehutAutoJoinRandomModule());
-        addModule(new AutoLoginModule());
-        addModule(new InvCleanerModule());
-        addModule(new BorderNoclipModule());
-        addModule(new WordFilterModule());
-        /*if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player"))*/ addModule(new PacketLoggerModule());
-        addModule(new VersionSpoofModule());
+        modules.add(new MultiCommandCommandBlockModule());
+        modules.add(new PlatformFlyModule());
+        modules.add(new BetterBungeeSpoofModule());
+        modules.add(new BetterCollisionsModule());
+        modules.add(new CreativeFlightModule());
+        modules.add(new AutoFuckModule());
+        modules.add(new ChestStealerModule());
+        modules.add(new MinehutAutoJoinRandomModule());
+        modules.add(new AutoLoginModule());
+        modules.add(new InvCleanerModule());
+        modules.add(new BorderNoclipModule());
+        modules.add(new WordFilterModule());
+        /*if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player"))*/ modules.add(new PacketLoggerModule());
+        modules.add(new VersionSpoofModule());
         // addModule(new OPNotifierModule());
-        addModule(new TrackerModule());
-        addModule(new AimbotModule());
-        addModule(new EncryptChatModule());
-        addModule(new DistributeModule());
-        addModule(new TrollModule());
-        if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new DevModule());
+        modules.add(new TrackerModule());
+        modules.add(new AimbotModule());
+        modules.add(new EncryptChatModule());
+        modules.add(new DistributeModule());
+        modules.add(new TrollModule());
+        if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) modules.add(new DevModule());
         // addModule(new SwimModule());
-        addModule(new FastStaircaseModule());
-        addModule(new BlockHitboxesModule());
-        addModule(new ClientDeleteModule());
-        addModule(new RTCSettingsModule());
+        modules.add(new FastStaircaseModule());
+        modules.add(new BlockHitboxesModule());
+        modules.add(new ClientDeleteModule());
+        modules.add(new RTCSettingsModule());
         //if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new OPNotifierModule());
-        if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new SpamTwo());
+        if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) modules.add(new SpamTwo());
 
-            // Commands
-        addCommand(new CrashAll());
-        addCommand(new CrashPlayer());
-        addCommand(new ServerCrash());
-        addCommand(new GetNbtItem());
-        addCommand(new PermLevel());
-        addCommand(new FuckServerCommand());
-        addCommand(new MeCommand());
-        addCommand(new CommandBlockCommand());
-        addCommand(new PhaseCommand());
-        addCommand(new BypassCommand());
-        addCommand(new MathCommand());
-        addCommand(new CalcCommand());
-        addCommand(new WhereIsCommand());
-        addCommand(new TrackerCommand());
-        addCommand(new BCommand());
-        addCommand(new RTCCommand());
-        addCommand(new CloseCommand());
+        // Commands
+        Commands.add(new CrashAll());
+        Commands.add(new CrashPlayer());
+        Commands.add(new ServerCrash());
+        Commands.add(new GetNbtItem());
+        Commands.add(new PermLevel());
+        Commands.add(new FuckServerCommand());
+        Commands.add(new MeCommand());
+        Commands.add(new CommandBlockCommand());
+        Commands.add(new PhaseCommand());
+        Commands.add(new BypassCommand());
+        Commands.add(new MathCommand());
+        Commands.add(new CalcCommand());
+        Commands.add(new WhereIsCommand());
+        Commands.add(new TrackerCommand());
+        Commands.add(new BCommand());
+        Commands.add(new RTCCommand());
+        Commands.add(new CloseCommand());
 
 
         // HUD
-        addHud(Username.INFO);
-        addHud(SpoofedIPHUD.INFO);
-        addHud(MinehutIPHud.INFO);
+        Hud hud = Hud.get();
+        hud.register(Username.INFO);
+        hud.register(SpoofedIPHUD.INFO);
+        hud.register(MinehutIPHud.INFO);
     }
 
     @EventHandler
