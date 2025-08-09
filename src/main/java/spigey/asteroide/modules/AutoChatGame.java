@@ -16,6 +16,7 @@ import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.util;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import static spigey.asteroide.util.banstuff;
@@ -247,11 +248,10 @@ public class AutoChatGame extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Post event) {
-        banstuff();
         if(!isActive()){return;} // this got me banned off my favorite server
         if(this.tick > 0){this.tick--; return;} // don't execute when it's not done waiting
         if(this.tick == -1){return;} // disable when on -1
-        if (this.OutputMode == "send") {msg(this.solution);} else{ChatUtils.sendMsg(Text.of(this.solution));}
+        if (Objects.equals(this.OutputMode, "send")) {msg(this.solution);} else{ChatUtils.sendMsg(Text.of(this.solution));}
         this.tick = -1;
     }
 

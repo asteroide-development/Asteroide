@@ -62,7 +62,7 @@ public class ws extends WebSocketClient {
     public void onClose(int i, String s, boolean b) {
         if(reconnecting) return;
         reconnecting = true;
-        if(ping != null) ping.cancel();
+        if(ping != null) { ping.cancel(); ping = null; }
         try{ mc.player.sendMessage(Text.of("§8§l[§c§lAsteroide§8§l]§r Disconnected from RTC Server. Attempting to reconnect"), false); }catch(Exception L){/**/}
         new Thread(() -> {
             while(true){
@@ -82,9 +82,7 @@ public class ws extends WebSocketClient {
     }
 
     @Override
-    public void onError(Exception e) {
-        close();
-    }
+    public void onError(Exception e) { if(isOpen()) { close(); } }
 
     public static void sendChat(String... args){
         if(instance == null || !instance.isOpen()) return;

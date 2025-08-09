@@ -116,6 +116,7 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new BlockHitboxesModule());
         modules.add(new ClientDeleteModule());
         modules.add(new RTCSettingsModule());
+        modules.add(new BetterNoInteractModule());
         //if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new OPNotifierModule());
         if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) modules.add(new SpamTwo());
 
@@ -137,6 +138,7 @@ public class AsteroideAddon extends MeteorAddon {
         Commands.add(new BCommand());
         Commands.add(new RTCCommand());
         Commands.add(new CloseCommand());
+        Commands.add(new UUIDCommand());
 
 
         // HUD
