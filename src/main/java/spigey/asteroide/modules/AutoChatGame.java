@@ -101,7 +101,7 @@ public class AutoChatGame extends Module {
     private Random rand = new Random();
     private String OutputMode = "send";
     public AutoChatGame() {
-        super(AsteroideAddon.CATEGORY, "auto-chatgame", "Automatically answers most chat games when triggered");
+        super(AsteroideAddon.CATEGORY, "Auto-Chatgame", "Automatically answers most chat games when triggered");
     }
     int meth(String equation) {
         return (int) util.meth(equation); // I was too lazy to actually change the method everywhere

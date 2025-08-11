@@ -18,7 +18,7 @@ import spigey.asteroide.AsteroideAddon;
 
 public class BetterCollisionsModule extends Module {
     public BetterCollisionsModule() {
-        super(AsteroideAddon.CATEGORY, "better-collisions", "Meteor Client's Collisions, but better");
+        super(AsteroideAddon.CATEGORY, "Better-Collisions", "Meteor Client's Collisions, but better");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 

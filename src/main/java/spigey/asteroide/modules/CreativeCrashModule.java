@@ -13,7 +13,7 @@ import net.minecraft.block.entity.CommandBlockBlockEntity;
 
 public class CreativeCrashModule extends Module {
     public CreativeCrashModule() {
-        super(AsteroideAddon.CATEGORY, "server-fuck", "Crashes the server without using OP. Creative mode required");
+        super(AsteroideAddon.CATEGORY, "Server-Fuck", "Crashes the server without using OP. Creative mode required");
     }
     @EventHandler
     private void onReceivePacket(PacketEvent.Receive event) {

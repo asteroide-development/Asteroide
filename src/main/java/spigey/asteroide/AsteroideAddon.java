@@ -54,7 +54,7 @@ public class AsteroideAddon extends MeteorAddon {
         String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz", "spoofedservers"};
 
         try{
-            wss = new ws(new URI("ws://rtc.asteroide.cc/asws"));
+            wss = new ws(new URI("ws://rtc.asteroide.cc/asws?version=0.2.0"));
             wss.connect();
         } catch(Exception e){ /* whoopsy daisy!! */ }
 

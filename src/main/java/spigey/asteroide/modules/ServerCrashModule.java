@@ -26,7 +26,7 @@ public class ServerCrashModule extends Module {
         .build()
     );
     public ServerCrashModule() {
-        super(AsteroideAddon.CATEGORY, "server-crash", "[REQUIRES OP] Crashes the server. Bee NoRender and EntityCulling mod highly recommended!");
+        super(AsteroideAddon.CATEGORY, "Server-Crash", "[REQUIRES OP] Crashes the server. Bee NoRender and EntityCulling mod highly recommended!");
     }
     @Override
     public void onActivate(){

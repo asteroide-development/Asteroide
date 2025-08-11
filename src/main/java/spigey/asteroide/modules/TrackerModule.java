@@ -31,7 +31,7 @@ public class TrackerModule extends Module {
     private double partialTicks;
 
     public TrackerModule() {
-        super(AsteroideAddon.CATEGORY, "tracker", "Tracks a player by always looking at it. Must be loaded!");
+        super(AsteroideAddon.CATEGORY, "Tracker", "Tracks a player by always looking at it. Must be loaded!");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<Double> interpolation = sgGeneral.add(new DoubleSetting.Builder()

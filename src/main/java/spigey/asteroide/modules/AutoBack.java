@@ -1,10 +1,7 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
-import meteordevelopment.meteorclient.settings.EnumSetting;
-import meteordevelopment.meteorclient.settings.Setting;
-import meteordevelopment.meteorclient.settings.SettingGroup;
-import meteordevelopment.meteorclient.settings.StringListSetting;
+import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.misc.AutoRespawn;
@@ -22,7 +19,7 @@ import static spigey.asteroide.util.msg;
 
 public class AutoBack extends Module {
     public AutoBack() {
-        super(AsteroideAddon.CATEGORY, "auto-back", "REQUIRES AUTORESPAWN Automatically runs /back upon dying");
+        super(AsteroideAddon.CATEGORY, "Auto-Back", "REQUIRES AUTORESPAWN Automatically runs /back upon dying");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<AutoBack.AutoBackMode> mode = sgGeneral.add(new EnumSetting.Builder<AutoBack.AutoBackMode>()
@@ -38,6 +35,12 @@ public class AutoBack extends Module {
         .visible(() -> mode.get() == AutoBackMode.OnMessage)
         .build()
     );
+    public Setting<String> backMessage = sgGeneral.add(new StringSetting.Builder()
+        .name("back-message")
+        .description("The message to send when dying.")
+        .defaultValue("/back")
+        .build()
+    );
     @EventHandler
     private void onPacketReceive(PacketEvent.Receive event){
         banstuff();
@@ -46,7 +49,7 @@ public class AutoBack extends Module {
                 String content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
                 for (int i = 0; i < messages.get().size(); i++) {
                     if (content.toLowerCase().contains(messages.get().get(i).toLowerCase())) {
-                        msg("/back");
+                        msg(backMessage.get());
                     }
                 }
             }
@@ -55,7 +58,7 @@ public class AutoBack extends Module {
             assert mc.world != null;
             Entity entity = mc.world.getEntityById(packet.playerId());
             if(entity != mc.player){return;}
-            msg("/back");
+            msg(backMessage.get());
         }
     }
 

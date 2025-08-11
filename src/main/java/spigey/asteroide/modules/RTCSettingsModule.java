@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class RTCSettingsModule extends Module {
     public RTCSettingsModule() {
-        super(AsteroideAddon.CATEGORY, "rtc-settings", "Settings for the .rtc command. Enable to apply settings.");
+        super(AsteroideAddon.CATEGORY, "RTC-Settings", "Settings for the .rtc command. Enable to apply settings.");
     }
 
 
@@ -34,6 +34,13 @@ public class RTCSettingsModule extends Module {
         .name("Hide RTC Messages")
         .description("Hides all messages received from the RTC.")
         .defaultValue(false)
+        .build()
+    );
+
+    public final Setting<Boolean> disableIcon = sgGeneral.add(new BoolSetting.Builder()
+        .name("Highlight Asteroide Users in the player list")
+        .description("Highlights Asteroide users in the player list with a custom icon.")
+        .defaultValue(true)
         .build()
     );
 

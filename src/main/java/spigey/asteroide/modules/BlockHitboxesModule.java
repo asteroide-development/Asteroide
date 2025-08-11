@@ -41,7 +41,7 @@ import java.util.List;
 
 public class BlockHitboxesModule extends Module {
     public BlockHitboxesModule() {
-        super(AsteroideAddon.CATEGORY, "block-hitboxes", "Increases some blocks hitbox sizes for easier aiming");
+        super(AsteroideAddon.CATEGORY, "Block-Hitboxes", "Increases some blocks hitbox sizes for easier aiming");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 

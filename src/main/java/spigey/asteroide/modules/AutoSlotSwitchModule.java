@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AutoSlotSwitchModule extends Module {
     public AutoSlotSwitchModule() {
-        super(AsteroideAddon.CATEGORY, "auto-hotbar", "Automatically swaps between slots in the hotbar");
+        super(AsteroideAddon.CATEGORY, "Auto-Hotbar", "Automatically swaps between slots in the hotbar");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()

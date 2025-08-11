@@ -12,7 +12,7 @@ import java.util.List;
 
 public class WordFilterModule extends Module {
     public WordFilterModule() {
-        super(AsteroideAddon.CATEGORY, "word-filter", "Filters words you send in the chat to prevent getting banned");
+        super(AsteroideAddon.CATEGORY, "Word-Filter", "Filters words you send in the chat to prevent getting banned");
     }
 
     final SettingGroup sgGeneral = settings.getDefaultGroup();

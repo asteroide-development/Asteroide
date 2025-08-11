@@ -30,7 +30,7 @@ public class AntiAnnouncement extends Module {
     );
 
     public AntiAnnouncement() {
-        super(AsteroideAddon.CATEGORY, "anti-announcement", "Prevents the chat from being flooded from automated messages");
+        super(AsteroideAddon.CATEGORY, "Anti-Announcement", "Prevents the chat from being flooded from automated messages");
     }
 
     @EventHandler

@@ -26,7 +26,7 @@ import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 public class PlatformFlyModule extends Module {
     public PlatformFlyModule() {
-        super(AsteroideAddon.CATEGORY, "air-walk", "Lets you walk on air");
+        super(AsteroideAddon.CATEGORY, "Air-Walk", "Lets you walk on air");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<Boolean> allowJumping = sgGeneral.add(new BoolSetting.Builder()

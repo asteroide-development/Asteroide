@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class PacketLoggerModule extends Module {
     public PacketLoggerModule() {
-        super(AsteroideAddon.CATEGORY, "packet-logger", "Logs sent/received packets");
+        super(AsteroideAddon.CATEGORY, "Packet-Logger", "Logs sent/received packets");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 

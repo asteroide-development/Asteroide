@@ -15,7 +15,7 @@ import java.util.List;
 
 public class MultiCommandCommandBlockModule extends Module {
     public MultiCommandCommandBlockModule() {
-        super(AsteroideAddon.CATEGORY, "multi-command", "Gives you a command block with multiple commands inside");
+        super(AsteroideAddon.CATEGORY, "Multi-Command", "Gives you a command block with multiple commands inside");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<MultiCommandCommandBlockModule.Profile> profile = sgGeneral.add(new EnumSetting.Builder<MultiCommandCommandBlockModule.Profile>()

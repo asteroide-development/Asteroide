@@ -6,7 +6,7 @@ import spigey.asteroide.AsteroideAddon;
 
 public class VersionSpoofModule extends Module {
     public VersionSpoofModule() {
-        super(AsteroideAddon.CATEGORY, "version-spoof", "Spoofs your minecraft version.");
+        super(AsteroideAddon.CATEGORY, "Version-Spoof", "UNMAINTAINED | Spoofs your minecraft version.");
     }
     SettingGroup sgGeneral = settings.getDefaultGroup();
     public Setting<String> spoofedVersion = sgGeneral.add(new StringSetting.Builder()

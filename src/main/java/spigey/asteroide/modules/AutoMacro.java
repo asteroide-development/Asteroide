@@ -37,7 +37,7 @@ public class AutoMacro extends Module {
     );
 
     public AutoMacro() {
-        super(AsteroideAddon.CATEGORY, "auto-macro", "Automatically runs a macro when a specified message is sent in the chat");
+        super(AsteroideAddon.CATEGORY, "Auto-Macro", "Automatically runs a macro when a specified message is sent in the chat");
     }
     String content;
     @EventHandler(priority = EventPriority.HIGHEST + 1)

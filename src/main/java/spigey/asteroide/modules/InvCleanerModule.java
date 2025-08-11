@@ -32,7 +32,7 @@ import java.util.Objects;
 
 public class InvCleanerModule extends Module {
     public InvCleanerModule() {
-        super(AsteroideAddon.CATEGORY, "inv-cleaner", "Automatically drops useless items in your inventory");
+        super(AsteroideAddon.CATEGORY, "Inv-Cleaner", "Automatically drops useless items in your inventory");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 

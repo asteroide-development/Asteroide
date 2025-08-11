@@ -27,7 +27,7 @@ import java.util.Set;
 
 public class AimbotModule extends Module {
     public AimbotModule() {
-        super(AsteroideAddon.CATEGORY, "aimbot", "Self explanatory.");
+        super(AsteroideAddon.CATEGORY, "Aimbot", "Self explanatory.");
     }
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();

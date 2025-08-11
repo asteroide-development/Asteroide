@@ -64,7 +64,7 @@ public class ChatBot extends Module {
     private boolean subscribed = false;
     private Random rand = new Random();
     public ChatBot() {
-        super(AsteroideAddon.CATEGORY, "chat-bot", "Automatically answers to other people using commands");
+        super(AsteroideAddon.CATEGORY, "Chat-Bot", "Automatically answers to other people using commands");
     }
     int meth(String equation) {
         return (int) util.meth(equation); // I was too lazy to actually change the method everywhere

@@ -16,7 +16,7 @@ import spigey.asteroide.util;
 
 public class DevModule extends Module {
     public DevModule() {
-        super(AsteroideAddon.CATEGORY, "dev", "What the fuck are you doing here??");
+        super(AsteroideAddon.CATEGORY, "Dev", "What the fuck are you doing here??");
     }
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();

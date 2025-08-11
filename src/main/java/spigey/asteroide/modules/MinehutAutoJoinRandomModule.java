@@ -24,7 +24,7 @@ import java.util.Objects;
 
 public class MinehutAutoJoinRandomModule extends Module {
     public MinehutAutoJoinRandomModule() {
-        super(AsteroideAddon.CATEGORY, "minehut-auto-join", "Automatically joins random minehut servers when in the lobby");
+        super(AsteroideAddon.CATEGORY, "Minehut-Auto-Join", "Automatically joins random minehut servers when in the lobby");
     }
 
     private int tick = 0;

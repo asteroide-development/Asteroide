@@ -1,0 +1,11 @@
+{
+    "providers": [
+        {
+            "type":"bitmap","file":"minecraft:font\/asteroide.png",
+            "ascent": 7,
+            "height":8,
+            "chars":[
+                "\uE000"]
+        }
+    ]
+}

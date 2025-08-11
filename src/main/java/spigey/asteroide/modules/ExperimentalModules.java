@@ -19,7 +19,7 @@ import static spigey.asteroide.util.msg;
 
 public class ExperimentalModules extends Module {
     public ExperimentalModules() {
-        super(AsteroideAddon.CATEGORY, "experimental-features", "Experimental features that are still in development");
+        super(AsteroideAddon.CATEGORY, "Experimental-Features", "Experimental features that are still in development");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     /* private final Setting<Boolean> word_filter = sgGeneral.add(new BoolSetting.Builder()

@@ -19,7 +19,7 @@ import spigey.asteroide.util;
 
 public class EncryptChatModule extends Module {
     public EncryptChatModule() {
-        super(AsteroideAddon.CATEGORY, "encrypt-chat", "Encrypts your chat messages so only asteroide users can read them");
+        super(AsteroideAddon.CATEGORY, "Encrypt-Chat", "Encrypts your chat messages so only asteroide users can read them");
     }
 
     final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -111,13 +111,13 @@ public class EncryptChatModule extends Module {
 
     @EventHandler
     private void onMessageReceive(ReceiveMessageEvent event) throws Exception {
-        String content = event.getMessage().getString();
+        try{String content = event.getMessage().getString();
         String[] split = content.split("\"");
         int start = content.indexOf("STRT\"") + 5;
         String message = content; // ???
         if (start >= 0 && (content.indexOf("\"", start)) >= 0) {
             try{event.setMessage(Text.literal(String.format("§e§l%s§r§e%s §r§c§l(Decrypted)", message.substring(0, start - 5), util.decrypt(split[1], encryptionKey.get()))));}
             catch(Exception L){System.out.println(L); event.setMessage(Text.literal(String.format("§c§l%s§r§cDecryption Failed", message.substring(0, start - 5))));}
-        }
+        }}catch(Exception L){ /* Aw man */ }
     }
 }

@@ -10,7 +10,7 @@ import spigey.asteroide.AsteroideAddon;
 
 public class AutoFuckModule extends Module {
     public AutoFuckModule() {
-        super(AsteroideAddon.CATEGORY, "auto-fuck", "Automatically fucks other players");
+        super(AsteroideAddon.CATEGORY, "Auto-Fuck", "Automatically fucks other players");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<Integer> sneakTime = sgGeneral.add(new IntSetting.Builder()

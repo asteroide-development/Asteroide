@@ -18,7 +18,7 @@ import spigey.asteroide.AsteroideAddon;
 
 public class ClientDeleteModule extends Module {
     public ClientDeleteModule() {
-        super(AsteroideAddon.CATEGORY, "client-delete", "Deletes blocks on the client side");
+        super(AsteroideAddon.CATEGORY, "Client-Delete", "Deletes blocks on the client side");
     }
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();

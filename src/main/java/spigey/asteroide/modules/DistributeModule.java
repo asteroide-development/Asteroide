@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class DistributeModule extends Module {
     public DistributeModule() {
-        super(AsteroideAddon.CATEGORY, "distribute", "Automatically distributes duped items.");
+        super(AsteroideAddon.CATEGORY, "Distribute", "Automatically distributes duped items.");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<List<String>> command = sgGeneral.add(new StringListSetting.Builder()

@@ -10,7 +10,7 @@ import spigey.asteroide.AsteroideAddon;
 
 public class CreativeFlightModule extends Module {
     public CreativeFlightModule() {
-        super(AsteroideAddon.CATEGORY, "creative-flight", "Allows you to fly like you're in creative mode");
+        super(AsteroideAddon.CATEGORY, "Creative-Flight", "Allows you to fly like you're in creative mode");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<Double> speed = sgGeneral.add(new DoubleSetting.Builder()

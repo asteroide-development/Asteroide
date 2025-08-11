@@ -16,7 +16,7 @@ import static spigey.asteroide.util.msg;
 
 public class AutoLoginModule extends Module {
     public AutoLoginModule() {
-        super(AsteroideAddon.CATEGORY, "auto-login", "Automatically logs in on cracked servers");
+        super(AsteroideAddon.CATEGORY, "Auto-Login", "Automatically logs in on cracked servers");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<List<String>> register = sgGeneral.add(new StringListSetting.Builder()

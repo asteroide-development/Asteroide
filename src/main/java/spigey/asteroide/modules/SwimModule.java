@@ -10,7 +10,7 @@ import spigey.asteroide.util;
 
 public class SwimModule extends Module {
     public SwimModule() {
-        super(AsteroideAddon.CATEGORY, "swim", "Lets you swim in the air");
+        super(AsteroideAddon.CATEGORY, "Swim", "Lets you swim in the air");
     }
     @EventHandler
     private void onCollisionShape(CollisionShapeEvent event){

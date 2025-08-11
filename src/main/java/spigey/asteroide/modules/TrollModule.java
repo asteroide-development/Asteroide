@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class TrollModule extends Module {
     public TrollModule() {
-        super(AsteroideAddon.CATEGORY, "troll", "Automatically msgs random people.");
+        super(AsteroideAddon.CATEGORY, "Troll", "Automatically msgs random people.");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<String> command = sgGeneral.add(new StringSetting.Builder()

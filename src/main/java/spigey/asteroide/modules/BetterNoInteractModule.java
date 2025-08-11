@@ -16,7 +16,7 @@ import java.util.List;
 
 public class BetterNoInteractModule extends Module {
     public BetterNoInteractModule() {
-        super(AsteroideAddon.CATEGORY, "better-no-interact", "No interact, but better");
+        super(AsteroideAddon.CATEGORY, "Better-No-Interact", "No interact, but better");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 

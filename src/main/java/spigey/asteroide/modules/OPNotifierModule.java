@@ -15,7 +15,7 @@ import static spigey.asteroide.util.getPermissionLevel;
 
 public class OPNotifierModule extends Module {
     public OPNotifierModule() {
-        super(AsteroideAddon.CATEGORY, "op-notifier", "Tells you your permission level upon joining a server");
+        super(AsteroideAddon.CATEGORY, "OP-Notifier", "Tells you your permission level upon joining a server");
     }
     @EventHandler
     private void onConnect(ServerConnectEndEvent event){

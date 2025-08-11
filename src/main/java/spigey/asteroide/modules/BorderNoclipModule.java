@@ -14,7 +14,7 @@ import spigey.asteroide.AsteroideAddon;
 
 public class BorderNoclipModule extends Module {
     public BorderNoclipModule() {
-        super(AsteroideAddon.CATEGORY, "border-noclip", "Removes the world border collision");
+        super(AsteroideAddon.CATEGORY, "Border-Noclip", "Removes the world border collision");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     public final Setting<Double> damage = sgGeneral.add(new DoubleSetting.Builder()
@@ -25,4 +25,6 @@ public class BorderNoclipModule extends Module {
         .sliderMax(10)
         .build()
     );
+
+    // mixin
 }

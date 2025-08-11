@@ -24,7 +24,7 @@ public class AutoKys extends Module {
     private final Setting<List<String>> messages = sgGeneral.add(new StringListSetting.Builder().name("messages").description("Randomly takes the message from the list and sends on each death.").defaultValue("kys", "that's fucking luck").build());
 
     public AutoKys() {
-        super(AsteroideAddon.CATEGORY, "auto-kys", "Sends a message when you die");
+        super(AsteroideAddon.CATEGORY, "Auto-Kys", "Sends a message when you die");
     }
 
     @EventHandler

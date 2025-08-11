@@ -28,7 +28,7 @@ import java.util.Objects;
 
 public class ChestStealerModule extends Module {
     public ChestStealerModule() {
-        super(AsteroideAddon.CATEGORY, "chest-stealer", "Takes all items from Inventories");
+        super(AsteroideAddon.CATEGORY, "Chest-Stealer", "Takes all items from Inventories");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
