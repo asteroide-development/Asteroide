@@ -23,7 +23,7 @@ public class PlayerListHudMixin {
     }
 
     private boolean tooLazyForThisShit(String username){
-        for(String user : AsteroideAddon.users) { if(username.contains(user)) return true; }
+        for(String user : AsteroideAddon.users) { if(username.contains(user.replaceAll("§[a-z]", ""))) return true; }
         return username.contains(mc.player.getName().getString());
     }
 }
