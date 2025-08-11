@@ -119,6 +119,7 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new BetterNoInteractModule());
         //if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new OPNotifierModule());
         if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) modules.add(new SpamTwo());
+        modules.add(new EntityCancellerModule());
 
         // Commands
         Commands.add(new CrashAll());

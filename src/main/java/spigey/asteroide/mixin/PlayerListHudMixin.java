@@ -11,12 +11,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.modules.RTCSettingsModule;
 
+import static meteordevelopment.meteorclient.MeteorClient.mc;
+
 @Mixin(PlayerListHud.class)
 public class PlayerListHudMixin {
     @Inject(method = "getPlayerName", at = @At("RETURN"), cancellable = true)
     private void modifyPlayerName(PlayerListEntry entry, CallbackInfoReturnable<Text> cir) {
         final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
-        if(!AsteroideAddon.users.contains(entry.getProfile().getName()) || !rtc.disableIcon.get()) return;
+        if(!tooLazyForThisShit(entry.getProfile().getName()) || !rtc.disableIcon.get()) return;
         cir.setReturnValue(Text.empty().append("\uE000 ").append(cir.getReturnValue()));
+    }
+
+    private boolean tooLazyForThisShit(String username){
+        for(String user : AsteroideAddon.users) { if(username.contains(user)) return true; }
+        return username.contains(mc.player.getName().getString());
     }
 }
