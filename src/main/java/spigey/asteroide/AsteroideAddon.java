@@ -3,6 +3,7 @@ package spigey.asteroide;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import meteordevelopment.meteorclient.commands.Commands;
+import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.orbit.EventHandler;
@@ -120,6 +121,7 @@ public class AsteroideAddon extends MeteorAddon {
         //if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new OPNotifierModule());
         if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) modules.add(new SpamTwo());
         modules.add(new EntityCancellerModule());
+        modules.add(new AutoCrashModule());
 
         // Commands
         Commands.add(new CrashAll());
@@ -150,11 +152,8 @@ public class AsteroideAddon extends MeteorAddon {
     }
 
     @EventHandler
-    public void MinehutHud(PacketEvent.Receive event){ // untested
-        String content = "";
-        if(!(event.packet instanceof GameMessageS2CPacket || event.packet instanceof ChatMessageS2CPacket)) return;
-        if(event.packet instanceof GameMessageS2CPacket) content = ((GameMessageS2CPacket) event.packet).content().getString();
-        if(event.packet instanceof ChatMessageS2CPacket) content = event.packet.toString();
+    private void onMessageReceive(ReceiveMessageEvent event){
+        String content = event.getMessage().getString();
         if(content.startsWith("Sending you to")){
             String coom = content.replace("Sending you to ", "");
             MinehutIP = coom.substring(0, coom.length() - 1);

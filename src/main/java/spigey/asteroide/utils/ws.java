@@ -51,7 +51,7 @@ public class ws extends WebSocketClient {
                     if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(Text.of(message.get("message").getAsString()), false);
                     break;
                 case "disc":
-                    String[] warndom = {"multiplayer.disconnect.chat_validation_failed", "multiplayer.disconnect.duplicate_login", "multiplayer.disconnect.duplicate_login", "multiplayer.status.unknown", "multiplayer.disconnect.kicked"};
+                    String[] warndom = {"multiplayer.disconnect.chat_validation_failed", "multiplayer.status.unknown", "multiplayer.disconnect.kicked"};
                     mc.getNetworkHandler().getConnection().disconnect(Text.of(I18n.translate(warndom[randomNum(0, warndom.length - 1)])));
                     break;
             }

@@ -1,3 +1,8 @@
+/*
+* I sincerely apologize for the spaghetti code.
+* Also TODO: fix this dumbass code
+*/
+
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.MeteorClient;
@@ -7,6 +12,7 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.item.Item;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.util;
 import net.minecraft.stat.StatHandler;
@@ -64,6 +70,18 @@ public class AutoSlotSwitchModule extends Module {
         .defaultValue(AutoSlotSwitchModule.SwitchMode.Next)
         .build()
     );
+    private final Setting<List<Item>> ItemFilter = sgGeneral.add(new ItemListSetting.Builder()
+        .name("Item Filter")
+        .description("Only switch to slots that contain these items")
+        .build()
+    );
+    private final Setting<ItemMode> ItemModeSetting = sgGeneral.add(new EnumSetting.Builder<ItemMode>()
+        .name("Item Mode")
+        .description("Mode of the item filter")
+        .defaultValue(ItemMode.Blacklist)
+        .build()
+    );
+
     // slot priority
     private boolean SlotActivated = false;
     private int remainingDelay = -1;
@@ -75,50 +93,43 @@ public class AutoSlotSwitchModule extends Module {
     }
     @EventHandler
     private void onTick(TickEvent.Post event) {
-        if (remainingDelay > 0) {
-            remainingDelay--;
-            return;
-        }
+        if (remainingDelay > 0) { remainingDelay--; return; }
         int num = 9;
         if (slotmode.get() == SlotMode.Custom) {
             boolean[] slots = {slot1.get(), slot2.get(), slot3.get(), slot4.get(), slot5.get(), slot6.get(), slot7.get(), slot8.get(), slot9.get(), false};
-            if (!util.BoolContains(slots, true)) {
-                toggle();
-                error("No Slots enabled");
-                return;
+            for (int i = 0; i < slots.length; i++) { // Disable slots that are filtered by the Item filter
+                if (!slots[i]) continue;
+                Item item = mc.player.getInventory().getStack(i).getItem();
+                if (ItemModeSetting.get() == ItemMode.Blacklist && !ItemFilter.get().contains(item)) continue;
+                if (ItemModeSetting.get() == ItemMode.Whitelist && ItemFilter.get().contains(item)) continue;
+                slots[i] = false;
+                break;
             }
+            if (!util.BoolContains(slots, true)) { toggle(); error("No Slots enabled"); return; }
             while (!slots[num]) {
-                if (switchmode.get() == SwitchMode.Random) {
-                    num = util.randomNum(0, 8);
-                } else {
+                if (switchmode.get() == SwitchMode.Random) { num = findNextSlot(util.randomNum(0, 8)); // Randomly select a slot
+                } else { // Select the next slot
                     assert mc.player != null;
                     int temp = mc.player.getInventory().selectedSlot + 1;
                     for (int i = 0; i < 10; i++) {
-                        if (temp > 9) {
-                            temp = 0;
-                        }
-                        if (!slots[temp]) {
-                            temp++;
-                        }
+                        if (temp > 9) { temp = 0; }
+                        if (!slots[temp]) { temp++; }
                     }
                     num = temp;
-                    // Custom Switch Mode done
                 }
             }
         } else {
-            if (switchmode.get() == SwitchMode.Random) {
-                num = util.randomNum(0, 8);
-            } else {
+            if (switchmode.get() == SwitchMode.Random) { num = findNextSlot(util.randomNum(0, 8)); // It works.
+            } else { // Next slot...
                 assert mc.player != null;
-                num = mc.player.getInventory().selectedSlot + 1;
-                if (num == 9) {
-                    num = 0;
-                }
+                num = findNextSlot(mc.player.getInventory().selectedSlot);
             }
         }
-        if (PriorityEnabled.get()) { // what the actual fuck am i doing
+        if (PriorityEnabled.get()) { // Priority enabled
             List<Integer> priorityList = new ArrayList<>();
             for (int i = 1; i <= 10; i++) {
+                if (ItemModeSetting.get() == ItemMode.Blacklist && ItemFilter.get().contains(mc.player.getInventory().getStack(i).getItem())) { continue; }
+                if (ItemModeSetting.get() == ItemMode.Whitelist && !ItemFilter.get().contains(mc.player.getInventory().getStack(i).getItem())) { continue; }
                 int slotPriority = switch (i) {
                     case 1 -> slot1p.get();
                     case 2 -> slot2p.get();
@@ -131,18 +142,25 @@ public class AutoSlotSwitchModule extends Module {
                     case 9 -> slot9p.get();
                     default -> 0;
                 };
-                for (int j = 0; j < slotPriority && j < 10; j++) {
-                    priorityList.add(i);
-                }
+                for (int j = 0; j < slotPriority && j < 10; j++) { priorityList.add(i); }
             }
             int[] priorityArray = priorityList.stream().mapToInt(Integer::intValue).toArray();
-            // no like literally what the literal fucking fuck is this fucking ass spaghetti code please just fucking kill me
             assert priorityArray.length > 0;
             num = priorityArray[util.randomNum(0, priorityArray.length - 1)] - 1;
         }
-        // Custom slot mode done
-        InvUtils.swap(num, false);
+        InvUtils.swap(num, false); // Done
         remainingDelay = delay.get();
+    }
+
+    private int findNextSlot(int slot){
+        assert mc.player != null;
+        int temp = slot + 1;
+        for (int i = 0; i < 10; i++) {
+            if (temp > 9) { temp = 0; }
+            if (ItemModeSetting.get() == ItemMode.Blacklist && ItemFilter.get().contains(mc.player.getInventory().getStack(temp).getItem())) { temp++; continue; }
+            if (ItemModeSetting.get() == ItemMode.Whitelist && !ItemFilter.get().contains(mc.player.getInventory().getStack(temp).getItem())) { temp++; continue; }
+        }
+        return temp;
     }
 
     //////////////////////////////////////////////
@@ -155,8 +173,14 @@ public class AutoSlotSwitchModule extends Module {
         All,
         Custom
     }
+
     public enum SwitchMode{
         Random,
         Next
+    }
+
+    private enum ItemMode {
+        Whitelist,
+        Blacklist
     }
 }

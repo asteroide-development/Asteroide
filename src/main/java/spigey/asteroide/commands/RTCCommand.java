@@ -18,10 +18,6 @@ public class RTCCommand extends Command {
             ws.sendChat(StringArgumentType.getString(context, "message").split(" "));
             return SINGLE_SUCCESS;
         }));
-        builder.then(literal("kick").then(argument("args", StringArgumentType.greedyString()).executes(ctx ->{
-            ws.call("kick", (StringArgumentType.getString(ctx, "args").isEmpty() ? "fuckjavaifuckinghatejava" : StringArgumentType.getString(ctx, "args")).split(" "));
-            return SINGLE_SUCCESS;
-        })));
         builder.then(literal("online").executes(ctx ->{
             info("§f§lOnline Users (" + AsteroideAddon.users.size() + "):");
             for(String user : AsteroideAddon.users) info(user);
