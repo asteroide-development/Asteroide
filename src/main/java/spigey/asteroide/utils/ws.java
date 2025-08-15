@@ -48,7 +48,9 @@ public class ws extends WebSocketClient {
                     break;
                 case "message":
                     final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
-                    if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(Text.of(message.get("message").getAsString()), false);
+                    String msg = message.get("message").getAsString();
+                    if(rtc.censor.get() && rtc.isActive()) msg = msg.replaceAll("(?i)igg", "***").replaceAll("(?i)fag", "***");
+                    if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(Text.of(msg), false);
                     break;
                 case "disc":
                     String[] warndom = {"multiplayer.disconnect.chat_validation_failed", "multiplayer.status.unknown", "multiplayer.disconnect.kicked"};

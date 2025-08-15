@@ -44,6 +44,13 @@ public class RTCSettingsModule extends Module {
         .build()
     );
 
+    public final Setting<Boolean> censor = sgGeneral.add(new BoolSetting.Builder()
+        .name("I am a 10 year old child")
+        .description("Censors slurs in the RTC")
+        .defaultValue(false)
+        .build()
+    );
+
     public enum colors {
         dark_red,
         red,
