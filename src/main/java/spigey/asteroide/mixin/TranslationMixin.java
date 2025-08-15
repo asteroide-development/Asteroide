@@ -20,10 +20,11 @@ public class TranslationMixin {
 
     @Inject(method = "getArg", at = @At("HEAD"), cancellable = true)
     private void onGetArg(int index, CallbackInfoReturnable<Object> cir) {
-        final EntityCancellerModule ecm = Modules.get().get(EntityCancellerModule.class);
-        if(!ecm.isActive()) return;
-        for(String keyy : ecm.translations.get()) if(this.key.contains(keyy)) { cir.setReturnValue(Text.literal("§c[Translation Blocked]")); break; }
+        try{
+            final EntityCancellerModule ecm = Modules.get().get(EntityCancellerModule.class);
+            if(!ecm.isActive()) return;
+            for(String keyy : ecm.translations.get()) if(this.key.contains(keyy)) { cir.setReturnValue(Text.literal("§c[Translation Blocked]")); break; }
+        }catch(Exception e){ /* dear fuck */ }
     }
 }
-
 
