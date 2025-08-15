@@ -15,6 +15,7 @@ import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
 
+import java.util.List;
 import java.util.Set;
 
 public class EntityCancellerModule extends Module {
@@ -48,6 +49,13 @@ public class EntityCancellerModule extends Module {
         .defaultValue(false)
         .build()
     );
+    private final Setting<Boolean> translationCrash = sgGeneral.add(new BoolSetting.Builder()
+        .name("Block Invalid Translations")
+        .description("Cancels invalid translation strings.")
+        .defaultValue(true)
+        .build()
+    );
+    public final Setting<List<String>> translations = sgGeneral.add(new StringListSetting.Builder().name("translations").description("Translation strings to block").defaultValue("%1$s").visible(translationCrash::get).build());
     public boolean shouldRender(net.minecraft.entity.Entity entity) {
         if (entity == mc.player) return true;
         if (entity == null || entity.isRemoved()) return false;
