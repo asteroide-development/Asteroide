@@ -1,4 +1,4 @@
-# 🚀 Asteroide
+# <img src="https://minecraft.wiki/images/thumb/Magma_Block_JE2_BE2.gif/150px-Magma_Block_JE2_BE2.gif?b8077" width="40" style="vertical-align: middle; padding-bottom: 5px"> Asteroide
 
 <div align="center">
   <img src="https://github.com/asteroide-development/Asteroide/blob/master/icon.png?raw=true" width="200">
@@ -26,6 +26,7 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance meteor,
   <a href="https://github.com/asteroide-development/Asteroide/releases">
     <img alt="Downloads" src="https://img.shields.io/github/downloads/asteroide-development/asteroide/total?color=red&style=flat-square">
   </a>
+<br>
   <a href="https://discord.gg/QFzE3UzdpQ">
     <img src="https://invidget.switchblade.xyz/QFzE3UzdpQ">
 </a>  
