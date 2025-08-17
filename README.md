@@ -1,4 +1,4 @@
-# <img src="https://minecraft.wiki/images/thumb/Magma_Block_JE2_BE2.gif/150px-Magma_Block_JE2_BE2.gif?b8077" width="40" style="vertical-align: middle; padding-bottom: 5px"> Asteroide
+# <img src="https://minecraft.wiki/images/thumb/Magma_Block_JE2_BE2.gif/150px-Magma_Block_JE2_BE2.gif?b8077" width="40" style="vertical-align: middle;"> Asteroide
 
 <div align="center">
   <img src="https://github.com/asteroide-development/Asteroide/blob/master/icon.png?raw=true" width="200">
