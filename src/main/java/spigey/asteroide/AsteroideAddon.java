@@ -1,17 +1,11 @@
 package spigey.asteroide;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
-import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.item.Items;
-import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
-import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
-import net.minecraft.network.packet.s2c.play.ScoreboardDisplayS2CPacket;
-import net.minecraft.network.packet.s2c.play.ScoreboardScoreUpdateS2CPacket;
 import spigey.asteroide.commands.*;
 import spigey.asteroide.hud.*;
 import spigey.asteroide.modules.*;
@@ -21,7 +15,6 @@ import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
-import spigey.asteroide.utils.Regex;
 import spigey.asteroide.utils.ws;
 
 import java.io.BufferedReader;
@@ -32,7 +25,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
-import static spigey.asteroide.util.*;
 
 public class AsteroideAddon extends MeteorAddon {
     public static final Logger LOG = LogUtils.getLogger();
@@ -120,7 +112,7 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new BetterNoInteractModule());
         //if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new OPNotifierModule());
         if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) modules.add(new SpamTwo());
-        modules.add(new EntityCancellerModule());
+        modules.add(new BetterAntiCrashModule());
         modules.add(new AutoCrashModule());
 
         // Commands
