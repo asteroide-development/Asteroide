@@ -1,11 +1,13 @@
 package spigey.asteroide;
 
 import com.google.gson.Gson;
+import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.item.Items;
+import net.minecraft.text.Text;
 import spigey.asteroide.commands.*;
 import spigey.asteroide.hud.*;
 import spigey.asteroide.modules.*;
@@ -44,6 +46,7 @@ public class AsteroideAddon extends MeteorAddon {
 
     @Override
     public void onInitialize() {
+        MeteorClient.EVENT_BUS.subscribe(this); // dear fuck chatskibidi...
         String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz", "spoofedservers"};
 
         try{
@@ -51,7 +54,7 @@ public class AsteroideAddon extends MeteorAddon {
             wss.connect();
         } catch(Exception e){ /* whoopsy daisy!! */ }
 
-        LOG.info("\nLoaded Asteroide v0.1.8\n");
+        LOG.info("\nLoaded Asteroide v0.2.0\n");
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("trolls.txt");
              BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
             String line;
@@ -114,6 +117,7 @@ public class AsteroideAddon extends MeteorAddon {
         if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) modules.add(new SpamTwo());
         modules.add(new BetterAntiCrashModule());
         modules.add(new AutoCrashModule());
+        modules.add(new TypoModule());
 
         // Commands
         Commands.add(new CrashAll());
@@ -146,10 +150,11 @@ public class AsteroideAddon extends MeteorAddon {
     @EventHandler
     private void onMessageReceive(ReceiveMessageEvent event){
         String content = event.getMessage().getString();
-        if(content.startsWith("Sending you to")){
+        if(!content.startsWith("Sending you to") || !content.endsWith("!")) return;
+        try {
             String coom = content.replace("Sending you to ", "");
             MinehutIP = coom.substring(0, coom.length() - 1);
-        }
+        }catch(Exception L) { /* scawy */ }
     }
 
     @Override

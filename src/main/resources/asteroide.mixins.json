@@ -2,7 +2,6 @@
   "required": true,
   "package": "spigey.asteroide.mixin",
   "compatibilityLevel": "JAVA_17",
-  "client": [],
   "injectors": {
     "defaultRequire": 1
   },
@@ -14,6 +13,7 @@
     "HandshakeC2SMixin",
     "PlayerListHudMixin",
     "TranslationMixin",
-    "WorldBorderMixin"
+    "WorldBorderMixin",
+    "ClientPlayNetworkHandlerMixin"
   ]
 }

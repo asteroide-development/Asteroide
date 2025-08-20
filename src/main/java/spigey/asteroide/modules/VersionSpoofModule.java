@@ -20,6 +20,7 @@ public class VersionSpoofModule extends Module {
 
     public static int readable(String asd){
         return switch(asd) {
+            case "1.21.8" -> 772;
             case "1.21" -> 767;
             case "1.20.6", "1.20.5" -> 766;
             case "1.20.2" -> 758;
