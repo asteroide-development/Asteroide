@@ -8,7 +8,6 @@
   "mixins": [
     "BedrockSpoofMixin",
     "BlockOutlineMixin",
-    "ChatMessageC2SMixin",
     "EntityRendererMixin",
     "HandshakeC2SMixin",
     "PlayerListHudMixin",
