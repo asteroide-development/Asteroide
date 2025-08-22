@@ -15,7 +15,7 @@ public class ClientPlayNetworkHandlerMixin {
         if(!typo.isActive() || !typo.commands.get()) return command;
         for(int i = 0; i < typo.keywords.get().size(); i++) {
             if (!command.toLowerCase().contains(typo.keywords.get().get(i).toLowerCase())) continue;
-            if(typo.replacements.get().size() < i) break;
+            if(typo.replacements.get().size() <= i) break;
             command = command.replace(typo.keywords.get().get(i), typo.replacements.get().get(i));
         }
         return command;

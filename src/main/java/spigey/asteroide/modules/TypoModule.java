@@ -30,9 +30,9 @@ public class TypoModule extends Module {
         String content = event.message;
         for(int i = 0; i < keywords.get().size(); i++) {
             if (!content.toLowerCase().contains(keywords.get().get(i).toLowerCase())) continue;
-            if(replacements.get().size() < i) break;
+            if(replacements.get().size() <= i) break;
             content = content.replace(keywords.get().get(i), replacements.get().get(i));
         }
-        event.message = content;
+        event.message = content.length() > 256 ? content.substring(0, 256) : content;
     }
 }
