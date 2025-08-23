@@ -49,14 +49,6 @@ public class WordFilterModule extends Module {
         .build()
     );
 
-    private final Setting<Boolean> alwaysBypass = sgGeneral.add(new BoolSetting.Builder()
-        .name("always bypass")
-        .description("Always bypass any chatfilter, even if no word was mentioned")
-        .defaultValue(true)
-        .visible(() -> typee.get() == Type.Bypass)
-        .build()
-    );
-
 
     ///////////////////////////////   CODE NOW USES A MIXIN   ///////////////////////////////
 
@@ -67,10 +59,6 @@ public class WordFilterModule extends Module {
 
     @EventHandler
     private void onMessageSend(SendMessageEvent event) throws Exception {
-        if(typee.get() == Type.Bypass && alwaysBypass.get()){
-            event.message = event.message.replaceAll("a", "а").replaceAll("c", "с").replaceAll("e", "е").replaceAll("h", "һ").replaceAll("i", "і").replaceAll("j", "ј").replaceAll("n", "ո").replaceAll("o", "о").replaceAll("p", "р").replaceAll("u", "ս").replaceAll("v", "ν").replaceAll("x", "х").replaceAll("y", "у");
-            return;
-        }
         String[] datshit = event.message.split(" ");
         StringBuilder message = new StringBuilder();
         for (int i = 0; i < datshit.length; i++) {

@@ -4,6 +4,9 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import meteordevelopment.meteorclient.events.game.OpenScreenEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.settings.IntSetting;
+import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.orbit.EventHandler;
@@ -26,12 +29,20 @@ public class MinehutAutoJoinRandomModule extends Module {
     public MinehutAutoJoinRandomModule() {
         super(AsteroideAddon.CATEGORY, "Minehut-Auto-Join", "Automatically joins random minehut servers when in the lobby");
     }
-
+    private final SettingGroup sgGeneral = settings.getDefaultGroup();
+    private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
+        .name("delay")
+        .description("The delay when trying to join")
+        .defaultValue(5)
+        .min(0)
+        .sliderMax(30)
+        .build()
+    );
     private int tick = 0;
 
     @Override
     public void onActivate() {
-        tick = 5;
+        tick = delay.get();
     }
 
     @EventHandler
@@ -39,23 +50,16 @@ public class MinehutAutoJoinRandomModule extends Module {
         if(tick > 0) {tick--; return;}
         assert mc.player != null;
         if(mc.isInSingleplayer()) return;
-        if(!(Objects.requireNonNull(mc.getCurrentServerEntry()).address).toLowerCase().contains("minehut")) return;
-        // if(mc.currentScreen == null) return;
+        if(!(Objects.requireNonNull(mc.getCurrentServerEntry()).address).toLowerCase().contains("minehut.")) return;
         assert mc.player != null;
-        ItemStack stack = mc.player.getInventory().getMainHandStack();
-        //NbtCompound tag = stack.getNbt();
-        //if(tag == null) return; // try
-        //assert tag != null; // try hard
-        //if(tag == null) return; // try harder
-        //if(!NbtHelper.toFormattedString(tag).contains("lobby:lobby-item")) return;
-        // if(!Objects.equals(mc.currentScreen.getTitle().toString(), "literal{Where to?}")) return;
-        //Utils.rightClick();
+        if(!Objects.equals(mc.player.getInventory().getMainHandStack().getName().getString(), "Find a Server (Right-Click)")) return;
+        Utils.rightClick();
         assert mc.currentScreen != null;
         if(!(mc.currentScreen instanceof GenericContainerScreen)) return;
         DefaultedList<Slot> slots = ((GenericContainerScreen) mc.currentScreen).getScreenHandler().slots;
         ClickSlotC2SPacket packet = new ClickSlotC2SPacket(1, 55, 49, 0, SlotActionType.PICKUP, slots.get(26).getStack(), Int2ObjectMaps.singleton(26, ItemStack.EMPTY));
         mc.getNetworkHandler().sendPacket(packet);
-        tick = 5;
+        tick = delay.get();
     }
 }
 

@@ -118,6 +118,8 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new BetterAntiCrashModule());
         modules.add(new AutoCrashModule());
         modules.add(new TypoModule());
+        modules.add(new ChatBypassModule());
+        modules.add(new NoOcclusionModule());
 
         // Commands
         Commands.add(new CrashAll());
