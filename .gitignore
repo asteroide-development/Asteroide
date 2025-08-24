@@ -41,3 +41,4 @@ run/
 TODO.txt
 Changelog.md
 private/
+build/libs/org
