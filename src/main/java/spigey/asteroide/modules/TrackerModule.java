@@ -31,7 +31,7 @@ public class TrackerModule extends Module {
     private double partialTicks;
 
     public TrackerModule() {
-        super(AsteroideAddon.CATEGORY, "Tracker", "Tracks a player by always looking at it. Must be loaded!");
+        super(AsteroideAddon.CATEGORY, "Tracker", "Tracks a player by always looking at it. Use with .track <player>");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<Double> interpolation = sgGeneral.add(new DoubleSetting.Builder()
@@ -88,7 +88,7 @@ public class TrackerModule extends Module {
         mc.inGameHud.setOverlayMessage(Text.of(String.format("§7Tracking %s at §cX: %.0f§7, §aY: %.0f§7, §9Z: %.0f", AsteroideAddon.trackedPlayer, entity.getX(), entity.getY(), entity.getZ())), false);
         double[] geminiwtf = {entity.getX(), entity.getY(), entity.getZ()};
         for (int i = 0; i < 3; i++) {
-            last[i] = MathHelper.lerp(partialTicks * interpolation.get(), last[i], i == 1 ? entity.getY() + 1.62 : geminiwtf[i]);
+            last[i] = MathHelper.lerp(partialTicks * interpolation.get(), last[i], i == 1 ? entity.getEyeY() : geminiwtf[i]);
         }
         if(render.get()) draw(event, entity);
         mc.player.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, new Vec3d(last[0], last[1], last[2]));
