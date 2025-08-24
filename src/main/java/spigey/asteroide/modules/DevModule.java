@@ -1,7 +1,9 @@
 package spigey.asteroide.modules;
 
+import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.events.game.SendMessageEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
@@ -24,6 +26,13 @@ public class DevModule extends Module {
     private final Setting<Boolean> testEvents = sgGeneral.add(new BoolSetting.Builder()
         .name("Test Events")
         .description("Tests SendMessageEvent")
+        .defaultValue(false)
+        .build()
+    );
+
+    private final Setting<Boolean> testMsgs = sgGeneral.add(new BoolSetting.Builder()
+        .name("Test AutoChatGame")
+        .description("Tests AutoChatGame")
         .defaultValue(false)
         .build()
     );
@@ -52,5 +61,22 @@ public class DevModule extends Module {
             .replaceAll("v", "ν")
             .replaceAll("x", "х")
             .replaceAll("y", "у") + " h";
+    }
+
+    boolean Received = false;
+    int ticks = 0;
+    @EventHandler
+    private void onMessageReceive(ReceiveMessageEvent event){
+        if(!testMsgs.get() || !isActive()) return;
+        if(event.getMessage().getString().contains("[Dev]")) return;
+        this.Received = !this.Received;
+        if(this.Received) this.ticks = 0;
+        else info(String.valueOf(this.ticks));
+    }
+
+    @EventHandler
+    private void onTick(TickEvent.Post event){
+        if(!testMsgs.get() || !isActive() || !this.Received) return;
+        this.ticks++;
     }
 }
