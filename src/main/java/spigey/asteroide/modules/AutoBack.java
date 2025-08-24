@@ -1,6 +1,8 @@
 package spigey.asteroide.modules;
 
+import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
@@ -41,30 +43,41 @@ public class AutoBack extends Module {
         .defaultValue("/back")
         .build()
     );
+    public Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
+        .name("delay")
+        .description("Delay in ticks before sending the back command.")
+        .defaultValue(5)
+        .min(0)
+        .sliderMax(40)
+        .build()
+    );
+
+    private int tick = -1;
+
     @EventHandler
     private void onPacketReceive(PacketEvent.Receive event){
-        banstuff();
-        if(!(mode.get() == AutoBackMode.OnDeath)){
-            if(event.packet instanceof GameMessageS2CPacket){
-                String content = String.valueOf(((GameMessageS2CPacket) event.packet).content().getString());
-                for (int i = 0; i < messages.get().size(); i++) {
-                    if (content.toLowerCase().contains(messages.get().get(i).toLowerCase())) {
-                        msg(backMessage.get());
-                    }
-                }
-            }
-        }
-        if(event.packet instanceof DeathMessageS2CPacket packet){
-            assert mc.world != null;
-            Entity entity = mc.world.getEntityById(packet.playerId());
-            if(entity != mc.player){return;}
-            msg(backMessage.get());
-        }
+        if(mode.get() != AutoBackMode.OnDeath || !isActive() || !(event.packet instanceof DeathMessageS2CPacket packet)) return;
+        if(mc.world.getEntityById(packet.playerId()) != mc.player){return;}
+        this.tick = delay.get();
+    }
+
+    @EventHandler
+    private void onMessageReceive(ReceiveMessageEvent event){
+        if(!isActive() || mode.get() != AutoBackMode.OnMessage) return;
+        for(String msg : messages.get()) if(!event.getMessage().getString().toLowerCase().contains(msg.toLowerCase())) return;
+        this.tick = delay.get();
+    }
+
+    @EventHandler
+    private void onTick(TickEvent.Post event){
+        if(this.tick == -1 || !isActive()) return;
+        if(this.tick > 0) { this.tick--; return; }
+        msg(backMessage.get());
+        this.tick = -1;
     }
 
     @Override
     public void onActivate() {
-        banstuff();
         Module thing = Modules.get().get(AutoRespawn.class);
         if(!thing.isActive()){thing.toggle();}
     }

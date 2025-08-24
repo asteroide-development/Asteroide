@@ -29,7 +29,6 @@ public class AutoKys extends Module {
 
     @EventHandler
     private void onPacketReceive(PacketEvent.Receive event){
-        banstuff();
         if(event.packet instanceof DeathMessageS2CPacket packet){
             Entity entity = mc.world.getEntityById(packet.playerId());
             if(entity != mc.player){return;}

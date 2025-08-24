@@ -62,16 +62,6 @@ public class BetterCollisionsModule extends Module {
     }
 
     @EventHandler
-    private void onPlayerMove(PlayerMoveEvent event) {
-        int x = (int) (mc.player.getX() + event.movement.x) >> 4;
-        int z = (int) (mc.player.getZ() + event.movement.z) >> 4;
-        if (unloadedChunks.get() && !mc.world.getChunkManager().isChunkLoaded(x, z)) {
-//            ((IVec3d) event.movement).set(0, event.movement.y, 0);
-            info("fuck oiff doesn't work");
-        }
-    }
-
-    @EventHandler
     private void onPacketSend(PacketEvent.Send event) {
         if (!unloadedChunks.get()) return;
         if (event.packet instanceof VehicleMoveC2SPacket packet) {
@@ -84,8 +74,5 @@ public class BetterCollisionsModule extends Module {
                 event.cancel();
             }
         }
-    }
-    public boolean ignoreBorder() {
-        return  isActive() && ignoreBorder.get();
     }
 }

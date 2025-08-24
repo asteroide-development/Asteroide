@@ -47,7 +47,7 @@ public class BlockHitboxesModule extends Module {
 
     public final Setting<List<Block>> blocks = sgGeneral.add(new BlockListSetting.Builder()
         .name("blocks")
-        .description("What blocks should get an incresed hitbox size.")
+        .description("What blocks should have an increased hitbox size.")
         .build()
     );
 

@@ -25,3 +25,6 @@ public class NoOcclusionModule extends Module {
         event.lightLevel = lightLevel.get();
     }
 }
+
+// Turns Top white at 19004279
+// Turns ALL white at 31673798

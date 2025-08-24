@@ -1,5 +1,6 @@
 package spigey.asteroide.modules;
 
+import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
@@ -44,9 +45,8 @@ public class AutoLoginModule extends Module {
         .build()
     );
     @EventHandler
-    private void onPacketReceive(PacketEvent.Receive event){
-        if(!(event.packet instanceof GameMessageS2CPacket)) return;
-        String content = String.valueOf(((GameMessageS2CPacket) event.packet).content());
+    private void onMessageReceive(ReceiveMessageEvent event){
+        String content = event.getMessage().getString();
         if(!blacklist.get().isEmpty()) for(int i = 0; i < blacklist.get().size(); i++) if(content.toLowerCase().contains(blacklist.get().get(i).toLowerCase())) return;
         for(String str : register.get()){
             if(content.toLowerCase().contains(str)) {

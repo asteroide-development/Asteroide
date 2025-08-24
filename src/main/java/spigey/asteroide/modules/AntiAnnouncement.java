@@ -37,6 +37,6 @@ public class AntiAnnouncement extends Module {
     private void onMessageReceive(ReceiveMessageEvent event){
         String content = event.getMessage().getString();
         for (int i = 0; i < messages.get().size(); i++) { if (content.toLowerCase().contains(messages.get().get(i).toLowerCase())) { event.cancel(); } }
-        if (content.replaceAll(" ", "").replaceAll("\n", "").isEmpty() && mtmsg.get()) { event.cancel(); }
+        if (content.replaceAll("\\s+", "").isEmpty() && mtmsg.get()) { event.cancel(); }
     }
 }
