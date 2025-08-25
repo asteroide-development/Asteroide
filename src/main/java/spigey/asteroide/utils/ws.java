@@ -45,6 +45,7 @@ public class ws extends WebSocketClient {
                     Set<String> dearfucknigga = new HashSet<>();
                     message.getAsJsonArray("further").forEach(key -> dearfucknigga.add(key.getAsString()));
                     AsteroideAddon.users = dearfucknigga;
+                    send("{\"event\":\"ping\"}");
                     break;
                 case "message":
                     final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);

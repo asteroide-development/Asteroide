@@ -1,5 +1,6 @@
 package spigey.asteroide.modules;
 
+import meteordevelopment.meteorclient.events.game.GameJoinedEvent;
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.events.game.SendMessageEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
@@ -18,10 +19,17 @@ import spigey.asteroide.util;
 
 public class DevModule extends Module {
     public DevModule() {
-        super(AsteroideAddon.CATEGORY, "Dev", "What the fuck are you doing here??");
+        super(AsteroideAddon.CATEGORY, "Dev", "Dev tools you shouldn't be able to see.");
     }
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
+
+    private final Setting<Boolean> slots = sgGeneral.add(new BoolSetting.Builder()
+        .name("Test Slot Packets")
+        .description("Tests Slot Packets")
+        .defaultValue(false)
+        .build()
+    );
 
     private final Setting<Boolean> testEvents = sgGeneral.add(new BoolSetting.Builder()
         .name("Test Events")
@@ -39,10 +47,11 @@ public class DevModule extends Module {
 
     @EventHandler
     private void onPacketSend(PacketEvent.Send event) {
-        if (!(event.packet instanceof ClickSlotC2SPacket)) return;
+        if (!(event.packet instanceof ClickSlotC2SPacket) || !slots.get()) return;
         ChatUtils.sendMsg(Text.of("§cSLOT " + ((ClickSlotC2SPacket) event.packet).getSlot()));
         ChatUtils.sendMsg(Text.of("§aREVISION " + ((ClickSlotC2SPacket) event.packet).getRevision()));
         ChatUtils.sendMsg(Text.of("§9SYNC ID " + ((ClickSlotC2SPacket) event.packet).getSyncId()));
+        ChatUtils.sendMsg(Text.of("§7ACTION " + ((ClickSlotC2SPacket) event.packet).getActionType().name()));
     }
 
     @EventHandler
@@ -61,6 +70,13 @@ public class DevModule extends Module {
             .replaceAll("v", "ν")
             .replaceAll("x", "х")
             .replaceAll("y", "у") + " h";
+    }
+
+    @EventHandler
+    private void onGameJoin(GameJoinedEvent event){
+        if(!testEvents.get()) return;
+        AsteroideAddon.LOG.info(event.toString());
+        info(event.toString());
     }
 
     boolean Received = false;
