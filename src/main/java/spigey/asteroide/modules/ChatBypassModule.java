@@ -17,7 +17,7 @@ public class ChatBypassModule extends Module {
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<Boolean> toggleOnMessage = sgGeneral.add(new BoolSetting.Builder()
-        .name("toggle")
+        .name("toggle on msg")
         .description("Toggles the module if a specific message is received")
         .defaultValue(false)
         .build()

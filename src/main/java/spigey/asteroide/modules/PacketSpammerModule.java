@@ -30,9 +30,14 @@ public class PacketSpammerModule extends Module {
 
     @Override
     public void onActivate() {
+        new Thread(this::spam).start();
+        info("Sent " + amount.get() + " packets.");
         toggle();
-        for(int i = 0; i < 10000; i++) {
-            if(mc.player == null || mc.world == null) return;
+    }
+
+    private void spam(){
+        for(int i = 0; i < amount.get(); i++) {
+            if(mc.player == null || mc.world == null) { error(mc.player == null ? "Player is null" : "World is null"); break; }
             mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), mc.player.getY(), mc.player.getZ(), mc.player.isOnGround(), true));
         }
     }
