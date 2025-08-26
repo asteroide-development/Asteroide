@@ -8,11 +8,13 @@
     "Spigey"
   ],
   "contact": {
-    "repo": "https://github.com/Spigey/Asteroide",
-    "discord": "Spigey"
+    "issues": "https://github.com/asteroide-development/Asteroide/issues",
+    "repo": "https://github.com/asteroide-development/Asteroide",
+    "homepage": "https://www.asteroide.cc/"
   },
   "icon": "assets/asteroide/icon.png",
   "environment": "client",
+  "license": "Apache-2.0",
   "entrypoints": {
     "meteor": [
       "spigey.asteroide.AsteroideAddon"

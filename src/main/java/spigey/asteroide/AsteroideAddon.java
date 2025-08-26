@@ -2,6 +2,7 @@ package spigey.asteroide;
 
 import com.google.gson.Gson;
 import meteordevelopment.meteorclient.MeteorClient;
+import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.systems.hud.Hud;
@@ -18,6 +19,7 @@ import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
 import spigey.asteroide.utils.ws;
+import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -162,13 +164,13 @@ public class AsteroideAddon extends MeteorAddon {
         }catch(Exception L) { /* scawy */ }
     }
 
-    @Override
-    public void onRegisterCategories() {
+    @Override public void onRegisterCategories() {
         Modules.registerCategory(CATEGORY);
     }
-
-    @Override
-    public String getPackage() {
+    @Override public String getPackage() {
         return "spigey.asteroide";
     }
+    @Override public GithubRepo getRepo() { return new GithubRepo("asteroide-development", "Asteroide"); }
+    @Override public String getWebsite() { return "https://www.asteroide.cc/"; }
+    @Override public String getCommit() { return "d99742cf8cfed610ddb1e5ff5cd9041dca39d973"; } // Crashes when I try to do it dynamically, requires any commit for the website & GitHub to be clickable
 }
