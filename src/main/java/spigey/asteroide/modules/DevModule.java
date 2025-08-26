@@ -87,7 +87,7 @@ public class DevModule extends Module {
         if(event.getMessage().getString().contains("[Dev]")) return;
         this.Received = !this.Received;
         if(this.Received) this.ticks = 0;
-        else info(String.valueOf(this.ticks));
+        else info(String.format("Auto Chatgame took %d ticks (%.2f seconds)", this.ticks, this.ticks / 20f));
     }
 
     @EventHandler
