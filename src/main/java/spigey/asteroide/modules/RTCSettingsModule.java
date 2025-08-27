@@ -34,6 +34,7 @@ public class RTCSettingsModule extends Module {
         .name("Hide RTC Messages")
         .description("Hides all messages received from the RTC.")
         .defaultValue(false)
+        .onChanged((value) -> AsteroideAddon.showRtc = !(value && isActive()))
         .build()
     );
 

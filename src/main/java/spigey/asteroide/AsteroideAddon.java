@@ -46,6 +46,8 @@ public class AsteroideAddon extends MeteorAddon {
     public static Set<String> users = new HashSet<>();
     public static ws wss;
 
+    public static boolean showRtc = false;
+
     @Override
     public void onInitialize() {
         MeteorClient.EVENT_BUS.subscribe(this); // dear fuck chatskibidi...
@@ -152,6 +154,8 @@ public class AsteroideAddon extends MeteorAddon {
         hud.register(Username.INFO);
         hud.register(SpoofedIPHUD.INFO);
         hud.register(MinehutIPHud.INFO);
+
+        showRtc = !(Modules.get().get(RTCSettingsModule.class).isActive() && Modules.get().get(RTCSettingsModule.class).hideMessages.get());
     }
 
     @EventHandler
