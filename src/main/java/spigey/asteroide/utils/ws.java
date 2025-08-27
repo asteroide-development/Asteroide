@@ -23,6 +23,7 @@ public class ws extends WebSocketClient {
 
     private Timer ping;
     private static volatile boolean reconnecting = false;
+    private final Random random = new Random();
 
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
@@ -45,7 +46,7 @@ public class ws extends WebSocketClient {
                     Set<String> dearfucknigga = new HashSet<>();
                     message.getAsJsonArray("further").forEach(key -> dearfucknigga.add(key.getAsString()));
                     AsteroideAddon.users = dearfucknigga;
-                    send("{\"event\":\"ping\"}");
+                    call("ping", String.valueOf(random.nextInt(99999999)));
                     break;
                 case "message":
                     final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);

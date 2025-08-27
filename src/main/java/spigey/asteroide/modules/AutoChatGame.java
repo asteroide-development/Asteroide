@@ -136,7 +136,6 @@ public class AutoChatGame extends Module {
             if(sample.length() != game.length()) continue;
             char[] chr = sample.toCharArray();
             for (int i = 0; i < chr.length; i++) if (game.charAt(i) == '_') chr[i] = '_';
-            info(new String(chr));
             if(new String(chr).equals(game)) return sample;
         }
         error("Could not find word to fill out " + game);
