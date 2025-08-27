@@ -73,7 +73,7 @@ public class AutoChatGame extends Module {
         for(String msg : mether.get()) if (content.toLowerCase().contains(msg.toLowerCase())) { gameMode = GameMode.SOLVE; break; }
         for(String msg : filltriggers.get()) if (content.toLowerCase().contains(msg.toLowerCase())) { gameMode = GameMode.FILLOUT; break; }
         for(String msg : scramble.get()) if (content.toLowerCase().contains(msg.toLowerCase())) { gameMode = GameMode.UNSCRAMBLE; break; }
-        if(triviaEnabled.get()) for(String msg : trivia.keySet()) if(content.trim().toLowerCase().equals(String.format("`%s`", msg.toLowerCase()))) { gameMode = GameMode.TRIVIA; break; }
+        if(triviaEnabled.get()) for(String msg : trivia.keySet()) if(content.trim().toLowerCase().startsWith(String.format("`%s`", msg.toLowerCase()))) { gameMode = GameMode.TRIVIA; break; }
         if(content.toLowerCase().contains(String.format("solve for: `%s`", variableSolveFor.get().toLowerCase()))) { this.isVariable = true; return; }
         if(this.isVariable && hidetr.get()) event.cancel();
         if(!this.isVariable) {
