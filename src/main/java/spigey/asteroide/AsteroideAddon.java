@@ -6,9 +6,13 @@ import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.systems.hud.Hud;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.item.Items;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
+import net.minecraft.util.Formatting;
 import spigey.asteroide.commands.*;
 import spigey.asteroide.hud.*;
 import spigey.asteroide.modules.*;
@@ -27,6 +31,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.function.Supplier;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
@@ -50,6 +55,9 @@ public class AsteroideAddon extends MeteorAddon {
 
     @Override
     public void onInitialize() {
+
+        // LOG.info(mc.getSession().getAccessToken()); // Turns out my cracked players access token is "FabricMC"??
+
         MeteorClient.EVENT_BUS.subscribe(this); // dear fuck chatskibidi...
         String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz", "spoofedservers"};
 
@@ -156,6 +164,18 @@ public class AsteroideAddon extends MeteorAddon {
         hud.register(MinehutIPHud.INFO);
 
         showRtc = !(Modules.get().get(RTCSettingsModule.class).isActive() && Modules.get().get(RTCSettingsModule.class).hideMessages.get());
+        ChatUtils.registerCustomPrefix("spigey.asteroide.modules", this::getPrefix);
+    }
+
+    private Text getPrefix(){ // https://github.com/MeteorClientPlus/MeteorPlus/blob/1.21.8/src/main/java/nekiplay/meteorplus/features/modules/misc/ChatPrefix.java
+        MutableText value = Text.literal("Asteroide");
+        MutableText prefix = Text.literal("");
+        value.setStyle(value.getStyle().withColor(TextColor.fromFormatting(Formatting.RED)));
+        prefix.setStyle(prefix.getStyle().withFormatting(Formatting.DARK_GRAY))
+            .append(Text.literal("["))
+            .append(value)
+            .append(Text.literal("] "));
+        return prefix;
     }
 
     @EventHandler

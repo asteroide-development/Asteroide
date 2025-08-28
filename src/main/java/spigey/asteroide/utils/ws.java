@@ -27,7 +27,12 @@ public class ws extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
-        send("{\"event\":\"init\",\"username\":\"" + mc.getSession().getUsername() + "\"}");
+        RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
+        this.send(gson.toJson(Map.of(
+            "event", "init",
+            "username", String.format("%s%s", mc.getSession().getAccessToken().length() < 300 ? "." : "", mc.getSession().getUsername()),
+            "online", rtc.isActive() && rtc.broadcastOnline.get()
+        )));
         ping = new Timer();
         ping.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -103,6 +108,14 @@ public class ws extends WebSocketClient {
         Map<String, Object> json = new HashMap<>();
         json.put("event", event);
         json.put("args", Arrays.asList(args));
+        instance.send(gson.toJson(json));
+    }
+
+    public static void call(String event, boolean args){
+        if(instance == null || !instance.isOpen()) return;
+        Map<String, Object> json = new HashMap<>();
+        json.put("event", event);
+        json.put("args", args);
         instance.send(gson.toJson(json));
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class TypoModule extends Module {
     public TypoModule() {
-        super(AsteroideAddon.CATEGORY, "Typo", "Replace text in sent messages/commands.");
+        super(AsteroideAddon.CATEGORY, "Typo", "Replaces text in sent messages/commands.");
     }
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();

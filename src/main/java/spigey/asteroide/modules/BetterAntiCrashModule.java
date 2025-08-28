@@ -29,11 +29,11 @@ public class BetterAntiCrashModule extends Module {
     );
     private final Setting<Boolean> EntityLimit = sgEntities.add(new BoolSetting.Builder()
         .name("Entity Limit Enabled")
-        .description("Cancels entity spawning at a specific treshold.")
+        .description("Cancels entity spawning at a specific threshold.")
         .defaultValue(true)
         .build()
     );
-    private final Setting<Integer> EntityTreshold = sgEntities.add(new IntSetting.Builder()
+    private final Setting<Integer> EntityThreshold = sgEntities.add(new IntSetting.Builder()
         .name("Entity Limit")
         .description("Cancels entities X from spawning when there are more than X entities in the world.")
         .defaultValue(2000)
@@ -44,9 +44,9 @@ public class BetterAntiCrashModule extends Module {
         .visible(EntityLimit::get)
         .build()
     );
-    private final Setting<Set<EntityType<?>>> excludeFromTreshold = sgEntities.add(new EntityTypeListSetting.Builder()
+    private final Setting<Set<EntityType<?>>> excludeFromThreshold = sgEntities.add(new EntityTypeListSetting.Builder()
         .name("Entity Limit Exclusions")
-        .description("Excludes entities from the entity limit treshold.")
+        .description("Excludes entities from the entity limit threshold.")
         .defaultValue(Set.of(EntityType.PLAYER, EntityType.ITEM))
         .build()
     );
@@ -58,13 +58,13 @@ public class BetterAntiCrashModule extends Module {
     );
     private final Setting<Boolean> DeleteParticles = sgParticles.add(new BoolSetting.Builder()
         .name("Cancel Particles")
-        .description("Cancels particle spawning at a specific treshold.")
+        .description("Cancels particle spawning at a specific threshold.")
         .defaultValue(true)
         .build()
     );
-    private final Setting<Integer> Treshold = sgParticles.add(new IntSetting.Builder()
-        .name("Particle Treshold")
-        .description("Minimum treshold to start cancelling particles.")
+    private final Setting<Integer> Threshold = sgParticles.add(new IntSetting.Builder()
+        .name("Particle Threshold")
+        .description("Minimum threshold to start cancelling particles.")
         .defaultValue(2000)
         .min(-1)
         .sliderMin(0)
@@ -98,11 +98,11 @@ public class BetterAntiCrashModule extends Module {
 
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void onReceivePacket(PacketEvent.Receive event) {
-        if(event.packet instanceof ParticleS2CPacket) if(DeleteParticles.get() && ((ParticleS2CPacket) event.packet).getCount() >= Treshold.get()) event.cancel();
+        if(event.packet instanceof ParticleS2CPacket) if(DeleteParticles.get() && ((ParticleS2CPacket) event.packet).getCount() >= Threshold.get()) event.cancel();
         if(event.packet instanceof EntityStatusS2CPacket) if((((EntityStatusS2CPacket) event.packet).getEntity(mc.world) instanceof FireworkRocketEntity) && CancelFireworks.get()) event.cancel();
         if(!(event.packet instanceof EntitySpawnS2CPacket packet)) return;
         if(entities.get().contains(packet.getEntityType())) event.cancel();
-        if(this.entityCounts.getOrDefault(packet.getEntityType(), 0)+1 > EntityTreshold.get() && EntityLimit.get()) event.cancel();
+        if(this.entityCounts.getOrDefault(packet.getEntityType(), 0)+1 > EntityThreshold.get() && EntityLimit.get()) event.cancel();
     }
 
     @EventHandler
@@ -114,16 +114,16 @@ public class BetterAntiCrashModule extends Module {
     private void onTick(TickEvent.Post event) {
         if(!EntityLimit.get()) return;
         Entity[] entities = StreamSupport.stream(mc.world.getEntities().spliterator(), false).toArray(Entity[]::new);
-        if(entities.length < EntityTreshold.get()) { this.entityCounts = new HashMap<>(); return; }
+        if(entities.length < EntityThreshold.get()) { this.entityCounts = new HashMap<>(); return; }
         List<EntityType<?>> remove = new ArrayList<>();
         Map<EntityType<?>, Integer> thisCounts = new HashMap<>();
         for(Entity entity : entities){
             if(entity == mc.player) continue;
             EntityType<?> type = entity.getType();
-            if(excludeFromTreshold.get().contains(type)) continue;
+            if(excludeFromThreshold.get().contains(type)) continue;
             if(remove.contains(type)) { entity.setRemoved(Entity.RemovalReason.DISCARDED); continue; }
             thisCounts.put(type, thisCounts.getOrDefault(type, 0) + 1);
-            if(thisCounts.getOrDefault(type, 0) > EntityTreshold.get()) { entity.setRemoved(Entity.RemovalReason.DISCARDED); remove.add(type); }
+            if(thisCounts.getOrDefault(type, 0) > EntityThreshold.get()) { entity.setRemoved(Entity.RemovalReason.DISCARDED); remove.add(type); }
         }
         this.entityCounts = thisCounts;
     }

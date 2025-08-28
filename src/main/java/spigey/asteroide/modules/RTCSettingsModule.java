@@ -3,7 +3,7 @@ package spigey.asteroide.modules;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import net.minecraft.entity.EntityType;
+import spigey.asteroide.utils.ws;
 import spigey.asteroide.AsteroideAddon;
 import meteordevelopment.meteorclient.settings.*;
 
@@ -39,18 +39,29 @@ public class RTCSettingsModule extends Module {
     );
 
     public final Setting<Boolean> disableIcon = sgGeneral.add(new BoolSetting.Builder()
-        .name("Highlight Asteroide Users in the player list")
+        .name("Highlight Asteroide Users in the tab list")
         .description("Highlights Asteroide users in the player list with a custom icon.")
         .defaultValue(true)
         .build()
     );
 
     public final Setting<Boolean> censor = sgGeneral.add(new BoolSetting.Builder()
-        .name("I am a 10 year old child")
+        .name("Censor Slurs")
         .description("Censors slurs in the RTC")
         .defaultValue(false)
         .build()
     );
+
+    public final Setting<Boolean> broadcastOnline = sgGeneral.add(new BoolSetting.Builder()
+        .name("Get notified when someone comes online")
+        .description("Self explanatory")
+        .onChanged((value) -> { ws.call("online", isActive() && value); } )
+        .defaultValue(false)
+        .build()
+    );
+
+    @Override public void onActivate() { ws.call("online", isActive() && broadcastOnline.get()); }
+    @Override public void onDeactivate() { ws.call("online", false); }
 
     public enum colors {
         dark_red,
