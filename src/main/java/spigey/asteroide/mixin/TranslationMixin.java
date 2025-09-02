@@ -20,6 +20,7 @@ public class TranslationMixin {
         try{
             final BetterAntiCrashModule ecm = Modules.get().get(BetterAntiCrashModule.class);
             if(!ecm.isActive()) return;
+            if(this.key.matches("%[0-9]+\\$s")) cir.setReturnValue(Text.literal("§c[Translation Blocked]"));
             for(String keyy : ecm.translations.get()) if(this.key.contains(keyy)) { cir.setReturnValue(Text.literal("§c[Translation Blocked]")); break; }
         }catch(Exception e){ /* dear fuck */ }
     }

@@ -8,11 +8,14 @@
   "mixins": [
     "BedrockSpoofMixin",
     "BlockOutlineMixin",
+    "ClientPlayNetworkHandlerMixin",
     "EntityRendererMixin",
     "HandshakeC2SMixin",
     "PlayerListHudMixin",
     "TranslationMixin",
-    "WorldBorderMixin",
-    "ClientPlayNetworkHandlerMixin"
+    "WorldBorderMixin"
+  ],
+  "client": [
+    "BossBarHudMixin"
   ]
 }

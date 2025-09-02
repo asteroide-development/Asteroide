@@ -1,5 +1,6 @@
 package spigey.asteroide.modules;
 
+import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.ParticleEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -7,13 +8,17 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
+import net.minecraft.client.render.VertexFormatElement;
+import net.minecraft.component.ComponentType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
-import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.network.packet.s2c.play.EntityStatusS2CPacket;
-import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.particle.ParticleType;
+import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
 
 import java.util.*;
@@ -87,6 +92,41 @@ public class BetterAntiCrashModule extends Module {
         .build()
     );
     public final Setting<List<String>> translations = sgOther.add(new StringListSetting.Builder().name("translations").description("Translation strings to block").defaultValue("%1$s").visible(translationCrash::get).build());
+    final SettingGroup sgLength = settings.createGroup("Length", true);
+    public final Setting<Integer> ThresholdLength = sgLength.add(new IntSetting.Builder()
+        .name("Length Threshold")
+        .description("Cancels things that are longer than X characters.")
+        .defaultValue(750)
+        .min(-1)
+        .sliderMin(100)
+        .sliderMax(10000)
+        .max(2147483647)
+        .build()
+    );
+    private final Setting<Boolean> chatLimit = sgLength.add(new BoolSetting.Builder()
+        .name("Chat Messages")
+        .description("Cancels chat messages that are too long.")
+        .defaultValue(true)
+        .build()
+    );
+    private final Setting<Boolean> entityLengthLimit = sgLength.add(new BoolSetting.Builder()
+        .name("Entities")
+        .description("Cancels entities whose names are too long.")
+        .defaultValue(true)
+        .build()
+    );
+    public final Setting<Boolean> bossBarLimit = sgLength.add(new BoolSetting.Builder()
+        .name("Bossbars")
+        .description("Cancels bossbars whose names are too long.")
+        .defaultValue(true)
+        .build()
+    );
+    /*public final Setting<Boolean> items = sgLength.add(new BoolSetting.Builder()
+        .name("Items")
+        .description("Cancels items whose names are too long.")
+        .defaultValue(true)
+        .build()
+    );*/
 
     private Map<EntityType<?>, Integer> entityCounts = new HashMap<>();
 
@@ -98,6 +138,11 @@ public class BetterAntiCrashModule extends Module {
 
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void onReceivePacket(PacketEvent.Receive event) {
+        if(event.packet instanceof EntityTrackerUpdateS2CPacket && entityLengthLimit.get()) { try{
+            String name = "";
+            for(var entry : ((EntityTrackerUpdateS2CPacket) event.packet).trackedValues()) { if(entry.id() == 2) { name = ((Optional<Text>) entry.value()).isPresent() ? ((Optional<Text>) entry.value()).get().getString() : ""; break; }}
+            if(name.length() > ThresholdLength.get()) event.cancel();
+        }catch(Exception L){/**/}}
         if(event.packet instanceof ParticleS2CPacket) if(DeleteParticles.get() && ((ParticleS2CPacket) event.packet).getCount() >= Threshold.get()) event.cancel();
         if(event.packet instanceof EntityStatusS2CPacket) if((((EntityStatusS2CPacket) event.packet).getEntity(mc.world) instanceof FireworkRocketEntity) && CancelFireworks.get()) event.cancel();
         if(!(event.packet instanceof EntitySpawnS2CPacket packet)) return;
@@ -112,6 +157,15 @@ public class BetterAntiCrashModule extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Post event) {
+        /*if(items.get()){
+            for(ItemStack stack : mc.player.getInventory().main){
+                if(stack.getName().getString().length() > ThresholdLength.get()) stack.set(DataComponentTypes.CUSTOM_NAME, Text.of(String.format("§c[Item with length %d blocked]", stack.getName().getString().length())));
+            }
+        }*/
+        if(entityLengthLimit.get()){try{
+            Entity[] entities = StreamSupport.stream(mc.world.getEntities().spliterator(), false).toArray(Entity[]::new);
+            for(Entity entity : entities){ if(entity.getName().getString().length() > ThresholdLength.get() && entityLengthLimit.get()){ entity.setCustomName(Text.of(String.format("§c[Entity with length %d blocked]", entity.getCustomName().getString().length())));} }
+        }catch(Exception L){/**/}}
         if(!EntityLimit.get()) return;
         Entity[] entities = StreamSupport.stream(mc.world.getEntities().spliterator(), false).toArray(Entity[]::new);
         if(entities.length < EntityThreshold.get()) { this.entityCounts = new HashMap<>(); return; }
@@ -126,6 +180,14 @@ public class BetterAntiCrashModule extends Module {
             if(thisCounts.getOrDefault(type, 0) > EntityThreshold.get()) { entity.setRemoved(Entity.RemovalReason.DISCARDED); remove.add(type); }
         }
         this.entityCounts = thisCounts;
+    }
+
+    @EventHandler
+    private void onMessageReceive(ReceiveMessageEvent event){
+        if(!chatLimit.get()) return;
+        int length = event.getMessage().getString().length();
+        if(chatLimit.get() && length <= ThresholdLength.get()) return;
+        event.setMessage(Text.of("§c[Message with length " + length + " blocked]"));
     }
 
     @Override
