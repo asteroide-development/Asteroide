@@ -85,6 +85,7 @@ public class DevModule extends Module {
     private void onMessageReceive(ReceiveMessageEvent event){
         if(!testMsgs.get() || !isActive()) return;
         if(event.getMessage().getString().contains("[Dev]")) return;
+        info(event.getMessage().toString());
         this.Received = !this.Received;
         if(this.Received) this.ticks = 0;
         else info(String.format("Auto Chatgame took %d ticks (%.2f seconds)", this.ticks, this.ticks / 20f));

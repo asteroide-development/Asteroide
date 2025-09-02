@@ -19,7 +19,7 @@ public class PlayerListHudMixin {
     private void modifyPlayerName(PlayerListEntry entry, CallbackInfoReturnable<Text> cir) {
         final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
         if(!tooLazyForThisShit(entry.getProfile().getName()) || !rtc.disableIcon.get()) return;
-        cir.setReturnValue(Text.empty().append("\uE000 ").append(cir.getReturnValue()));
+        cir.setReturnValue(Text.empty().append("\uE429 ").append(cir.getReturnValue()));
     }
 
     private boolean tooLazyForThisShit(String username){
