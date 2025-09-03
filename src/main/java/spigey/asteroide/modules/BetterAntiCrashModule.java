@@ -121,16 +121,17 @@ public class BetterAntiCrashModule extends Module {
         .defaultValue(true)
         .build()
     );
-    /*public final Setting<Boolean> items = sgLength.add(new BoolSetting.Builder()
+    public final Setting<Boolean> items = sgLength.add(new BoolSetting.Builder()
         .name("Items")
         .description("Cancels items whose names are too long.")
         .defaultValue(true)
         .build()
-    );*/
+    );
 
     private Map<EntityType<?>, Integer> entityCounts = new HashMap<>();
 
     public boolean shouldRender(net.minecraft.entity.Entity entity) {
+        if(!isActive()) return true;
         if (entity == mc.player) return true;
         if (entity == null || entity.isRemoved()) return false;
         return !entities.get().contains(entity.getType());
@@ -138,6 +139,7 @@ public class BetterAntiCrashModule extends Module {
 
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void onReceivePacket(PacketEvent.Receive event) {
+        if(!isActive()) return;
         if(event.packet instanceof EntityTrackerUpdateS2CPacket && entityLengthLimit.get()) { try{
             String name = "";
             for(var entry : ((EntityTrackerUpdateS2CPacket) event.packet).trackedValues()) { if(entry.id() == 2) { name = ((Optional<Text>) entry.value()).isPresent() ? ((Optional<Text>) entry.value()).get().getString() : ""; break; }}
@@ -152,16 +154,13 @@ public class BetterAntiCrashModule extends Module {
 
     @EventHandler
     private void onAddParticle(ParticleEvent event) {
+        if(!isActive()) return;
         if (particles.get().contains(event.particle.getType())) event.cancel();
     }
 
     @EventHandler
     private void onTick(TickEvent.Post event) {
-        /*if(items.get()){
-            for(ItemStack stack : mc.player.getInventory().main){
-                if(stack.getName().getString().length() > ThresholdLength.get()) stack.set(DataComponentTypes.CUSTOM_NAME, Text.of(String.format("§c[Item with length %d blocked]", stack.getName().getString().length())));
-            }
-        }*/
+        if(!isActive()) return;
         if(entityLengthLimit.get()){try{
             Entity[] entities = StreamSupport.stream(mc.world.getEntities().spliterator(), false).toArray(Entity[]::new);
             for(Entity entity : entities){ if(entity.getName().getString().length() > ThresholdLength.get() && entityLengthLimit.get()){ entity.setCustomName(Text.of(String.format("§c[Entity with length %d blocked]", entity.getCustomName().getString().length())));} }
@@ -184,6 +183,7 @@ public class BetterAntiCrashModule extends Module {
 
     @EventHandler
     private void onMessageReceive(ReceiveMessageEvent event){
+        if(!isActive()) return;
         if(!chatLimit.get()) return;
         int length = event.getMessage().getString().length();
         if(chatLimit.get() && length <= ThresholdLength.get()) return;

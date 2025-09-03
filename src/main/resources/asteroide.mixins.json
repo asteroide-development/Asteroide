@@ -11,6 +11,7 @@
     "ClientPlayNetworkHandlerMixin",
     "EntityRendererMixin",
     "HandshakeC2SMixin",
+    "ItemStackMixin",
     "PlayerListHudMixin",
     "TranslationMixin",
     "WorldBorderMixin"

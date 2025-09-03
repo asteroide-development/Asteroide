@@ -156,6 +156,7 @@ public class AsteroideAddon extends MeteorAddon {
         Commands.add(new CloseCommand());
         Commands.add(new UUIDCommand());
         Commands.add(new DupeCommand());
+        
 
 
         // HUD
