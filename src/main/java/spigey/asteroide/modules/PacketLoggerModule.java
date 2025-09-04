@@ -11,6 +11,9 @@ import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.s2c.common.CommonPingS2CPacket;
+import net.minecraft.network.packet.s2c.common.KeepAliveS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerActionResponseS2CPacket;
 import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
 
@@ -38,8 +41,10 @@ public class PacketLoggerModule extends Module {
 
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void onReceivePacket(PacketEvent.Receive event) {
-        if (s2cPackets.get().contains(event.packet.getClass())) ChatUtils.sendMsg(Text.of("§7" + event.packet.getClass().getSimpleName() + " was received!"));
-        // new CollisionShapeEvent();
+        if (s2cPackets.get().contains(event.packet.getClass())) {
+            if(event.packet instanceof CommonPingS2CPacket) info(String.valueOf(((CommonPingS2CPacket) event.packet).getParameter()));
+            else ChatUtils.sendMsg(Text.of("§7" + event.packet.getClass().getSimpleName() + " was received!"));
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST + 1)

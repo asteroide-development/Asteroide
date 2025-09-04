@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.stream.StreamSupport;
 
 public class BetterAntiCrashModule extends Module {
-    public BetterAntiCrashModule() { super(AsteroideAddon.CATEGORY, "Better-Anti-Crash", "Fixes crashes from too many entities/particles/fireworks & invalid translations."); }
+    public BetterAntiCrashModule() { super(AsteroideAddon.CATEGORY, "Better-Anti-Crash", "Fixes various exploits and crashes."); }
     final SettingGroup sgEntities = settings.createGroup("Entities", true);
     private final Setting<Set<EntityType<?>>> entities = sgEntities.add(new EntityTypeListSetting.Builder()
         .name("entities")

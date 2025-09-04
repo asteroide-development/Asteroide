@@ -19,7 +19,7 @@ import java.util.List;
 
 public class DupeCommand extends Command {
     public DupeCommand() {
-        super("dupe", "Dupes the item in your hand.");
+        super("dupe", "Dupes the item in your hand & drops the results.");
     }
 
     private int tick = -1;
