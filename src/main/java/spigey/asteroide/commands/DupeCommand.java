@@ -29,15 +29,15 @@ public class DupeCommand extends Command {
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.executes(context -> {
-            execute("dupe", 5);
+            execute();
             this.setDelay = false;
             return SINGLE_SUCCESS;
         }).then(argument("delay", IntegerArgumentType.integer(0)).executes(context -> {
-            execute(StringArgumentType.getString(context, "command"), IntegerArgumentType.getInteger(context, "delay"));
-            this.setDelay = false;
+            execute(IntegerArgumentType.getInteger(context, "delay"));
+            this.setDelay = false; // uhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
             return SINGLE_SUCCESS;
         }).then(argument("command", StringArgumentType.greedyString()).executes(context -> {
-            execute(StringArgumentType.getString(context, "command"), 5);
+            execute(StringArgumentType.getString(context, "command"), IntegerArgumentType.getInteger(context, "delay"));
             this.setDelay = false;
             return SINGLE_SUCCESS;
         })));
@@ -46,21 +46,16 @@ public class DupeCommand extends Command {
 
     private void execute(String command, int delay){
         MeteorClient.EVENT_BUS.subscribe(this);
-        ItemStack stack = mc.player.getInventory().getMainHandStack();
-        if(stack.getCount() <= stack.getMaxCount() / 2){
-            error(String.format("You need at least %d of %s in your hand to dupe!", stack.getMaxCount() / 2 + 1, stack.getName().getString()));
-            return;
-        }
         List<ItemStack> oldInventory = new ArrayList<>();
-        for (int i = 0; i < mc.player.getInventory().size(); i++) { oldInventory.add(mc.player.getInventory().getStack(i).copy()); }
+        for (int i = 0; i < mc.player.getInventory().size(); i++) { oldInventory.add(mc.player.getInventory().getStack(i).copyWithCount(1)); }
         this.inventory = oldInventory;
         mc.getNetworkHandler().sendChatCommand(command.startsWith("/") ? command.substring(1) : command);
         this.tick = delay;
     }
 
-    private void execute(String command){ execute(command, 5); }
+    private void execute(String command){ execute(command, 30); }
     private void execute(int delay){ execute("dupe", delay); }
-    private void execute(){ execute("dupe", 5); }
+    private void execute(){ execute("dupe", 30); }
 
     @EventHandler
     private void onTick(TickEvent.Post event) {
@@ -69,7 +64,7 @@ public class DupeCommand extends Command {
             PlayerInventory newInventory = mc.player.getInventory();
             for(int i = 0; i < newInventory.size(); i++){
                 ItemStack item = this.inventory.get(i);
-                if(!ItemStack.areEqual(item, newInventory.getStack(i))){ InvUtils.drop().slot(i); }
+                if(!ItemStack.areEqual(item, newInventory.getStack(i).copyWithCount(1))){ InvUtils.drop().slot(i); }
             }
             this.tick--;
             return;
