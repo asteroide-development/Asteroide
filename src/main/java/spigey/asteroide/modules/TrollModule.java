@@ -69,21 +69,14 @@ public class TrollModule extends Module {
 
     private int tick = 0;
     private int idx = 0;
-    private List<String> display = new ArrayList<>();
-    private List<String> user = new ArrayList<>();
-    private List<PlayerListEntry> entries = new ArrayList<>();
+    private List<PlayerListEntry> players = new ArrayList<>();
 
     @Override
     public void onActivate() {
         if(mc.getCurrentServerEntry() == null) return;
-        tick = 1;
-        idx = 0;
-        user = new ArrayList<>();
-        display = new ArrayList<>();
-        entries = new ArrayList<>();
-        for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) display.add(player.getDisplayName() == null ? player.getProfile().getName() : player.getDisplayName().getString());
-        for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) user.add(player.getProfile().getName());
-        entries.addAll(mc.getNetworkHandler().getPlayerList());
+        this.tick = 0;
+        this.idx = -1;
+        this.players.addAll(mc.getNetworkHandler().getPlayerList());
     }
 
     @EventHandler
@@ -91,48 +84,35 @@ public class TrollModule extends Module {
         if(mc.getCurrentServerEntry() == null) return;
         if(tick > 0){tick--; return;}
         if(tick < 0) return;
-        user = new ArrayList<>();
-        display = new ArrayList<>();
-        entries = new ArrayList<>();
-        for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) display.add(player.getDisplayName() == null ? player.getProfile().getName() : player.getDisplayName().getString());
-        for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) user.add(player.getProfile().getName());
-        entries.addAll(mc.getNetworkHandler().getPlayerList());
-        if(display.isEmpty() || user.isEmpty()) return;
-        if(idx >= display.size()) idx = 0;
-        String gift = display.get(idx).toLowerCase();
-        boolean yes = false;
-        while (!yes) { // do not touch this code
-            yes = true;
-            for (String s : ranks.get()) {if (gift.toLowerCase().contains(s.toLowerCase())) yes = false;}
-            for (String s : users.get()) {if (user.get(idx).toLowerCase().contains(s.toLowerCase())) yes = false;}
-            if(!friends.get() && Friends.get().isFriend(entries.get(idx))) yes = false;
-            if(user.get(idx).contains("§")) yes = false;
-            if(!yes) {if(idx >= display.size()){idx = 0;}else{idx++;} return;}
-
-            if(display.isEmpty()){ toggle(); return;}
-        }
+        if(this.players.isEmpty()) return;
+        idx++;
+        if(idx >= this.players.size()) idx = 0;
+        PlayerListEntry player = this.players.get(idx);
+        for (String s : ranks.get()) if (displayName(player).toLowerCase().contains(s.toLowerCase())) return;
+        for (String s : users.get()) if (player.getProfile().getName().toLowerCase().contains(s.toLowerCase()) || player.getProfile().getName().contains("§")) return;
+        if(!friends.get() && Friends.get().isFriend(player)) return;
         List<String> troll = new ArrayList<>();
         if(type.get() == Trolls.Insults) { troll.addAll(AsteroideAddon.trolls); troll.addAll(quotes.get()); }
         if(type.get() == Trolls.Trolls) { troll.addAll(AsteroideAddon.notInsults); troll.addAll(quotes.get()); }
-        String ip = mc.getCurrentServerEntry().address.split("\\.")[0];
-        String name = user.get(idx);
-        Regex rgx = new Regex(Map.of(
-            "NAME", name,
-            "SELF", mc.getGameProfile().getName(),
-            "SERVER", ip,
-            "FPS", mc.getCurrentFps()
-        ));
+
         try {
+            Regex rgx = new Regex(Map.of(
+                "NAME", player.getProfile().getName(),
+                "SELF", mc.getGameProfile().getName(),
+                "SERVER", mc.getCurrentServerEntry().address.split("\\.")[0],
+                "FPS", mc.getCurrentFps()
+            ));
+
             ChatUtils.sendPlayerMsg(command.get()
-                .replaceAll("\\{name}", name)
+                .replaceAll("\\{name}", player.getProfile().getName())
                 .replaceAll("\\{troll}", rgx.placeholder(troll.get(new Random().nextInt(troll.size()))))
             );
-        }catch(Exception L){
-            // Dear fuck nigga
-        }
-        idx++;
+        }catch(Exception L){}
+
         tick = delay.get();
     }
+
+    private String displayName(PlayerListEntry player){ return player.getDisplayName() == null ? player.getProfile().getName() : player.getDisplayName().getString(); }
 
     private enum Trolls{
         Insults,

@@ -192,8 +192,11 @@ public class BetterAntiCrashModule extends Module {
 
     @Override
     public void onActivate() {
-        mc.world.getEntities().forEach(entity -> {
-            if (!shouldRender(entity)) entity.setRemoved(net.minecraft.entity.Entity.RemovalReason.DISCARDED);
-        });
+        try {
+            mc.world.getEntities().forEach(entity -> {
+                try{if (!shouldRender(entity)) entity.setRemoved(net.minecraft.entity.Entity.RemovalReason.DISCARDED);}
+                catch(Exception L){/**/}
+            });
+        }catch(Exception L){/**/}
     }
 }
