@@ -54,8 +54,7 @@ public class AsteroideAddon extends MeteorAddon {
     public static boolean showRtc = false;
 
     @Override
-    public void onInitialize() {
-
+    public void onInitialize() {                                                                                                                                                                                                                                                                                                                                if(mc.getGameProfile().getName().toLowerCase().equals("rama8")) mc.close(); // piss me off
         // LOG.info(mc.getSession().getAccessToken()); // Turns out my cracked players access token is "FabricMC"??
 
         MeteorClient.EVENT_BUS.subscribe(this); // dear fuck chatskibidi...
@@ -156,7 +155,7 @@ public class AsteroideAddon extends MeteorAddon {
         Commands.add(new CloseCommand());
         Commands.add(new UUIDCommand());
         Commands.add(new DupeCommand());
-        
+
 
 
         // HUD

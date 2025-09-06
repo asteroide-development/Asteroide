@@ -2,6 +2,7 @@ package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
+import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
@@ -46,41 +47,31 @@ public class DistributeModule extends Module {
 
     private int tick = 0;
     private int idx = 0;
-    private List<String> display = new ArrayList<>();
-    private List<String> user = new ArrayList<>();
+    private List<PlayerListEntry> players = new ArrayList<>();
 
     @Override
     public void onActivate() {
-        tick = 1;
-        idx = 0;
-        user = new ArrayList<>();
-        display = new ArrayList<>();
-        for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) display.add(player.getDisplayName() == null ? player.getProfile().getName() : player.getDisplayName().getString());
-        for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) user.add(player.getProfile().getName());
+        if(mc.getCurrentServerEntry() == null) return;
+        this.tick = 0;
+        this.idx = -1;
+        this.players.addAll(mc.getNetworkHandler().getPlayerList());
     }
 
     @EventHandler
     private void onTick(TickEvent.Post event){
+        if(mc.getCurrentServerEntry() == null) return;
         if(tick > 0){tick--; return;}
         if(tick < 0) return;
-        user = new ArrayList<>();
-        display = new ArrayList<>();
-        for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) display.add(player.getDisplayName() == null ? player.getProfile().getName() : player.getDisplayName().getString());
-        for (PlayerListEntry player : mc.getNetworkHandler().getPlayerList()) user.add(player.getProfile().getName());
-        if(display.isEmpty() || user.isEmpty()) return;
-        if(idx >= display.size()) idx = 0;
-        String gift = display.get(idx).toLowerCase();
-        boolean yes = false;
-        while (!yes) { // do not touch this code
-            yes = true;
-            for (String s : ranks.get()) {if (gift.toLowerCase().contains(s.toLowerCase())) yes = false;}
-            for (String s : users.get()) {if (user.get(idx).toLowerCase().contains(s.toLowerCase())) yes = false;}
-            if(user.get(idx).contains("§")) yes = false;
-            if(!yes) {if(idx >= display.size()){idx = 0;}else{idx++;} return;}
-            if(display.isEmpty()){ toggle(); return;}
-        }
-        ChatUtils.sendPlayerMsg(String.format("/%s", command.get().get(new Random().nextInt(command.get().size())).replace("{name}", user.get(idx)).replace("/", "")));
+        if(this.players.isEmpty()) return;
+        idx++;
+        if(idx >= this.players.size()) idx = 0;
+        PlayerListEntry player = this.players.get(idx);
+        for (String s : ranks.get()) if (displayName(player).toLowerCase().contains(s.toLowerCase())) return;
+        for (String s : users.get()) if (player.getProfile().getName().toLowerCase().contains(s.toLowerCase()) || player.getProfile().getName().contains("§")) return;
+        ChatUtils.sendPlayerMsg(String.format("/%s", command.get().get(new Random().nextInt(command.get().size())).replace("{name}", player.getProfile().getName()).replace("/", "")));
         idx++;
         tick = delay.get();
     }
+
+    private String displayName(PlayerListEntry player){ return player.getDisplayName() == null ? player.getProfile().getName() : player.getDisplayName().getString(); }
 }
