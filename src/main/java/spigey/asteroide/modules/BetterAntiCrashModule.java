@@ -85,7 +85,7 @@ public class BetterAntiCrashModule extends Module {
         .defaultValue(false)
         .build()
     );
-    private final Setting<Boolean> translationCrash = sgOther.add(new BoolSetting.Builder()
+    public final Setting<Boolean> translationCrash = sgOther.add(new BoolSetting.Builder()
         .name("Block Invalid Translations")
         .description("Cancels invalid translation strings.")
         .defaultValue(true)
