@@ -17,6 +17,7 @@
     "WorldBorderMixin"
   ],
   "client": [
-    "BossBarHudMixin"
+    "BossBarHudMixin",
+    "ChatHudMixin"
   ]
 }
