@@ -70,7 +70,7 @@ public class AimbotModule extends Module {
     );
 
     private final Setting<Boolean> targetFriends = sgGeneral.add(new BoolSetting.Builder().name("target friends").description("Also targets friends when enabled.").defaultValue(false).build());
-    // this nigga shit so fucking skidded 💔
+    // this shit so fucking skidded 💔
 
 
     @EventHandler
@@ -81,9 +81,9 @@ public class AimbotModule extends Module {
         double[] geminiwtf = {entity.getX(), entity.getY(), entity.getZ()};
         assert mc.player != null;
         if(allowUp.get()) {
-            float nigger = MathHelper.wrapDegrees((float) (-Math.toDegrees(Math.atan2(geminiwtf[0] - mc.player.getX(), geminiwtf[2] - mc.player.getZ()))));
-            mc.player.setHeadYaw(nigger);
-            mc.player.setYaw(nigger);
+            float yaw = MathHelper.wrapDegrees((float) (-Math.toDegrees(Math.atan2(geminiwtf[0] - mc.player.getX(), geminiwtf[2] - mc.player.getZ()))));
+            mc.player.setHeadYaw(yaw);
+            mc.player.setYaw(yaw);
         } else {
             mc.player.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, new Vec3d(geminiwtf[0], entity.getY() + (entity.getHeight() * (percent.get() / 100.0)), geminiwtf[2]));
         }

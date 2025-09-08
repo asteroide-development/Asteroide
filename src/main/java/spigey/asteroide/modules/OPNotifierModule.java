@@ -19,8 +19,6 @@ public class OPNotifierModule extends Module {
     }
     @EventHandler
     private void onConnect(ServerConnectEndEvent event){
-        System.out.println("asdasdasdasdasasdadsasd");
-        info("NIGGA WHY IS IT NOT WORKING");
         if(!isActive()) return;
         ChatUtils.sendMsg(Text.of(switch(getPermissionLevel()){
             case 0 -> "§cYou do not have any permission on this server.";

@@ -25,8 +25,6 @@ public abstract class BlockOutlineMixin {
             BlockHitboxesModule module = moduless.get(BlockHitboxesModule.class);
             assert module != null;
             if(module.isActive()) if (module.blocks.get().contains(((BlockState) (Object) this).getBlock())) cir.setReturnValue(VoxelShapes.fullCube());
-        }catch(Exception e){
-            // nigga
-        }
+        }catch(Exception e){/**/}
     }
 }

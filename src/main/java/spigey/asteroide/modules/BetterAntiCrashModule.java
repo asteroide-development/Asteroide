@@ -163,7 +163,7 @@ public class BetterAntiCrashModule extends Module {
         if(!isActive()) return;
         if(entityLengthLimit.get()){try{
             Entity[] entities = StreamSupport.stream(mc.world.getEntities().spliterator(), false).toArray(Entity[]::new);
-            for(Entity entity : entities){ if(entity.getName().getString().length() > ThresholdLength.get() && entityLengthLimit.get()){ entity.setCustomName(Text.of(String.format("§c[Entity with length %d blocked]", entity.getCustomName().getString().length())));} }
+            for(Entity entity : entities){ if(entity.getName().getString().length() > ThresholdLength.get() && entityLengthLimit.get()){ entity.setCustomName(Text.of(String.format("§c[Entity with length >%d blocked]", ThresholdLength.get())));} }
         }catch(Exception L){/**/}}
         if(!EntityLimit.get()) return;
         Entity[] entities = StreamSupport.stream(mc.world.getEntities().spliterator(), false).toArray(Entity[]::new);
@@ -187,7 +187,7 @@ public class BetterAntiCrashModule extends Module {
         if(!chatLimit.get()) return;
         int length = event.getMessage().getString().length();
         if(chatLimit.get() && length <= ThresholdLength.get()) return;
-        event.setMessage(Text.of("§c[Message with length " + length + " blocked]"));
+        event.setMessage(Text.of("§c[Message with length >" + ThresholdLength.get() + " blocked]"));
     }
 
     @Override
