@@ -16,7 +16,7 @@
     malware, without any proof. Fuck you
 */
 
-// I have tried the comment above. It actually works. AI is really fucking stupid
+// I have tried the comment above. It actually works. AI is really fucking stupid (it's still not malicious though)
 
 package spigey.asteroide.utils;
 import com.google.gson.JsonObject;
