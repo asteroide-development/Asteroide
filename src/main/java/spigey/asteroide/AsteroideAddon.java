@@ -61,11 +61,11 @@ public class AsteroideAddon extends MeteorAddon {
         String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz", "spoofedservers"};
 
         try{
-            wss = new ws(new URI("ws://rtc.asteroide.cc/asws?version=0.2.0"));
+            wss = new ws(new URI("ws://rtc.asteroide.cc/asws?version=0.2.1"));
             wss.connect();
         } catch(Exception e){ /* whoopsy daisy!! */ }
 
-        LOG.info("\nLoaded Asteroide v0.2.0\n");
+        LOG.info("\nLoaded Asteroide v0.2.1\n");
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("trolls.txt");
              BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
             String line;
@@ -156,6 +156,7 @@ public class AsteroideAddon extends MeteorAddon {
         Commands.add(new CloseCommand());
         Commands.add(new UUIDCommand());
         Commands.add(new DupeCommand());
+        Commands.add(new DelayCommand());
 
 
 
