@@ -15,6 +15,6 @@ public class BossBarHudMixin {
     @ModifyExpressionValue(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ClientBossBar;getName()Lnet/minecraft/text/Text;"))
     public Text modifyBossBarName(Text original, @Local ClientBossBar clientBossBar) {
         BetterAntiCrashModule bac = Modules.get().get(BetterAntiCrashModule.class);
-        return bac.isActive() && bac.bossBarLimit.get() && bac.ThresholdLength.get() < original.getString().length() ? Text.of(String.format("§c[Bossbar with length >%d blocked]", bac.ThresholdLength.get())) : original;
+        return bac.isActive() && bac.bossBarLimit.get() && bac.ThresholdLength.get() < original.getString().length() ? Text.of(String.format("§c[Bossbar with length %s blocked]", bac.getMessage(original.getString()))) : original;
     }
 }

@@ -25,13 +25,13 @@ public class ItemStackMixin {
         BetterAntiCrashModule bac = Modules.get().get(BetterAntiCrashModule.class);
         if(!bac.isActive() || !bac.items.get()) { cir.setReturnValue(cir.getReturnValue()); return; }
         String tooltip = cir.getReturnValue().stream().skip(1).map(Text::getString).collect(Collectors.joining());
-        cir.setReturnValue(tooltip.length() > bac.ThresholdLength.get() ? Arrays.stream(new Text[]{cir.getReturnValue().get(0), Text.of(String.format("§c[Tooltip with length >%d blocked]", bac.ThresholdLength.get()))}).toList() : cir.getReturnValue());
+        cir.setReturnValue(tooltip.length() > bac.ThresholdLength.get() ? Arrays.stream(new Text[]{cir.getReturnValue().get(0), Text.of(String.format("§c[Tooltip with length %s blocked]", bac.getMessage(tooltip)))}).toList() : cir.getReturnValue());
     }
 
     @Inject(method = "getName()Lnet/minecraft/text/Text;", at = @At("RETURN"), cancellable = true)
     private void name(CallbackInfoReturnable<Text> cir) {
         BetterAntiCrashModule bac = Modules.get().get(BetterAntiCrashModule.class);
         if(!bac.isActive() || !bac.items.get()) { cir.setReturnValue(cir.getReturnValue()); return; }
-        cir.setReturnValue(cir.getReturnValue().getString().length() > bac.ThresholdLength.get() ? Text.of(String.format("§c[Name with length >%d blocked]", bac.ThresholdLength.get())) : cir.getReturnValue());
+        cir.setReturnValue(cir.getReturnValue().getString().length() > bac.ThresholdLength.get() ? Text.of(String.format("§c[Name with length %s blocked]", bac.getMessage(cir.getReturnValue().getString()))) : cir.getReturnValue());
     }
 }

@@ -13,9 +13,12 @@ import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.text.Text;
@@ -53,6 +56,11 @@ public class BetterAntiCrashModule extends Module {
         .name("Entity Limit Exclusions")
         .description("Excludes entities from the entity limit threshold.")
         .defaultValue(Set.of(EntityType.PLAYER, EntityType.ITEM))
+        .build()
+    );
+    private final Setting<List<Item>> itemEntities = sgEntities.add(new ItemListSetting.Builder()
+        .name("items")
+        .description("Disables spawning of selected items on the ground.")
         .build()
     );
     final SettingGroup sgParticles = settings.createGroup("Particles", true);
@@ -128,18 +136,67 @@ public class BetterAntiCrashModule extends Module {
         .build()
     );
 
+    public final Setting<LengthMode> lengthMode = sgLength.add(new EnumSetting.Builder<LengthMode>()
+        .name("Length Mode")
+        .description("Whether to display the length of something that's blocked or not")
+        .defaultValue(LengthMode.Performance)
+        .build()
+    );
+
+    final SettingGroup sgPackets = settings.createGroup("Packets", true);
+    public final Setting<Boolean> packets = sgPackets.add(new BoolSetting.Builder()
+        .name("Block Large Packets")
+        .description("Block large packets.")
+        .defaultValue(true)
+        .build()
+    );
+
+    private final Setting<Set<Class<? extends Packet<?>>>> blockPackets = sgPackets.add(new PacketListSetting.Builder()
+        .name("Packets")
+        .description("Packets to whitelist/blacklist")
+        .visible(packets::get)
+        .build()
+    );
+
+    public final Setting<Integer> packetThreshold = sgPackets.add(new IntSetting.Builder()
+        .name("Packet Threshold")
+        .description("Blocks too large packets.")
+        .defaultValue(10000)
+        .min(-1)
+        .sliderMin(1000)
+        .sliderMax(100000)
+        .max(2147483647)
+        .visible(packets::get)
+        .build()
+    );
+
+    private final Setting<PacketMode> packetMode = sgPackets.add(new EnumSetting.Builder<PacketMode>()
+        .name("Mode")
+        .description("Whitelisted packets will not be blocked.")
+        .defaultValue(PacketMode.Whitelist)
+        .visible(packets::get)
+        .build()
+    );
+
     private Map<EntityType<?>, Integer> entityCounts = new HashMap<>();
 
     public boolean shouldRender(net.minecraft.entity.Entity entity) {
         if(!isActive()) return true;
         if (entity == mc.player) return true;
         if (entity == null || entity.isRemoved()) return false;
+        if(entity instanceof ItemEntity) if(itemEntities.get().contains(((ItemEntity) entity).getStack().getItem())) return false;
         return !entities.get().contains(entity.getType());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void onReceivePacket(PacketEvent.Receive event) {
         if(!isActive()) return;
+        if(packets.get() && shouldCheck(event.packet)){
+            if(packetThreshold.get() < event.packet.toString().length()){
+                event.cancel();
+                info(String.format("Blocked large %s packet with length %s!", event.packet.getClass().getSimpleName(), getMessage(event.packet.toString())));
+            }
+        }
         if(event.packet instanceof EntityTrackerUpdateS2CPacket && entityLengthLimit.get()) { try{
             String name = "";
             for(var entry : ((EntityTrackerUpdateS2CPacket) event.packet).trackedValues()) { if(entry.id() == 2) { name = ((Optional<Text>) entry.value()).isPresent() ? ((Optional<Text>) entry.value()).get().getString() : ""; break; }}
@@ -150,6 +207,11 @@ public class BetterAntiCrashModule extends Module {
         if(!(event.packet instanceof EntitySpawnS2CPacket packet)) return;
         if(entities.get().contains(packet.getEntityType())) event.cancel();
         if(this.entityCounts.getOrDefault(packet.getEntityType(), 0)+1 > EntityThreshold.get() && EntityLimit.get()) event.cancel();
+    }
+
+    private boolean shouldCheck(Packet<?> packet){
+        if(packetMode.get() == PacketMode.Whitelist && blockPackets.get().contains(packet.getClass())) return false;
+        return packetMode.get() != PacketMode.Blacklist || blockPackets.get().contains(packet.getClass());
     }
 
     @EventHandler
@@ -163,7 +225,7 @@ public class BetterAntiCrashModule extends Module {
         if(!isActive()) return;
         if(entityLengthLimit.get()){try{
             Entity[] entities = StreamSupport.stream(mc.world.getEntities().spliterator(), false).toArray(Entity[]::new);
-            for(Entity entity : entities){ if(entity.getName().getString().length() > ThresholdLength.get() && entityLengthLimit.get()){ entity.setCustomName(Text.of(String.format("§c[Entity with length >%d blocked]", ThresholdLength.get())));} }
+            for(Entity entity : entities){ if(entity.getName().getString().length() > ThresholdLength.get() && entityLengthLimit.get()){ entity.setCustomName(Text.of(String.format("§c[Entity with length %s blocked]", getMessage(entity.getName().getString()))));} }
         }catch(Exception L){/**/}}
         if(!EntityLimit.get()) return;
         Entity[] entities = StreamSupport.stream(mc.world.getEntities().spliterator(), false).toArray(Entity[]::new);
@@ -187,7 +249,7 @@ public class BetterAntiCrashModule extends Module {
         if(!chatLimit.get()) return;
         int length = event.getMessage().getString().length();
         if(chatLimit.get() && length <= ThresholdLength.get()) return;
-        event.setMessage(Text.of("§c[Message with length >" + ThresholdLength.get() + " blocked]"));
+        event.setMessage(Text.of("§c[Message with length " + getMessage(event.getMessage().getString()) + " blocked]"));
     }
 
     @Override
@@ -198,5 +260,17 @@ public class BetterAntiCrashModule extends Module {
                 catch(Exception L){/**/}
             });
         }catch(Exception L){/**/}
+    }
+
+    public String getMessage(String text){ return lengthMode.get() == LengthMode.Performance ? ">"+ThresholdLength.get() : String.valueOf(text.length()); }
+
+    private enum LengthMode {
+        Details,
+        Performance
+    }
+
+    private enum PacketMode {
+        Whitelist,
+        Blacklist
     }
 }
