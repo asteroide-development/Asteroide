@@ -2,6 +2,9 @@ package spigey.asteroide.commands;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.systems.modules.Modules;
@@ -19,6 +22,8 @@ import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.modules.RTCSettingsModule;
 import spigey.asteroide.utils.ws;
 
+import java.util.concurrent.CompletableFuture;
+
 public class RTCCommand extends Command {
     public RTCCommand() {
         super("rtc", "Asteroide RTC");
@@ -30,6 +35,10 @@ public class RTCCommand extends Command {
             ws.sendChat(StringArgumentType.getString(context, "message").split(" "));
             return SINGLE_SUCCESS;
         }));
+        builder.then(literal("msg").then(argument("message", StringArgumentType.greedyString()).suggests(this::getSuggestions).executes(context -> {
+            ws.sendChat(StringArgumentType.getString(context, "message").split(" "));
+            return SINGLE_SUCCESS;
+        })));
         builder.then(literal("online").executes(ctx ->{
             info("§f§lOnline Users (" + AsteroideAddon.users.size() + "):");
             for(String user : AsteroideAddon.users) info(user);
@@ -64,5 +73,10 @@ public class RTCCommand extends Command {
             ))
         );
         return message.append(" ").append(Button);
+    }
+
+    private CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSource> ctx, SuggestionsBuilder builder){
+        for(String user : AsteroideAddon.users) if(user.toLowerCase().contains(builder.getRemainingLowerCase())) builder.suggest(user.replaceAll("§[a-z0-9]", ""));
+        return builder.buildFuture();
     }
 }
