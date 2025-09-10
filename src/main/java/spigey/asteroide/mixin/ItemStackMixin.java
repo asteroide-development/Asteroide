@@ -25,13 +25,16 @@ public class ItemStackMixin {
         BetterAntiCrashModule bac = Modules.get().get(BetterAntiCrashModule.class);
         if(!bac.isActive() || !bac.items.get()) { cir.setReturnValue(cir.getReturnValue()); return; }
         String tooltip = cir.getReturnValue().stream().skip(1).map(Text::getString).collect(Collectors.joining());
-        cir.setReturnValue(tooltip.length() > bac.ThresholdLength.get() ? Arrays.stream(new Text[]{cir.getReturnValue().get(0), Text.of(String.format("§c[Tooltip with length %s blocked]", bac.getMessage(tooltip)))}).toList() : cir.getReturnValue());
+        if(tooltip.contains("§c[Translation Blocked],§c[Translation Blocked]") || tooltip.contains("§c[Translation Blocked]§c[Translation Blocked]§c[Translation Blocked]") && bac.translationCrash.get()) cir.setReturnValue(Arrays.stream(new Text[]{cir.getReturnValue().get(0), Text.of("§c[Translation Blocked]")}).toList());
+        else cir.setReturnValue(tooltip.length() > bac.ThresholdLength.get() ? Arrays.stream(new Text[]{cir.getReturnValue().get(0), Text.of(String.format("§c[Tooltip with length %s blocked]", bac.getMessage(tooltip)))}).toList() : cir.getReturnValue());
     }
 
     @Inject(method = "getName()Lnet/minecraft/text/Text;", at = @At("RETURN"), cancellable = true)
     private void name(CallbackInfoReturnable<Text> cir) {
         BetterAntiCrashModule bac = Modules.get().get(BetterAntiCrashModule.class);
         if(!bac.isActive() || !bac.items.get()) { cir.setReturnValue(cir.getReturnValue()); return; }
-        cir.setReturnValue(cir.getReturnValue().getString().length() > bac.ThresholdLength.get() ? Text.of(String.format("§c[Name with length %s blocked]", bac.getMessage(cir.getReturnValue().getString()))) : cir.getReturnValue());
+        String name = cir.getReturnValue().getString();
+        if(name.contains("§c[Translation Blocked],§c[Translation Blocked]") || name.contains("§c[Translation Blocked]§c[Translation Blocked]§c[Translation Blocked]") && bac.translationCrash.get()) cir.setReturnValue(Text.of("§c[Translation Blocked]"));
+        else cir.setReturnValue(name.length() > bac.ThresholdLength.get() ? Text.of(String.format("§c[Name with length %s blocked]", bac.getMessage(name))) : cir.getReturnValue());
     }
 }
