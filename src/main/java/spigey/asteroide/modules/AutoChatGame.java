@@ -9,6 +9,7 @@ import meteordevelopment.orbit.EventHandler;
 import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.util;
+import spigey.asteroide.utils.RandUtils;
 
 import java.util.*;
 
@@ -114,14 +115,10 @@ public class AutoChatGame extends Module {
         }
 
         if(mode.get() == Mode.Precise) this.tick = delay.get();
-        else {
-            int rdm = this.rand.nextInt(maxoffset.get() - minoffset.get() + 1) + minoffset.get();
-            if (Math.random() > 0.5) rdm = -rdm;
-            this.tick = delay.get() + rdm;
-        }
+        else this.tick = RandUtils.withOffset(delay.get(), minoffset.get(), maxoffset.get());
+
         if(this.tick == 0) run();
         else this.tick--; // It's wrong by exactly 1 tick??
-
         this.isVariable = false;
         this.buffer.clear(); } catch (Exception L) { info("§8§l[§4§lX§8§l] §c" + L.getMessage()); }
     }

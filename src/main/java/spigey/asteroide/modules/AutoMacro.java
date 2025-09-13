@@ -1,23 +1,15 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
-import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import meteordevelopment.orbit.EventPriority;
-import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
-import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
-import net.minecraft.network.packet.s2c.play.ProfilelessChatMessageS2CPacket;
 import spigey.asteroide.AsteroideAddon;
-import meteordevelopment.meteorclient.systems.config.Config;
-import spigey.asteroide.util;
+import spigey.asteroide.utils.RandUtils;
 
 import java.util.List;
-import java.util.Random;
 
-import static spigey.asteroide.util.banstuff;
 import static spigey.asteroide.util.msg;
 
 public class AutoMacro extends Module {
@@ -60,11 +52,7 @@ public class AutoMacro extends Module {
             if(macro.get().get(i) != null){
                 this.message = macro.get().get(i);
                 if(mode.get() == AutoChatGame.Mode.Precise) this.tick = delay.get();
-                else {
-                    int rdm = new Random().nextInt(maxoffset.get() - minoffset.get() + 1) + minoffset.get();
-                    if (Math.random() > 0.5) rdm = -rdm;
-                    this.tick = delay.get() + rdm;
-                }
+                else this.tick = RandUtils.withOffset(delay.get(), minoffset.get(), maxoffset.get());
             }
             else error("Error: Macro is null");
         }

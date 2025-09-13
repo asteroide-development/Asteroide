@@ -93,6 +93,8 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance meteor,
   <tr><td>.uuid</td><td>Shows you a players UUID.</td></tr>
   <tr><td>.whereis</td><td>Find a specified player</td></tr>
 </table>
+
+
 ---
 
 ## ⚙️ Installation
