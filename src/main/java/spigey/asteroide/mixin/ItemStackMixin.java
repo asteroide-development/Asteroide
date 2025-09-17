@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.item.tooltip.TooltipType;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.modules.BetterAntiCrashModule;
+import spigey.asteroide.utils.RandUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

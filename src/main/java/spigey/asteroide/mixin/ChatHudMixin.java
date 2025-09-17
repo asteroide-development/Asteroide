@@ -29,8 +29,8 @@ public class ChatHudMixin {
         if (value.getStyle().getClickEvent() != null) {
             HoverEvent old = value.getStyle().getHoverEvent();
             MutableText tooltip = Text.empty();
-            if (old != null && old.getValue(HoverEvent.Action.SHOW_TEXT) instanceof MutableText t && ce.showCommand.get()) tooltip.append(t.copy()).append("\n\n");
-            if(ce.showCommand.get()) tooltip.append("§7" + value.getStyle().getClickEvent().getValue());
+            if(old != null && !old.getValue(HoverEvent.Action.SHOW_TEXT).getString().contains(value.getStyle().getClickEvent().getValue())) if (old.getValue(HoverEvent.Action.SHOW_TEXT) instanceof MutableText t && ce.showCommand.get()) tooltip.append(t.copy()).append("\n\n");
+            if (ce.showCommand.get()) tooltip.append("§7" + value.getStyle().getClickEvent().getValue());
             copied.setStyle(value.getStyle().withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tooltip)));
             if(ce.customColorEnabled.get()) copied.setStyle(copied.getStyle().withColor(ce.customColor.get().toTextColor()));
             if(ce.customStyleEnabled.get()) copied.setStyle(copied.getStyle().withFormatting(switch(ce.customStyle.get()){

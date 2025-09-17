@@ -11,4 +11,9 @@ public class RandUtils {
     public static int inRange(int max){ return random.nextInt(max); }
     public static Object inArray(Object[] array){ return array[inRange(array.length)]; }
     public static Object inList(List<?> list){ return list.get(inRange(list.size())); }
+    public static String string(int length){
+        StringBuilder sb = new StringBuilder(length);
+        for(int i = 0; i < length; i++) sb.append((char) inRange(32, 126));
+        return sb.toString();
+    }
 }
