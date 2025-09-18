@@ -1,0 +1,17 @@
+{
+    "description": "Asteroide is a utility/QoL/blatant addon for meteor client.",
+    "tags": [
+        "PvP",
+        "Utility",
+        "Misc"
+    ],
+    "supported_versions": [
+        "1.21.1",
+        "1.21.4",
+        "1.21.5",
+        "1.21.8"
+    ],
+    "icon": "https://github.com/asteroide-development/Asteroide/blob/master/icon.png",
+    "discord": "https://discord.com/invite/QFzE3UzdpQ",
+    "homepage": "https://www.asteroide.cc"
+}
