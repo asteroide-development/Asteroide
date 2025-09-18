@@ -178,6 +178,50 @@ public class BetterAntiCrashModule extends Module {
         .build()
     );
 
+    private int messages = 0;
+    private int tick = -1;
+
+    final SettingGroup sgChat = settings.createGroup("Chat Limit", true);
+    private final Setting<Boolean> chatLimitEnabled = sgChat.add(new BoolSetting.Builder()
+        .name("Block Chat Message Spam")
+        .description("Cancels chat messages when a lot of messages are sent in a short amount of time.")
+        .defaultValue(true)
+        .onChanged((value) -> { this.messages = 0; this.tick = -1; })
+        .build()
+    );
+    private final Setting<Integer> messagesLimit = sgChat.add(new IntSetting.Builder()
+        .name("Block if exceeds")
+        .description("Number of messages that can be sent in the time limit before chat messages are blocked.")
+        .defaultValue(100)
+        .min(0)
+        .sliderMin(1)
+        .sliderMax(1000)
+        .max(2147483647)
+        .visible(chatLimitEnabled::get)
+        .onChanged((value) -> { this.messages = 0; this.tick = -1; })
+        .build()
+    );
+    private final Setting<Integer> timeLimit = sgChat.add(new IntSetting.Builder()
+        .name("Messages in")
+        .description("Time frame of messages before chat messages are blocked.")
+        .defaultValue(1)
+        .min(0)
+        .sliderMin(1)
+        .sliderMax(20)
+        .max(2147483647)
+        .visible(chatLimitEnabled::get)
+        .onChanged((value) -> { this.messages = 0; this.tick = -1; })
+        .build()
+    );
+    private final Setting<LengthType> timeUnit = sgChat.add(new EnumSetting.Builder<LengthType>()
+        .name("time")
+        .description("The time unit to use for the chat threshold.")
+        .defaultValue(LengthType.Seconds)
+        .visible(chatLimitEnabled::get)
+        .onChanged((value) -> { this.messages = 0; this.tick = -1; })
+        .build()
+    );
+
     private Map<EntityType<?>, Integer> entityCounts = new HashMap<>();
 
     public boolean shouldRender(net.minecraft.entity.Entity entity) {
@@ -222,7 +266,19 @@ public class BetterAntiCrashModule extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Post event) {
-        if(!isActive()) return;
+        if(!isActive()) { this.tick = -1; this.messages = 0; return; }
+        if(chatLimitEnabled.get()){
+            if(this.tick > 0) { this.tick--; }
+            else {
+                this.messages = 0;
+                this.tick = switch (timeUnit.get()) {
+                    case Ticks -> timeLimit.get();
+                    case Seconds -> timeLimit.get() * 20;
+                    case Minutes -> timeLimit.get() * 20 * 60;
+                    case Hours -> timeLimit.get() * 20 * 3600;
+                };
+            }
+        }
         if(entityLengthLimit.get()){try{
             Entity[] entities = StreamSupport.stream(mc.world.getEntities().spliterator(), false).toArray(Entity[]::new);
             for(Entity entity : entities){ if(entity.getName().getString().length() > ThresholdLength.get() && entityLengthLimit.get()){ entity.setCustomName(Text.of(String.format("§c[Entity with length %s blocked]", getMessage(entity.getName().getString()))));} }
@@ -246,6 +302,8 @@ public class BetterAntiCrashModule extends Module {
     @EventHandler
     private void onMessageReceive(ReceiveMessageEvent event){
         if(!isActive()) return;
+        if(chatLimitEnabled.get() && this.messages < messagesLimit.get()){ this.messages++; return; }
+        else if(chatLimitEnabled.get()){ event.cancel(); return; }
         if(!chatLimit.get()) return;
         int length = event.getMessage().getString().length();
         if(chatLimit.get() && length <= ThresholdLength.get()) return;
@@ -272,5 +330,12 @@ public class BetterAntiCrashModule extends Module {
     private enum PacketMode {
         Whitelist,
         Blacklist
+    }
+
+    private enum LengthType {
+        Ticks,
+        Seconds,
+        Minutes,
+        Hours
     }
 }
