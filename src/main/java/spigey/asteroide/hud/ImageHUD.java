@@ -21,6 +21,7 @@ import meteordevelopment.starscript.compiler.Parser;
 import meteordevelopment.starscript.utils.StarscriptError;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import spigey.asteroide.AsteroideAddon;
 
@@ -146,10 +147,11 @@ public class ImageHUD extends HudElement {
                 locked = true;
                 if (url.get() == null) { locked = false; return; }
                 String compiled = compile(url.get()).isEmpty() ? url.get() : compile(url.get());
-                this.image = NativeImage.read(Http.get(compiled).sendInputStream());
-                mc.getTextureManager().registerTexture(TEXID, new NativeImageBackedTexture(this.image));
+                var tempImage = NativeImage.read(Http.get(compiled).sendInputStream());
+                mc.getTextureManager().registerTexture(TEXID, new NativeImageBackedTexture(tempImage));
+                this.image = tempImage;
                 empty = false;
-            } catch (Exception ex) { AsteroideAddon.LOG.error("Failed to render image from url {}", url.get(), ex); }
+            } catch (Exception ex) { mc.player.sendMessage(Text.of(String.format("§8[§cAsteroide§8] §cCould not load image from URL §7%s§c!", url.get())), false); }
             locked = false;
         }).start();
         updateSize();
