@@ -165,6 +165,7 @@ public class AsteroideAddon extends MeteorAddon {
         hud.register(Username.INFO);
         hud.register(SpoofedIPHUD.INFO);
         hud.register(MinehutIPHud.INFO);
+        hud.register(ImageHUD.INFO);
 
         showRtc = !(Modules.get().get(RTCSettingsModule.class).isActive() && Modules.get().get(RTCSettingsModule.class).hideMessages.get());
         ChatUtils.registerCustomPrefix("spigey.asteroide.modules", this::getPrefix);
