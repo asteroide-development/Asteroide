@@ -35,33 +35,23 @@ public class PhaseCommand extends Command {
                 packetsRequired = 1;
             }
 
-            if (mc.player.hasVehicle()) {
-                // Vehicle version
-                // For each 10 blocks, send a vehicle move packet with no delta
-                for (int packetNumber = 0; packetNumber < (packetsRequired - 1); packetNumber++) {
-                    mc.player.networkHandler.sendPacket(VehicleMoveC2SPacket.fromVehicle(mc.player.getVehicle()));
-                }
-                // Now send the final vehicle move packet
-                mc.player.getVehicle().setPosition(mc.player.getVehicle().getX(), mc.player.getVehicle().getY() + blocks, mc.player.getVehicle().getZ());
-                mc.player.networkHandler.sendPacket(VehicleMoveC2SPacket.fromVehicle(mc.player.getVehicle()));
-            } else {
-                // No vehicle version
-                // For each 10 blocks, send a player move packet with no delta
-                for (int packetNumber = 0; packetNumber < (packetsRequired - 1); packetNumber++) {
-                    mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(true, mc.player.horizontalCollision));
-                }
-                // Now send the final player move packet
-                String owo = PlayerDir(mc.player.getYaw());
-                double x = mc.player.getX();
-                double y = mc.player.getY();
-                double z = mc.player.getZ();
-                if(owo.equals("east")) x += blocks;
-                if(owo.equals("south")) z += blocks;
-                if(owo.equals("west")) x -= blocks;
-                if(owo.equals("north")) z -= blocks;
-                mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, true, mc.player.horizontalCollision));
-                mc.player.setPosition(x, y, z);
+            if (mc.player.hasVehicle()) return SINGLE_SUCCESS;
+            // No vehicle version
+            // For each 10 blocks, send a player move packet with no delta
+            for (int packetNumber = 0; packetNumber < (packetsRequired - 1); packetNumber++) {
+                mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(true, mc.player.horizontalCollision));
             }
+            // Now send the final player move packet
+            String owo = PlayerDir(mc.player.getYaw());
+            double x = mc.player.getX();
+            double y = mc.player.getY();
+            double z = mc.player.getZ();
+            if(owo.equals("east")) x += blocks;
+            if(owo.equals("south")) z += blocks;
+            if(owo.equals("west")) x -= blocks;
+            if(owo.equals("north")) z -= blocks;
+            mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, true, mc.player.horizontalCollision));
+            mc.player.setPosition(x, y, z);
 
             return SINGLE_SUCCESS;
         }));
