@@ -83,7 +83,7 @@ public class ImageHUD extends HudElement {
     private final Setting<String> url = sgGeneral.add(new StringSetting.Builder()
         .name("url")
         .description("Image URL.")
-        .defaultValue("https://repository-images.githubusercontent.com/785654587/ed944e14-636d-4413-bd6f-570b75ad6f80")
+        .defaultValue("https://raw.githubusercontent.com/asteroide-development/Asteroide/refs/heads/master/icon.png")
         .renderer(StarscriptTextBoxRenderer.class)
         .onChanged((v) -> loadImage())
         .build()
@@ -141,7 +141,7 @@ public class ImageHUD extends HudElement {
     }
 
     private void loadImage() {
-        if (locked) return;
+        if (locked || !isActive()) return;
         new Thread(() -> {
             try {
                 locked = true;
