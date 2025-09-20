@@ -120,10 +120,10 @@ public class ImageHUD extends HudElement {
 
     private NativeImage image = null;
 
-    private double[] getSize(){
-        if(dynamicSize.get() && this.image != null) return new double[]{ image.getWidth() * imgX.get(), image.getHeight() * imgX.get() };
+    private double[] getSize(){ try{
+        if(dynamicSize.get() && this.image != null) return new double[]{ this.image.getWidth() * imgX.get(), this.image.getHeight() * imgX.get() };
         else return new double[]{ imgWidth.get(), imgHeight.get() };
-    }
+    }catch(Exception e){ return new double[]{100, 100}; } }
 
     @Override
     public void render(HudRenderer renderer) {
@@ -151,7 +151,7 @@ public class ImageHUD extends HudElement {
                 mc.getTextureManager().registerTexture(TEXID, new NativeImageBackedTexture(tempImage));
                 this.image = tempImage;
                 empty = false;
-            } catch (Exception ex) { mc.player.sendMessage(Text.of(String.format("§8[§cAsteroide§8] §cCould not load image from URL §7%s§c!", url.get())), false); }
+            } catch (Exception ex) { mc.player.sendMessage(Text.of(String.format("§8[§cAsteroide§8] §cCould not load image from URL §7%s§c! %s", url.get(), ex)), false); }
             locked = false;
         }).start();
         updateSize();
