@@ -1,7 +1,7 @@
 # Asteroide
 
 <div align="center">
-  <img src="https://github.com/asteroide-development/Asteroide/blob/master/icon.png?raw=true" width="200">
+  <img src="https://raw.githubusercontent.com/asteroide-development/Asteroide/refs/heads/master/src/main/resources/assets/asteroide/icon.png" width="200">
 </div>
 <p align="center">
   <strong>The best utility Addon.</strong>
