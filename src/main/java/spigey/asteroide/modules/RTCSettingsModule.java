@@ -80,7 +80,10 @@ public class RTCSettingsModule extends Module {
         gray,
         dark_gray,
         black,
-        rainbow
+        rainbow,
+        ice,
+        sunset,
+        galaxy
     }
 
     public enum format {
