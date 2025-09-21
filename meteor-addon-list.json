@@ -11,7 +11,7 @@
         "1.21.5",
         "1.21.8"
     ],
-    "icon": "https://github.com/asteroide-development/Asteroide/blob/master/icon.png",
+    "icon": "https://raw.githubusercontent.com/asteroide-development/Asteroide/refs/heads/master/src/main/resources/assets/asteroide/icon.png",
     "discord": "https://discord.com/invite/QFzE3UzdpQ",
     "homepage": "https://www.asteroide.cc"
 }
