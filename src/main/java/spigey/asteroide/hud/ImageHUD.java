@@ -83,7 +83,7 @@ public class ImageHUD extends HudElement {
     private final Setting<String> url = sgGeneral.add(new StringSetting.Builder()
         .name("url")
         .description("Image URL.")
-        .defaultValue("https://raw.githubusercontent.com/asteroide-development/Asteroide/refs/heads/master/icon.png")
+        .defaultValue("https://rtc.asteroide.cc/img/furry")
         .renderer(StarscriptTextBoxRenderer.class)
         .onChanged((v) -> loadImage())
         .build()
