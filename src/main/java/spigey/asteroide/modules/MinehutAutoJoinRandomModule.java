@@ -120,7 +120,7 @@ public class MinehutAutoJoinRandomModule extends Module {
         Ranked(20),
         Puzzle(21),
         Box(22),
-        PvP(23),
+        PVP(23),
         SMP(24),
         Gen(29),
         Farming(30),
@@ -136,7 +136,7 @@ public class MinehutAutoJoinRandomModule extends Module {
         Modded(48),
         Random(49),
         Creative(50),
-        PvP_1_8(51);
+        PVP_1_8(51);
 
         private final int slot;
         Category(int slot){ this.slot = slot; }
