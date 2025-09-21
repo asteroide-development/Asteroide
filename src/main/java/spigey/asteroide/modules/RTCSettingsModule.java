@@ -79,7 +79,8 @@ public class RTCSettingsModule extends Module {
         white,
         gray,
         dark_gray,
-        black
+        black,
+        rainbow
     }
 
     public enum format {

@@ -22,6 +22,7 @@ package spigey.asteroide.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.utils.render.color.Color;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import org.java_websocket.client.WebSocketClient;
@@ -77,14 +78,14 @@ public class ws extends WebSocketClient {
                     final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
                     String msg = message.get("message").getAsString();
                     if(rtc.censor.get() && rtc.isActive()) msg = msg.replaceAll("(?i)igg", "***").replaceAll("(?i)fag", "***");
-                    if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(Text.of(msg), false);
+                    if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(HexConverter.toText(msg), false);
                     break;
                 case "disc":
                     String[] warndom = {"multiplayer.disconnect.chat_validation_failed", "multiplayer.status.unknown", "multiplayer.disconnect.kicked"};
                     mc.getNetworkHandler().getConnection().disconnect(Text.of(I18n.translate(warndom[randomNum(0, warndom.length - 1)])));
                     break;
             }
-        }catch(Exception E){/**/}
+        }catch(Exception E){ AsteroideAddon.LOG.error(String.valueOf(E)); }
     }
 
     @Override

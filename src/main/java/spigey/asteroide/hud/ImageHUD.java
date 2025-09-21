@@ -140,7 +140,7 @@ public class ImageHUD extends HudElement {
         setSize(iFuckingHateJava[0], iFuckingHateJava[1]);
     }
 
-    private void loadImage() {
+    private void loadImage() { try {
         if (locked || !isActive()) return;
         new Thread(() -> {
             try {
@@ -155,7 +155,7 @@ public class ImageHUD extends HudElement {
             locked = false;
         }).start();
         updateSize();
-    }
+    }catch(Exception e){/**/}}
 
     private static String compile(String script) { // Partly from meteor rejects https://github.com/AntiCope/meteor-rejects/blob/master/src/main/java/anticope/rejects/modules/ChatBot.java
         if (script == null) return null;
