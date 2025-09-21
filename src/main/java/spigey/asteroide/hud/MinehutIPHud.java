@@ -1,5 +1,6 @@
 package spigey.asteroide.hud;
 
+import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudElement;
 import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
@@ -18,8 +19,8 @@ public class MinehutIPHud extends HudElement {
     }
     @Override
     public void render(HudRenderer renderer) {
-        String username = mc.getSession().getUsername();
-        setSize(renderer.textWidth("Minehut IP: " + MinehutIP, true), renderer.textHeight(true));
-        renderer.text("Minehut IP: " + MinehutIP, x, y, Color.WHITE, true);
+        String text = String.format("Minehut IP: %s", MinehutIP);
+        setSize(renderer.textWidth(text, true), renderer.textHeight(true));
+        renderer.text(MinehutIP, renderer.text("Minehut IP: ", x, y, Hud.get().textColors.get().get(0), true), y, Hud.get().textColors.get().get(1), true);
     }
 }

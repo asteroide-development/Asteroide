@@ -1,10 +1,13 @@
 package spigey.asteroide.hud;
 
+import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudElement;
 import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import spigey.asteroide.AsteroideAddon;
+
+import static spigey.asteroide.AsteroideAddon.MinehutIP;
 import static spigey.asteroide.AsteroideAddon.spoofedIP;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
@@ -17,8 +20,8 @@ public class SpoofedIPHUD extends HudElement {
     }
     @Override
     public void render(HudRenderer renderer) {
-        String username = mc.getSession().getUsername();
-        setSize(renderer.textWidth("IP: " + spoofedIP, true), renderer.textHeight(true));
-        renderer.text("IP: " + spoofedIP, x, y, Color.WHITE, true);
+        String text = String.format("IP: %s", spoofedIP);
+        setSize(renderer.textWidth(text, true), renderer.textHeight(true));
+        renderer.text(spoofedIP, renderer.text("IP: ", x, y, Hud.get().textColors.get().get(0), true), y, Hud.get().textColors.get().get(1), true);
     }
 }

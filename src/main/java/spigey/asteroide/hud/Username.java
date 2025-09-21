@@ -1,5 +1,6 @@
 package spigey.asteroide.hud;
 
+import meteordevelopment.meteorclient.systems.hud.Hud;
 import spigey.asteroide.AsteroideAddon;
 import meteordevelopment.meteorclient.systems.hud.HudElement;
 import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
@@ -7,6 +8,7 @@ import meteordevelopment.meteorclient.systems.hud.HudRenderer;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
+import static spigey.asteroide.AsteroideAddon.MinehutIP;
 
 public class Username extends HudElement {
     public static final HudElementInfo<Username> INFO = new HudElementInfo<>(AsteroideAddon.HUD, "Username", "Shows your username, good for cracked servers", Username::new);
@@ -16,9 +18,8 @@ public class Username extends HudElement {
     }
     @Override
     public void render(HudRenderer renderer) {
-        Color WHITE = new Color();
-        String username = mc.getSession().getUsername();
-        setSize(renderer.textWidth("Username: " + username, true), renderer.textHeight(true));
-        renderer.text("Username: " + username, x, y, Color.WHITE, true);
+        String text = String.format("Username: %s", mc.getSession().getUsername());
+        setSize(renderer.textWidth(text, true), renderer.textHeight(true));
+        renderer.text(mc.getSession().getUsername(), renderer.text("Username: ", x, y, Hud.get().textColors.get().get(0), true), y, Hud.get().textColors.get().get(1), true);
     }
 }
