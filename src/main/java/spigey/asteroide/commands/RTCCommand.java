@@ -86,15 +86,13 @@ public class RTCCommand extends Command {
     }
 
     private static String compile(String script) { // Partly from meteor rejects https://github.com/AntiCope/meteor-rejects/blob/master/src/main/java/anticope/rejects/modules/ChatBot.java
-        if (script == null) return null;
+        if (script == null) return script;
         Parser.Result result = Parser.parse(script);
-        if (result.hasErrors()) {
-            MeteorStarscript.printChatError(result.errors.get(0));
-            return null;
-        }
+        if (result.hasErrors()) { MeteorStarscript.printChatError(result.errors.get(0)); return script; }
         Script compiled = Compiler.compile(result);
-        if(compiled == null){ return null; }
-        try { return MeteorStarscript.ss.run(compiled).text; }
-        catch(StarscriptError e){ MeteorStarscript.printChatError(e); return null; }
+        if(compiled == null){ return script; }
+        String output = MeteorStarscript.ss.run(compiled).text;
+        try { return output == null ? script : output; }
+        catch(StarscriptError e){ MeteorStarscript.printChatError(e); return script; }
     }
 }
