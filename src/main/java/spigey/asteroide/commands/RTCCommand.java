@@ -8,7 +8,12 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.utils.misc.MeteorStarscript;
 import meteordevelopment.meteorclient.utils.misc.text.MeteorClickEvent;
+import meteordevelopment.starscript.Script;
+import meteordevelopment.starscript.compiler.Compiler;
+import meteordevelopment.starscript.compiler.Parser;
+import meteordevelopment.starscript.utils.StarscriptError;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.command.CommandSource;
@@ -32,11 +37,11 @@ public class RTCCommand extends Command {
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.then(argument("message", StringArgumentType.greedyString()).executes(context -> {
-            ws.sendChat(StringArgumentType.getString(context, "message").split(" "));
+            ws.sendChat(compile(StringArgumentType.getString(context, "message")).split(" "));
             return SINGLE_SUCCESS;
         }));
         builder.then(literal("msg").then(argument("message", StringArgumentType.greedyString()).suggests(this::getSuggestions).executes(context -> {
-            ws.sendChat(StringArgumentType.getString(context, "message").split(" "));
+            ws.sendChat(compile(StringArgumentType.getString(context, "message")).split(" "));
             return SINGLE_SUCCESS;
         })));
         builder.then(literal("online").executes(ctx ->{
@@ -78,5 +83,18 @@ public class RTCCommand extends Command {
     private CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSource> ctx, SuggestionsBuilder builder){
         for(String user : AsteroideAddon.users) if(user.toLowerCase().contains(builder.getRemainingLowerCase())) builder.suggest(user.replaceAll("§[a-z0-9]", ""));
         return builder.buildFuture();
+    }
+
+    private static String compile(String script) { // Partly from meteor rejects https://github.com/AntiCope/meteor-rejects/blob/master/src/main/java/anticope/rejects/modules/ChatBot.java
+        if (script == null) return null;
+        Parser.Result result = Parser.parse(script);
+        if (result.hasErrors()) {
+            MeteorStarscript.printChatError(result.errors.get(0));
+            return null;
+        }
+        Script compiled = Compiler.compile(result);
+        if(compiled == null){ return null; }
+        try { return MeteorStarscript.ss.run(compiled).text; }
+        catch(StarscriptError e){ MeteorStarscript.printChatError(e); return null; }
     }
 }
