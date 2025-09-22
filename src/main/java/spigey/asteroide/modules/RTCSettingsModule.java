@@ -3,10 +3,12 @@ package spigey.asteroide.modules;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import spigey.asteroide.utils.ws;
 import spigey.asteroide.AsteroideAddon;
 import meteordevelopment.meteorclient.settings.*;
 
+import java.awt.*;
 import java.util.Set;
 
 public class RTCSettingsModule extends Module {
@@ -14,23 +16,42 @@ public class RTCSettingsModule extends Module {
         super(AsteroideAddon.CATEGORY, "RTC-Settings", "Settings for the .rtc command. Enable to apply settings.");
     }
 
+    private boolean useCustomColor = false;
 
-    private final SettingGroup sgGeneral = settings.getDefaultGroup();
-    public final Setting<colors> color = sgGeneral.add(new EnumSetting.Builder<colors>()
+    private final SettingGroup sgColors = settings.createGroup("Colors", true);
+    private final SettingGroup sgSettings = settings.createGroup("Settings", true);
+    public final Setting<colors> color = sgColors.add(new EnumSetting.Builder<colors>()
         .name("chat-color")
         .description("Chat Color.")
         .defaultValue(colors.aqua)
+        .visible(() -> !useCustomColor)
         .build()
     );
 
-    public final Setting<format> formath = sgGeneral.add(new EnumSetting.Builder<format>()
+    public final Setting<format> formath = sgColors.add(new EnumSetting.Builder<format>()
         .name("chat-format")
         .description("Chat Format.")
         .defaultValue(format.none)
         .build()
     );
 
-    public final Setting<Boolean> hideMessages = sgGeneral.add(new BoolSetting.Builder()
+    public final Setting<Boolean> useCustomColorSetting = sgColors.add(new BoolSetting.Builder()
+        .name("Custom Chat Color")
+        .description("Use a custom color instead of the preset colors.")
+        .defaultValue(false)
+        .onChanged((value) -> useCustomColor = value)
+        .build()
+    );
+
+    public final Setting<SettingColor> customColor = sgColors.add(new ColorSetting.Builder()
+        .name("custom-color")
+        .description("Custom Chat Color.")
+        .defaultValue(SettingColor.WHITE)
+        .visible(() -> useCustomColor)
+        .build()
+    );
+
+    public final Setting<Boolean> hideMessages = sgSettings.add(new BoolSetting.Builder()
         .name("Hide RTC Messages")
         .description("Hides all messages received from the RTC.")
         .defaultValue(false)
@@ -38,21 +59,21 @@ public class RTCSettingsModule extends Module {
         .build()
     );
 
-    public final Setting<Boolean> disableIcon = sgGeneral.add(new BoolSetting.Builder()
+    public final Setting<Boolean> disableIcon = sgSettings.add(new BoolSetting.Builder()
         .name("Highlight Asteroide Users in the tab list")
         .description("Highlights Asteroide users in the player list with a custom icon.")
         .defaultValue(true)
         .build()
     );
 
-    public final Setting<Boolean> censor = sgGeneral.add(new BoolSetting.Builder()
+    public final Setting<Boolean> censor = sgSettings.add(new BoolSetting.Builder()
         .name("Censor Slurs")
         .description("Censors slurs in the RTC")
         .defaultValue(false)
         .build()
     );
 
-    public final Setting<Boolean> broadcastOnline = sgGeneral.add(new BoolSetting.Builder()
+    public final Setting<Boolean> broadcastOnline = sgSettings.add(new BoolSetting.Builder()
         .name("Get notified when someone comes online")
         .description("Self explanatory")
         .onChanged((value) -> { ws.call("online", isActive() && value); } )

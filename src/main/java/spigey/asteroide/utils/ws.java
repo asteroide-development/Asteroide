@@ -23,6 +23,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.render.color.Color;
+import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import org.java_websocket.client.WebSocketClient;
@@ -119,7 +120,10 @@ public class ws extends WebSocketClient {
         Map<String, Object> json = new HashMap<>();
         final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
         json.put("event", "rtc");
-        if(rtc.isActive()) json.put("format", new String[]{rtc.color.get().name(), rtc.formath.get().name()});
+        SettingColor c = rtc.customColor.get();
+        boolean its4amIamsoTired = rtc.isActive() && rtc.useCustomColorSetting.get();
+        if(its4amIamsoTired) args[0] = String.format("§#%s%s", String.format("%02x%02x%02x", c.r, c.g, c.b).toUpperCase(), args[0]);
+        if(rtc.isActive()) json.put("format", new String[]{its4amIamsoTired ? "white" : rtc.color.get().name(), rtc.formath.get().name()});
         json.put("args", Arrays.asList(args));
         instance.send(gson.toJson(json));
     }

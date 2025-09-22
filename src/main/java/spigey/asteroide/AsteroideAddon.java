@@ -180,7 +180,7 @@ public class AsteroideAddon extends MeteorAddon {
             .append(value)
             .append(Text.literal("] "));
         return prefix;
-    }
+    } // Text.of("§7[§cAsteroide§7] ")
 
     @EventHandler
     private void onMessageReceive(ReceiveMessageEvent event){
