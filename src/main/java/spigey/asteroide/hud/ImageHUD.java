@@ -98,6 +98,16 @@ public class ImageHUD extends HudElement {
         .build()
     );
 
+    private final Setting<Boolean> refreshImage = sgGeneral.add(new BoolSetting.Builder()
+        .name("refresh-image")
+        .description("Refresh the image.")
+        .onChanged((val) -> { if (val) { toggle(); dfn(); } })
+        .defaultValue(false)
+        .build()
+    );
+
+    private void dfn(){ loadImage(); refreshImage.set(false); }
+
     public ImageHUD() {
         super(INFO);
         loadImage();
