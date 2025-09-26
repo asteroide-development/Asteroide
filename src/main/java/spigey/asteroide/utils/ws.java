@@ -24,6 +24,7 @@ import com.google.gson.JsonParser;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.network.message.ChatVisibility;
 import net.minecraft.text.Text;
@@ -140,6 +141,7 @@ public class ws extends WebSocketClient {
         Map<String, Object> json = new HashMap<>();
         json.put("event", event);
         json.put("args", Arrays.asList(args));
+        json.put("available", instance.isAvailable());
         instance.send(gson.toJson(json));
     }
 
@@ -148,6 +150,7 @@ public class ws extends WebSocketClient {
         Map<String, Object> json = new HashMap<>();
         json.put("event", event);
         json.put("args", args);
+        json.put("available", instance.isAvailable());
         instance.send(gson.toJson(json));
     }
 
@@ -155,9 +158,14 @@ public class ws extends WebSocketClient {
         RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
         return !(
             (rtc.hideMessages.get() && rtc.isActive()) ||
-                mc.options.hudHidden ||
-                mc.world == null ||
-                mc.options.getChatVisibility().getValue() == ChatVisibility.HIDDEN
+            (mc.options.hudHidden && !(mc.currentScreen instanceof ChatScreen)) ||
+            mc.world == null ||
+            mc.options.getChatVisibility().getValue() == ChatVisibility.HIDDEN ||
+            mc.getWindow().isMinimized() ||
+            mc.getWindow().shouldClose() ||
+            !mc.isFinishedLoading() ||
+            !mc.isWindowFocused() ||
+            !mc.isRunning()
         );
     }
 }
