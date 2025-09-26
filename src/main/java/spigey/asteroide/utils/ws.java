@@ -25,6 +25,7 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.network.message.ChatVisibility;
 import net.minecraft.text.Text;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -59,9 +60,15 @@ public class ws extends WebSocketClient {
         ping.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if(isOpen()) send("{\"event\":\"ping\"}");
+                if(isOpen()) send(String.format("{\"event\":\"ping\", \"available\": %s}", isAvailable()));
             }
         }, 30000, 30000);
+    }
+
+    @Override
+    public void send(String text) {
+        AsteroideAddon.LOG.info(text);
+        super.send(text);
     }
 
     @Override
@@ -142,5 +149,15 @@ public class ws extends WebSocketClient {
         json.put("event", event);
         json.put("args", args);
         instance.send(gson.toJson(json));
+    }
+
+    private boolean isAvailable(){
+        RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
+        return !(
+            (rtc.hideMessages.get() && rtc.isActive()) ||
+                mc.options.hudHidden ||
+                mc.world == null ||
+                mc.options.getChatVisibility().getValue() == ChatVisibility.HIDDEN
+        );
     }
 }

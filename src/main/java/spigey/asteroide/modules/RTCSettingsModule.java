@@ -1,9 +1,13 @@
 package spigey.asteroide.modules;
 
+import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
+import meteordevelopment.orbit.EventHandler;
+import net.minecraft.network.message.ChatVisibility;
+import net.minecraft.text.Text;
 import spigey.asteroide.utils.ws;
 import spigey.asteroide.AsteroideAddon;
 import meteordevelopment.meteorclient.settings.*;
@@ -77,6 +81,13 @@ public class RTCSettingsModule extends Module {
         .name("Get notified when someone comes online")
         .description("Self explanatory")
         .onChanged((value) -> { ws.call("online", isActive() && value); } )
+        .defaultValue(false)
+        .build()
+    );
+
+    public final Setting<Boolean> starscript = sgSettings.add(new BoolSetting.Builder()
+        .name("Enable Starscript Support")
+        .description("Self explanatory")
         .defaultValue(false)
         .build()
     );
