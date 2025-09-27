@@ -8,6 +8,7 @@ public class BetterBungeeSpoofModule extends Module {
     public BetterBungeeSpoofModule() {
         super(AsteroideAddon.CATEGORY, "Better-Bungespoof", "Lets you join BungeeCord servers with an exposed backend");
     }
+
     SettingGroup sgGeneral = settings.getDefaultGroup();
     public Setting<Boolean> randomize = sgGeneral.add(new BoolSetting.Builder()
         .name("Randomize IP")
@@ -33,5 +34,3 @@ public class BetterBungeeSpoofModule extends Module {
         .build()
     );
 }
-
-

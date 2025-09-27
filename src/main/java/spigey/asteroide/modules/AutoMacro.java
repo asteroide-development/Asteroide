@@ -19,14 +19,14 @@ public class AutoMacro extends Module {
     private final Setting<List<String>> messages = sgGeneral.add(new StringListSetting.Builder()
         .name("messages")
         .description("Keywords to execute the macro")
-        .defaultValue("Hello world!")
+        .defaultValue("Welcome for a prize!")
         .build()
     );
 
     private final Setting<List<String>> macro = sgGeneral.add(new StringListSetting.Builder()
-        .name("macro")
-        .description("macro name to execute")
-        .defaultValue("testmacro")
+        .name("message")
+        .description("message to send")
+        .defaultValue("Welcome")
         .build()
     );
 
