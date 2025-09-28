@@ -135,6 +135,7 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new AutoCommandModule());
         modules.add(new PacketPauseModule());
         modules.add(new ClickEventsModule());
+        modules.add(new MurderMysteryESP());
 
         // Commands
         Commands.add(new CrashAll());
