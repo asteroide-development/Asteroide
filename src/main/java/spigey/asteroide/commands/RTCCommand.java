@@ -36,14 +36,10 @@ public class RTCCommand extends Command {
 
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
-        builder.then(argument("message", StringArgumentType.greedyString()).executes(context -> {
+        builder.then(argument("message", StringArgumentType.greedyString()).suggests(this::getSuggestions).executes(context -> {
             ws.sendChat(compile(StringArgumentType.getString(context, "message")).split(" "));
             return SINGLE_SUCCESS;
         }));
-        builder.then(literal("msg").then(argument("message", StringArgumentType.greedyString()).suggests(this::getSuggestions).executes(context -> {
-            ws.sendChat(compile(StringArgumentType.getString(context, "message")).split(" "));
-            return SINGLE_SUCCESS;
-        })));
         builder.then(literal("online").executes(ctx ->{
             info("§f§lOnline Users (" + AsteroideAddon.users.size() + "):");
             for(String user : AsteroideAddon.users) info(user);
@@ -80,10 +76,15 @@ public class RTCCommand extends Command {
         return message.append(" ").append(Button);
     }
 
-    private CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSource> ctx, SuggestionsBuilder builder){
-        for(String user : AsteroideAddon.users) if(user.toLowerCase().contains(builder.getRemainingLowerCase())) builder.suggest(user.replaceAll("§[a-z0-9]", ""));
-        return builder.buildFuture();
+    private CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSource> ctx, SuggestionsBuilder builder) {
+        int rem = builder.getRemainingLowerCase().lastIndexOf('@');
+        if (rem == -1) return builder.buildFuture();
+        SuggestionsBuilder offset = builder.createOffset(builder.getStart() + rem + 1);
+        if (offset.getRemainingLowerCase().contains(" ")) return offset.buildFuture();
+        for (String user : AsteroideAddon.users) if (user.toLowerCase().contains(offset.getRemainingLowerCase())) offset.suggest(user.replaceAll("§[a-z0-9]", ""));
+        return offset.buildFuture();
     }
+
 
     private static String compile(String script) { // Partly from meteor rejects https://github.com/AntiCope/meteor-rejects/blob/master/src/main/java/anticope/rejects/modules/ChatBot.java
         if(!Modules.get().get(RTCSettingsModule.class).starscript.get()) return script;

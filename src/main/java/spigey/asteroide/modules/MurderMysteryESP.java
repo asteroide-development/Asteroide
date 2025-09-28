@@ -1,5 +1,6 @@
 package spigey.asteroide.modules;
 
+import meteordevelopment.meteorclient.events.meteor.MouseButtonEvent;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
@@ -11,6 +12,7 @@ import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.decoration.DisplayEntity;
@@ -20,6 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
+import org.joml.Vector3f;
 import spigey.asteroide.AsteroideAddon;
 
 import java.util.*;
@@ -28,6 +31,7 @@ public class MurderMysteryESP extends Module {
     public MurderMysteryESP() { super(AsteroideAddon.CATEGORY, "Murder-Mystery-ESP", "Shows the murderer in Hypixel Murder Mystery."); }
 
     private final SettingGroup sgGeneral = settings.createGroup("General", true);
+    private final SettingGroup sgBow = settings.createGroup("Bow", true);
     private final SettingGroup sgMurder = settings.createGroup("Murderer", true);
     private final SettingGroup sgDetective = settings.createGroup("Detective", true);
     private final SettingGroup sgInnocent = settings.createGroup("Innocent", true);
@@ -36,6 +40,58 @@ public class MurderMysteryESP extends Module {
         .name("Ignore Self")
         .description("Does not apply ESP to yourself.")
         .defaultValue(true)
+        .build()
+    );
+
+    private final Setting<Boolean> silentSwap = sgGeneral.add(new BoolSetting.Builder()
+        .name("Silent Swap")
+        .description("Silently swaps to your sword when you're murderer.")
+        .defaultValue(true)
+        .build()
+    );
+
+    private final Setting<Integer> silentSwapDelay = sgGeneral.add(new IntSetting.Builder()
+        .name("Silent Swap Delay")
+        .description("Delay for silent swap.")
+        .defaultValue(4)
+        .min(0)
+        .sliderMax(20)
+        .visible(() -> silentSwap.get())
+        .build()
+    );
+
+    private final Setting<Boolean> itemEsp = sgGeneral.add(new BoolSetting.Builder()
+        .name("Item ESP")
+        .description("Item ESP.")
+        .defaultValue(true)
+        .build()
+    );
+
+    private final Setting<SettingColor> itemColor = sgGeneral.add(new ColorSetting.Builder()
+        .name("Item ESP Color")
+        .description("ESP Color of the Item")
+        .defaultValue(new SettingColor(252, 186, 3, 130))
+        .build()
+    );
+
+    private final Setting<Boolean> bowEsp = sgBow.add(new BoolSetting.Builder()
+        .name("Bow ESP")
+        .description("Bow ESP.")
+        .defaultValue(true)
+        .build()
+    );
+
+    private final Setting<Boolean> bowTracers = sgBow.add(new BoolSetting.Builder()
+        .name("Bow Tracers")
+        .description("Bow Tracers.")
+        .defaultValue(true)
+        .build()
+    );
+
+    private final Setting<SettingColor> bowColor = sgBow.add(new ColorSetting.Builder()
+        .name("Bow ESP Color")
+        .description("ESP Color of the bow")
+        .defaultValue(new SettingColor(50, 168, 82, 100))
         .build()
     );
 
@@ -92,7 +148,7 @@ public class MurderMysteryESP extends Module {
     private final Setting<List<Item>> decItems = sgDetective.add(new ItemListSetting.Builder()
         .name("Detective Items")
         .description("Items to detect the detective.")
-        .defaultValue(List.of(Items.BOW))
+        .defaultValue(List.of(Items.BOW, Items.ARROW))
         .build()
     );
 
@@ -134,7 +190,7 @@ public class MurderMysteryESP extends Module {
     private final Setting<Boolean> innTracers = sgInnocent.add(new BoolSetting.Builder()
         .name("Innocent Tracers")
         .description("Tracers for innocent")
-        .defaultValue(true)
+        .defaultValue(false)
         .build()
     );
 
@@ -142,13 +198,36 @@ public class MurderMysteryESP extends Module {
     private Set<String> detectives = new HashSet<>();
     private Set<String> found = new HashSet<>();
 
+    private int tick = -1;
+    private Action slot = Action.Slot_1;
+    private Entity entityy;
+
+    @EventHandler
+    private void onClick(MouseButtonEvent event){
+        if(event.button != 0 || mc.currentScreen != null || mc.targetedEntity == null || !silentSwap.get()) return;
+        if(!(mc.targetedEntity instanceof PlayerEntity)) return;
+        for(Item item : murdItems.get()){
+            if(item != mc.player.getInventory().getStack(1).getItem()) continue;
+            event.cancel();
+            mc.player.getInventory().setSelectedSlot(1);
+            this.tick = silentSwapDelay.get();
+            this.slot = Action.Attack;
+            this.entityy = mc.targetedEntity;
+            break;
+        }
+    }
+
     @EventHandler
     private void onTick(TickEvent.Post event){
+        if(this.tick > 0){ this.tick--; }
+        else if(this.tick == 0){
+            if(this.slot == Action.Attack) { mc.interactionManager.attackEntity(mc.player, this.entityy); this.tick = silentSwapDelay.get(); this.slot = Action.Slot_0; }
+            if(this.slot == Action.Slot_0) mc.player.getInventory().setSelectedSlot(0);
+            if(this.slot == Action.Slot_1) mc.player.getInventory().setSelectedSlot(1);
+            if(this.tick == 0) this.tick = -1;
+        }
         if(mc.player.getInventory().getStack(8).getItem() == Items.RED_BED) { murderers.clear(); detectives.clear(); found.clear(); } // lmao
         for(Entity entity : mc.world.getEntities()){
-            if(entity instanceof ArmorStandEntity && ((ArmorStandEntity)entity).getEquippedStack(EquipmentSlot.MAINHAND).getItem() instanceof BowItem) {
-                // will add bow esp tomorrow
-            }
             if(entity == mc.player && ignoreSelf.get()) continue;
             if(!(entity instanceof PlayerEntity)) continue;
             String player = ((PlayerEntity) entity).getGameProfile().getName();
@@ -167,12 +246,29 @@ public class MurderMysteryESP extends Module {
     @EventHandler
     private void onRender3D(Render3DEvent event){
         for(Entity entity : mc.world.getEntities()){
+            if(entity instanceof ArmorStandEntity && ((ArmorStandEntity)entity).getEquippedStack(EquipmentSlot.MAINHAND).getItem() instanceof BowItem && (bowEsp.get() || bowTracers.get())) bowEsp(event, entity);
+            if(entity instanceof ItemEntity && ((ItemEntity) entity).getStack().getItem() == Items.GOLD_INGOT && itemEsp.get()) itemEsp(event, entity);
             if(entity == mc.player && ignoreSelf.get()) continue;
             if(!(entity instanceof PlayerEntity)) continue;
             String player = ((PlayerEntity) entity).getGameProfile().getName();
             tracers(event, entity);
             drawBoundingBox(event, entity);
         }
+    }
+
+    private void itemEsp(Render3DEvent event, Entity entity) {
+        double x = entity.getX() - 0.2;
+        double y = entity.getY();
+        double z = entity.getZ() - 0.2;
+        event.renderer.box(x, y, z, x + 0.4, y + 0.4, z + 0.4, itemColor.get(), null, ShapeMode.Sides, 0);
+    }
+
+    private void bowEsp(Render3DEvent event, Entity entity) {
+        double x = entity.getX() - 0.32;
+        double y = entity.getY() + 0.3;
+        double z = entity.getZ() - 0.25;
+        if(bowEsp.get()) event.renderer.box(x, y, z, x + 1, y + 1, z + 1, bowColor.get(), null, ShapeMode.Sides, 0);
+        if(bowTracers.get()) event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, x, y, z, new Color(bowColor.get()).a(255));
     }
 
     private void drawBoundingBox(Render3DEvent event, Entity entity) {
@@ -226,5 +322,11 @@ public class MurderMysteryESP extends Module {
         Murderer,
         Detective,
         Innocent
+    }
+
+    private enum Action {
+        Slot_0,
+        Attack,
+        Slot_1
     }
 }
