@@ -43,23 +43,6 @@ public class MurderMysteryESP extends Module {
         .build()
     );
 
-    private final Setting<Boolean> silentSwap = sgGeneral.add(new BoolSetting.Builder()
-        .name("Silent Swap")
-        .description("Silently swaps to your sword when you're murderer.")
-        .defaultValue(true)
-        .build()
-    );
-
-    private final Setting<Integer> silentSwapDelay = sgGeneral.add(new IntSetting.Builder()
-        .name("Silent Swap Delay")
-        .description("Delay for silent swap.")
-        .defaultValue(4)
-        .min(0)
-        .sliderMax(20)
-        .visible(() -> silentSwap.get())
-        .build()
-    );
-
     private final Setting<Boolean> itemEsp = sgGeneral.add(new BoolSetting.Builder()
         .name("Item ESP")
         .description("Item ESP.")
@@ -198,34 +181,8 @@ public class MurderMysteryESP extends Module {
     private Set<String> detectives = new HashSet<>();
     private Set<String> found = new HashSet<>();
 
-    private int tick = -1;
-    private Action slot = Action.Slot_1;
-    private Entity entityy;
-
-    @EventHandler
-    private void onClick(MouseButtonEvent event){
-        if(event.button != 0 || mc.currentScreen != null || mc.targetedEntity == null || !silentSwap.get()) return;
-        if(!(mc.targetedEntity instanceof PlayerEntity)) return;
-        for(Item item : murdItems.get()){
-            if(item != mc.player.getInventory().getStack(1).getItem()) continue;
-            event.cancel();
-            mc.player.getInventory().setSelectedSlot(1);
-            this.tick = silentSwapDelay.get();
-            this.slot = Action.Attack;
-            this.entityy = mc.targetedEntity;
-            break;
-        }
-    }
-
     @EventHandler
     private void onTick(TickEvent.Post event){
-        if(this.tick > 0){ this.tick--; }
-        else if(this.tick == 0){
-            if(this.slot == Action.Attack) { mc.interactionManager.attackEntity(mc.player, this.entityy); this.tick = silentSwapDelay.get(); this.slot = Action.Slot_0; }
-            if(this.slot == Action.Slot_0) mc.player.getInventory().setSelectedSlot(0);
-            if(this.slot == Action.Slot_1) mc.player.getInventory().setSelectedSlot(1);
-            if(this.tick == 0) this.tick = -1;
-        }
         if(mc.player.getInventory().getStack(8).getItem() == Items.RED_BED) { murderers.clear(); detectives.clear(); found.clear(); } // lmao
         for(Entity entity : mc.world.getEntities()){
             if(entity == mc.player && ignoreSelf.get()) continue;
