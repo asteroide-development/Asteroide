@@ -48,6 +48,7 @@ public class ws extends WebSocketClient {
     private Timer ping;
     private static volatile boolean reconnecting = false;
     private final Random random = new Random();
+    private static Thread reconnectThread = null;
 
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
@@ -99,11 +100,14 @@ public class ws extends WebSocketClient {
 
     @Override
     public void onClose(int i, String s, boolean b) {
-        if(reconnecting) return;
+        if(reconnecting || (reconnectThread != null && reconnectThread.isAlive())) return;
         reconnecting = true;
         if(ping != null) { ping.cancel(); ping = null; }
-        try{ mc.player.sendMessage(Text.of("§8§l[§c§lAsteroide§8§l]§r Disconnected from RTC Server. Attempting to reconnect"), false); }catch(Exception L){/**/}
-        new Thread(() -> {
+        try{
+            final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
+            if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(Text.of("§8§l[§c§lAsteroide§8§l]§r Disconnected from RTC Server. Attempting to reconnect"), false);
+        }catch(Exception L){/**/}
+        reconnectThread = new Thread(() -> {
             while(true){
                 try{
                     Thread.sleep(3000);
@@ -112,12 +116,14 @@ public class ws extends WebSocketClient {
                         instance = tempClient;
                         AsteroideAddon.wss = tempClient;
                         reconnecting = false;
+                        reconnectThread = null;
                         break;
                     }
                 }
                 catch(Exception L){/**/}
             }
-        }).start();
+        });
+        reconnectThread.start();
     }
 
     @Override

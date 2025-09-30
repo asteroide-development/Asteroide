@@ -28,7 +28,7 @@ import spigey.asteroide.AsteroideAddon;
 import java.util.*;
 
 public class MurderMysteryESP extends Module {
-    public MurderMysteryESP() { super(AsteroideAddon.CATEGORY, "Murder-Mystery-ESP", "Shows the murderer in Hypixel Murder Mystery."); }
+    public MurderMysteryESP() { super(AsteroideAddon.CATEGORY, "Murder-Mystery-ESP", "ESP for Hypixel Murder Mystery."); }
 
     private final SettingGroup sgGeneral = settings.createGroup("General", true);
     private final SettingGroup sgBow = settings.createGroup("Bow", true);
