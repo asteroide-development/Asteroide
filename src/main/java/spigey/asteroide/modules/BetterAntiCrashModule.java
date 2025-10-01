@@ -178,6 +178,14 @@ public class BetterAntiCrashModule extends Module {
         .build()
     );
 
+    private final Setting<Boolean> logBlockedPackets = sgPackets.add(new BoolSetting.Builder()
+        .name("Log Blocked Packets")
+        .description("Logs blocked packets to chat.")
+        .defaultValue(true)
+        .visible(packets::get)
+        .build()
+    );
+
     private int messages = 0;
     private int tick = -1;
 
@@ -238,7 +246,7 @@ public class BetterAntiCrashModule extends Module {
         if(packets.get() && shouldCheck(event.packet)){
             if(packetThreshold.get() < event.packet.toString().length()){
                 event.cancel();
-                info(String.format("Blocked large %s packet with length %s!", event.packet.getClass().getSimpleName(), getMessage(event.packet.toString())));
+                if(logBlockedPackets.get()) info(String.format("Blocked large %s packet with length %s!", event.packet.getClass().getSimpleName(), getMessagePacketThing(event.packet.toString())));
             }
         }
         if(event.packet instanceof EntityTrackerUpdateS2CPacket && entityLengthLimit.get()) { try{
@@ -321,6 +329,7 @@ public class BetterAntiCrashModule extends Module {
     }
 
     public String getMessage(String text){ return lengthMode.get() == LengthMode.Performance ? ">"+ThresholdLength.get() : String.valueOf(text.length()); }
+    public String getMessagePacketThing(String text){ return lengthMode.get() == LengthMode.Performance ? ">"+packetThreshold.get() : String.valueOf(text.length()); }
 
     private enum LengthMode {
         Details,

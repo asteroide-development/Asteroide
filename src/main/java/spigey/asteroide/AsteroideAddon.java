@@ -63,7 +63,7 @@ public class AsteroideAddon extends MeteorAddon {
         try{
             wss = new ws(new URI("ws://rtc.asteroide.cc/asws?version=0.2.1"));
             wss.connect();
-        } catch(Exception e){ /* whoopsy daisy!! */ }
+        } catch(Exception e){ LOG.error("Failed to connect to RTC! {}", String.valueOf(e)); }
 
         LOG.info("\nLoaded Asteroide v0.2.1\n");
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("trolls.txt");

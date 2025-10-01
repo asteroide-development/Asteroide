@@ -52,6 +52,7 @@ public class ws extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
+        AsteroideAddon.LOG.info("Connected to RTC Server!");
         RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
         this.send(gson.toJson(Map.of(
             "event", "init",
@@ -100,12 +101,13 @@ public class ws extends WebSocketClient {
 
     @Override
     public void onClose(int i, String s, boolean b) {
+        AsteroideAddon.LOG.info("Disconnected from RTC Server: {} {}", i, s);
         if(reconnecting || (reconnectThread != null && reconnectThread.isAlive())) return;
         reconnecting = true;
         if(ping != null) { ping.cancel(); ping = null; }
         try{
             final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
-            if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(Text.of("§8§l[§c§lAsteroide§8§l]§r Disconnected from RTC Server. Attempting to reconnect"), false);
+            if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(Text.of("§8§l[§c§lAsteroide§8§l]§r Disconnected from RTC Server. ("+s+")"), false);
         }catch(Exception L){/**/}
         reconnectThread = new Thread(() -> {
             while(true){
@@ -127,7 +129,7 @@ public class ws extends WebSocketClient {
     }
 
     @Override
-    public void onError(Exception e) { if(isOpen()) { close(); } }
+    public void onError(Exception e) { AsteroideAddon.LOG.info("RTC {}", String.valueOf(e)); if(isOpen()) { close(); } }
 
     public static void sendChat(String... args){
         if(instance == null || !instance.isOpen()) return;
