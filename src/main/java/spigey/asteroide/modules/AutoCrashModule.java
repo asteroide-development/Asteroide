@@ -7,12 +7,14 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import spigey.asteroide.AsteroideAddon;
+import spigey.asteroide.utils.RandUtils;
 
 import java.util.List;
 
 public class AutoCrashModule extends Module {
     public AutoCrashModule() { super(AsteroideAddon.CATEGORY, "Auto-Crash", "Automatically kicks/bans/crashes a player when they join the server"); }
-    private final SettingGroup sgGeneral = settings.getDefaultGroup();
+    private final SettingGroup sgGeneral = settings.createGroup("General");
+    private final SettingGroup sgDelay = settings.createGroup("Delay");
     private final Setting<List<String>> players = sgGeneral.add(new StringListSetting.Builder().name("players").description("Players to automatically crash").defaultValue("Fire93").build());
     private final Setting<PlayerMode> PlayerModeSetting = sgGeneral.add(new EnumSetting.Builder<PlayerMode>()
         .name("Player Mode")
@@ -54,14 +56,27 @@ public class AutoCrashModule extends Module {
         .visible(() -> { return ModeSetting.get() == Mode.Ban; })
         .build()
     );
-    private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
-        .name("delay")
-        .description("The delay between command runs.")
-        .defaultValue(30)
-        .min(0)
-        .sliderMax(200)
-        .build()
-    );
+
+    private enum DelayMode { Random, Precise }
+    private enum DelayUnit { Ticks, Seconds, Minutes, Hours, Days }
+    private final Setting<Integer> delay = sgDelay.add(new IntSetting.Builder().name("Delay").description("The delay between command runs.").defaultValue(30).min(0).sliderMax(200).build());
+    private final Setting<DelayMode> delayMode = sgDelay.add(new EnumSetting.Builder<DelayMode>().name("Delay Mode").description("Random or precise?").defaultValue(DelayMode.Precise).build());
+    private final Setting<DelayUnit> delayUnit = sgDelay.add(new EnumSetting.Builder<DelayUnit>().name("Delay Unt").description("Time unit to use for delay.").defaultValue(DelayUnit.Ticks).build());
+    private final Setting<Integer> minOffset = sgDelay.add(new IntSetting.Builder().name("Min Offset").description("Minimum offset of random delay.").defaultValue(5).visible(() -> delayMode.get() == DelayMode.Random).min(0).sliderMax(10).build());
+    private final Setting<Integer> maxOffset = sgDelay.add(new IntSetting.Builder().name("Max Offset").description("Maximum offset of random delay.").defaultValue(5).visible(() -> delayMode.get() == DelayMode.Random).min(0).sliderMax(10).build());
+
+    private int getDelay(){
+        int base = delay.get();
+        if(delayMode.get() == DelayMode.Random) base = RandUtils.withOffset(base, minOffset.get(), maxOffset.get());
+        switch (delayUnit.get()){
+            case Ticks -> { return base; }
+            case Seconds -> { return base * 20; }
+            case Minutes -> { return base * 20 * 60; }
+            case Hours -> { return base * 20 * 60 * 60; }
+            case Days -> { return base * 20 * 60 * 60 * 24; }
+        }
+        return base;
+    }
 
     private int tick = delay.get();
 
@@ -84,7 +99,7 @@ public class AutoCrashModule extends Module {
                 case Ban -> mc.player.networkHandler.sendCommand(banMessage.get().replace("{name}", name).replace("/", ""));
             }
         }
-        this.tick = delay.get();
+        this.tick = getDelay();
     }
 
     private enum Mode {
