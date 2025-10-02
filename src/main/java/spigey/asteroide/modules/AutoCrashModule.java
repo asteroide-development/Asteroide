@@ -61,7 +61,7 @@ public class AutoCrashModule extends Module {
     private enum DelayUnit { Ticks, Seconds, Minutes, Hours, Days }
     private final Setting<Integer> delay = sgDelay.add(new IntSetting.Builder().name("Delay").description("The delay between command runs.").defaultValue(30).min(0).sliderMax(200).build());
     private final Setting<DelayMode> delayMode = sgDelay.add(new EnumSetting.Builder<DelayMode>().name("Delay Mode").description("Random or precise?").defaultValue(DelayMode.Precise).build());
-    private final Setting<DelayUnit> delayUnit = sgDelay.add(new EnumSetting.Builder<DelayUnit>().name("Delay Unt").description("Time unit to use for delay.").defaultValue(DelayUnit.Ticks).build());
+    private final Setting<DelayUnit> delayUnit = sgDelay.add(new EnumSetting.Builder<DelayUnit>().name("Delay Unit").description("Time unit to use for delay.").defaultValue(DelayUnit.Ticks).build());
     private final Setting<Integer> minOffset = sgDelay.add(new IntSetting.Builder().name("Min Offset").description("Minimum offset of random delay.").defaultValue(5).visible(() -> delayMode.get() == DelayMode.Random).min(0).sliderMax(10).build());
     private final Setting<Integer> maxOffset = sgDelay.add(new IntSetting.Builder().name("Max Offset").description("Maximum offset of random delay.").defaultValue(5).visible(() -> delayMode.get() == DelayMode.Random).min(0).sliderMax(10).build());
 
