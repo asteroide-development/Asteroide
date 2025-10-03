@@ -31,10 +31,28 @@ public class AutoChatGame extends Module {
     private final Setting<List<String>> quotes = sgFilters.add(new StringListSetting.Builder().name("quotes").description("Quotes").defaultValue("\"", "'", "`").build());
     private final Setting<List<String>> contain = sgFilters.add(new StringListSetting.Builder().name("must contain all").description("Requires the message to contain all of these Strings").defaultValue().build());
     private final Setting<List<String>> dont = sgFilters.add(new StringListSetting.Builder().name("must not contain").description("Do not solve the chatgame if it contains one of these Strings").defaultValue("correctly unscrambled", "was the fastest to").build());
-    private final Setting<Mode> mode = sgDelay.add(new EnumSetting.Builder<Mode>().name("delay type").description("Whether it waits for a random or precise amount of time").defaultValue(Mode.Random).build());
-    private final Setting<Integer> delay = sgDelay.add(new IntSetting.Builder().name("delay").description("The delay before sending the solution in ticks").defaultValue(30).min(0).sliderMax(200).build());
-    private final Setting<Integer> minoffset = sgDelay.add(new IntSetting.Builder().name("delay min offset").description("Minimum offset from the delay in ticks").defaultValue(0).min(0).sliderMax(40).visible(() -> mode.get() == Mode.Random).build());
-    private final Setting<Integer> maxoffset = sgDelay.add(new IntSetting.Builder().name("delay max offset").description("Maximum offset from the delay in ticks").defaultValue(10).min(0).sliderMax(40).visible(() -> mode.get() == Mode.Random).build());
+
+    private enum DelayMode { Random, Precise }
+    private enum DelayUnit { Ticks, Seconds, Minutes, Hours, Days }
+    private final Setting<Integer> delay = sgDelay.add(new IntSetting.Builder().name("Delay").description("The delay before sending the solution.").defaultValue(30).min(0).sliderMax(200).build());
+    private final Setting<DelayMode> delayMode = sgDelay.add(new EnumSetting.Builder<DelayMode>().name("Delay Mode").description("Random or precise?").defaultValue(DelayMode.Precise).build());
+    private final Setting<DelayUnit> delayUnit = sgDelay.add(new EnumSetting.Builder<DelayUnit>().name("Delay Unit").description("Time unit to use for delay.").defaultValue(DelayUnit.Ticks).build());
+    private final Setting<Integer> minOffset = sgDelay.add(new IntSetting.Builder().name("Min Offset").description("Minimum offset of random delay.").defaultValue(5).visible(() -> delayMode.get() == DelayMode.Random).min(0).sliderMax(10).build());
+    private final Setting<Integer> maxOffset = sgDelay.add(new IntSetting.Builder().name("Max Offset").description("Maximum offset of random delay.").defaultValue(5).visible(() -> delayMode.get() == DelayMode.Random).min(0).sliderMax(10).build());
+
+    private int getDelay(){
+        int base = delay.get();
+        if(delayMode.get() == DelayMode.Random) base = RandUtils.withOffset(base, minOffset.get(), maxOffset.get());
+        switch (delayUnit.get()){
+            case Ticks -> { return base; }
+            case Seconds -> { return base * 20; }
+            case Minutes -> { return base * 20 * 60; }
+            case Hours -> { return base * 20 * 60 * 60; }
+            case Days -> { return base * 20 * 60 * 60 * 24; }
+        }
+        return base;
+    }
+
     private final Setting<Boolean> hidetr = sgChat.add(new BoolSetting.Builder().name("Hide Triggers").description("Hides messages that trigger the chatgame module").defaultValue(false).build());
     private final Setting<Boolean> shmsg = sgChat.add(new BoolSetting.Builder().name("Shorter message instead").description("Shows a shorter chatgame message instead").defaultValue(false).visible(hidetr::get).build());
     private final Setting<Boolean> showsul = sgChat.add(new BoolSetting.Builder().name("Show solution").description("Shows you the chatgame solution instead of sending it automatically").defaultValue(false).build());
@@ -46,7 +64,6 @@ public class AutoChatGame extends Module {
 
     private int tick;
     private String solution = "";
-    private final Random rand = new Random();
 
     private final Map<String, String> trivia = Map.of(
         "in what planet do we live in?", "Earth",
@@ -114,8 +131,7 @@ public class AutoChatGame extends Module {
             return;
         }
 
-        if(mode.get() == Mode.Precise) this.tick = delay.get();
-        else this.tick = RandUtils.withOffset(delay.get(), minoffset.get(), maxoffset.get());
+        this.tick = getDelay();
 
         if(this.tick == 0) run();
         else this.tick--; // It's wrong by exactly 1 tick??
