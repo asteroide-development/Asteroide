@@ -47,6 +47,13 @@ public class AimbotModule extends Module {
         .defaultValue(EntityType.PLAYER)
         .build()
     );
+    /*private final Setting<TargetingMode> targets = sgGeneral.add(new EnumSetting.Builder<TargetingMode>()
+        .name("Target Mode")
+        .description("Friends Targeting Mode.")
+        .visible(() -> entities.get().contains(EntityType.PLAYER))
+        .defaultValue(TargetingMode.NotFriends)
+        .build()
+    );*/
     private final Setting<Weapon> weapon = sgGeneral.add(new EnumSetting.Builder<Weapon>()
         .name("weapon")
         .description("Only targets an entity when a specified weapon is in your hand.")
@@ -109,6 +116,12 @@ public class AimbotModule extends Module {
         Axe,
         Both,
         All
+    }
+
+    private enum TargetingMode {
+        Any,
+        NotFriends,
+        OnlyFriends
     }
 
     private boolean itemInHand() {

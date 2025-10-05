@@ -26,6 +26,9 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance meteor,
   <a href="https://github.com/asteroide-development/Asteroide/releases">
     <img alt="Downloads" src="https://img.shields.io/github/downloads/asteroide-development/asteroide/total?color=red&style=flat-square">
   </a>
+  <a href="https://uptime.betterstack.com/?utm_source=status_badge">
+    <img alt="Uptime" src="https://uptime.betterstack.com/status-badges/v2/monitor/26971.svg">
+  </a>
 <br>
   <a href="https://discord.gg/QFzE3UzdpQ">
     <img src="https://invidget.switchblade.xyz/QFzE3UzdpQ">
