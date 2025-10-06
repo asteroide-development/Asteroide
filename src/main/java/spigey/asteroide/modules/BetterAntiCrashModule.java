@@ -30,6 +30,11 @@ import java.util.stream.StreamSupport;
 public class BetterAntiCrashModule extends Module {
     public BetterAntiCrashModule() { super(AsteroideAddon.CATEGORY, "Better-Anti-Crash", "Fixes various exploits and crashes."); }
     final SettingGroup sgEntities = settings.createGroup("Entities", true);
+    final SettingGroup sgParticles = settings.createGroup("Particles", true);
+    final SettingGroup sgLength = settings.createGroup("Length", true);
+    final SettingGroup sgPackets = settings.createGroup("Packets", true);
+    final SettingGroup sgChat = settings.createGroup("Chat Limit", true);
+    final SettingGroup sgOther = settings.createGroup("Other", true);
     private final Setting<Set<EntityType<?>>> entities = sgEntities.add(new EntityTypeListSetting.Builder()
         .name("entities")
         .description("Disables spawning of selected entities.")
@@ -63,7 +68,7 @@ public class BetterAntiCrashModule extends Module {
         .description("Disables spawning of selected items on the ground.")
         .build()
     );
-    final SettingGroup sgParticles = settings.createGroup("Particles", true);
+
     private final Setting<List<ParticleType<?>>> particles = sgParticles.add(new ParticleTypeListSetting.Builder()
         .name("particles")
         .description("Particles to not block.")
@@ -86,21 +91,7 @@ public class BetterAntiCrashModule extends Module {
         .visible(DeleteParticles::get)
         .build()
     );
-    final SettingGroup sgOther = settings.createGroup("Other", true);
-    private final Setting<Boolean> CancelFireworks = sgOther.add(new BoolSetting.Builder()
-        .name("Cancel Fireworks")
-        .description("Cancels Fireworks from spawning particles.")
-        .defaultValue(false)
-        .build()
-    );
-    public final Setting<Boolean> translationCrash = sgOther.add(new BoolSetting.Builder()
-        .name("Block Invalid Translations")
-        .description("Cancels invalid translation strings.")
-        .defaultValue(true)
-        .build()
-    );
-    public final Setting<List<String>> translations = sgOther.add(new StringListSetting.Builder().name("translations").description("Translation strings to block").defaultValue("%1$s").visible(translationCrash::get).build());
-    final SettingGroup sgLength = settings.createGroup("Length", true);
+
     public final Setting<Integer> ThresholdLength = sgLength.add(new IntSetting.Builder()
         .name("Length Threshold")
         .description("Cancels things that are longer than X characters.")
@@ -143,7 +134,7 @@ public class BetterAntiCrashModule extends Module {
         .build()
     );
 
-    final SettingGroup sgPackets = settings.createGroup("Packets", true);
+
     public final Setting<Boolean> packets = sgPackets.add(new BoolSetting.Builder()
         .name("Block Large Packets")
         .description("Block large packets.")
@@ -189,7 +180,6 @@ public class BetterAntiCrashModule extends Module {
     private int messages = 0;
     private int tick = -1;
 
-    final SettingGroup sgChat = settings.createGroup("Chat Limit", true);
     private final Setting<Boolean> chatLimitEnabled = sgChat.add(new BoolSetting.Builder()
         .name("Block Chat Message Spam")
         .description("Cancels chat messages when a lot of messages are sent in a short amount of time.")
@@ -227,6 +217,37 @@ public class BetterAntiCrashModule extends Module {
         .defaultValue(LengthType.Seconds)
         .visible(chatLimitEnabled::get)
         .onChanged((value) -> { this.messages = 0; this.tick = -1; })
+        .build()
+    );
+
+    private final Setting<Boolean> CancelFireworks = sgOther.add(new BoolSetting.Builder()
+        .name("Cancel Fireworks")
+        .description("Cancels Fireworks from spawning particles.")
+        .defaultValue(false)
+        .build()
+    );
+    public final Setting<Boolean> translationCrash = sgOther.add(new BoolSetting.Builder()
+        .name("Block Invalid Translations")
+        .description("Cancels invalid translation strings.")
+        .defaultValue(true)
+        .build()
+    );
+    public final Setting<List<String>> translations = sgOther.add(new StringListSetting.Builder().name("translations").description("Translation strings to block").defaultValue("%1$s").visible(translationCrash::get).build());
+    public final Setting<Boolean> commandBlockCrash = sgOther.add(new BoolSetting.Builder()
+        .name("Command Block Crash")
+        .description("Block too long commands in command blocks.")
+        .defaultValue(true)
+        .build()
+    );
+    public final Setting<Integer> commandBlockThreshold = sgOther.add(new IntSetting.Builder()
+        .name("Command Block Threshold")
+        .description("Cancels command blocks with commands longer than X characters.")
+        .defaultValue(50000)
+        .min(-1)
+        .sliderMin(1000)
+        .sliderMax(100000)
+        .max(2147483647)
+        .visible(commandBlockCrash::get)
         .build()
     );
 
