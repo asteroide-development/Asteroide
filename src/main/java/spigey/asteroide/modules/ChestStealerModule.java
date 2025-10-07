@@ -59,7 +59,7 @@ public class ChestStealerModule extends Module {
     );
     public final Setting<Mode> mode = sgGeneral.add(new EnumSetting.Builder<Mode>()
         .name("mode")
-        .description("Whether to use the new or classic method of stealing items")
+        .description("New works in all GUIs whereas classic is better for automation")
         .defaultValue(Mode.Classic)
         .build()
     );
@@ -68,6 +68,7 @@ public class ChestStealerModule extends Module {
         New,
         Classic
     }
+
     private int tick;
     private int i = -1;
     DefaultedList<Slot> slots;

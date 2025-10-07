@@ -12,6 +12,7 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.network.packet.c2s.common.CustomPayloadC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
@@ -45,8 +46,19 @@ public class DevModule extends Module {
         .build()
     );
 
+    private final Setting<Boolean> testBrand = sgGeneral.add(new BoolSetting.Builder()
+        .name("Brand Test")
+        .description("Tests Client Brand")
+        .defaultValue(false)
+        .build()
+    );
+
     @EventHandler
     private void onPacketSend(PacketEvent.Send event) {
+        if(event.packet instanceof CustomPayloadC2SPacket && testBrand.get()){
+            info("§cClient Brand: §a" + ((CustomPayloadC2SPacket) event.packet).payload().getId().id());
+            System.out.print(((CustomPayloadC2SPacket) event.packet).payload().getId().id());
+        }
         if (!(event.packet instanceof ClickSlotC2SPacket) || !slots.get()) return;
         ChatUtils.sendMsg(Text.of("§cSLOT " + ((ClickSlotC2SPacket) event.packet).getSlot()));
         ChatUtils.sendMsg(Text.of("§aREVISION " + ((ClickSlotC2SPacket) event.packet).getRevision()));
