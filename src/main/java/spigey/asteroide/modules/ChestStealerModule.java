@@ -7,10 +7,7 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.ingame.HopperScreen;
-import net.minecraft.client.gui.screen.ingame.ShulkerBoxScreen;
+import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -57,16 +54,34 @@ public class ChestStealerModule extends Module {
         .description("Which items to steal")
         .build()
     );
+    private final Setting<StealMode> stealMode = sgGeneral.add(new EnumSetting.Builder<StealMode>()
+        .name("steal-mode")
+        .description("Whether to use whitelist or blacklist")
+        .defaultValue(StealMode.Whitelist)
+        .build()
+    );
     public final Setting<Mode> mode = sgGeneral.add(new EnumSetting.Builder<Mode>()
         .name("mode")
         .description("New works in all GUIs whereas classic is better for automation")
         .defaultValue(Mode.Classic)
         .build()
     );
+    private final Setting<Boolean> close = sgGeneral.add(new BoolSetting.Builder()
+        .name("close")
+        .description("Closes the screen when done (new only)")
+        .defaultValue(true)
+        .build()
+    );
 
     private enum Mode {
         New,
         Classic
+    }
+
+    private enum StealMode {
+        Whitelist,
+        Blacklist,
+        All
     }
 
     private int tick;
@@ -92,26 +107,12 @@ public class ChestStealerModule extends Module {
                     return;
                 }
 
+
+
                 while ((i + 1) < (slots.size() - 36)) {
                     i++;
                     ItemStack uwu = slots.get(i).getStack();
-                    boolean yes = name.get().isEmpty() && contain.get().isEmpty() && items.get().isEmpty();
-                    if (!uwu.isEmpty()) for (int i = 0; i < name.get().size(); i++)
-                        if (uwu.getName().getString().equalsIgnoreCase(name.get().get(i))) {
-                            yes = true;
-                            break;
-                        }
-                    if (!uwu.isEmpty()) for (int i = 0; i < contain.get().size(); i++)
-                        if (uwu.getName().getString().toLowerCase().contains(contain.get().get(i).toLowerCase())) {
-                            yes = true;
-                            break;
-                        }
-                    if (!uwu.isEmpty()) for (int i = 0; i < items.get().size(); i++)
-                        if (uwu.getItem().getDefaultStack().getName().equals(items.get().get(i).getDefaultStack().getName())) {
-                            yes = true;
-                            break;
-                        }
-                    if (!(uwu.isEmpty()) && yes) {
+                    if (shouldSteal(uwu)) {
                         ClickSlotC2SPacket packet = getPacket(uwu);
                         assert mc.player != null;
                         mc.player.networkHandler.sendPacket(packet);
@@ -125,28 +126,35 @@ public class ChestStealerModule extends Module {
                 }
             }
         } else {
-            if (!(mc.currentScreen instanceof HandledScreen<?>)) return;
-            DefaultedList<Slot> slots = ((HandledScreen<?>) mc.currentScreen).getScreenHandler().slots;
+            if (!(mc.currentScreen instanceof HandledScreen<?> screen) || mc.currentScreen instanceof InventoryScreen) return;
+            DefaultedList<Slot> slots = screen.getScreenHandler().slots;
             if (slots == null || slots.isEmpty()) return;
 
             if (tick > 0) { tick--; return; }
 
             for(Slot slot : slots){
                 if(slot.inventory instanceof PlayerInventory) continue;
-                ItemStack uwu = slot.getStack();
-                boolean yes = name.get().isEmpty() && contain.get().isEmpty() && items.get().isEmpty();
-                if(!uwu.isEmpty()) for(int i = 0; i < name.get().size(); i++) if(uwu.getName().getString().equalsIgnoreCase(name.get().get(i))) {yes = true; break;}
-                if(!uwu.isEmpty()) for(int i = 0; i < contain.get().size(); i++) if(uwu.getName().getString().toLowerCase().contains(contain.get().get(i).toLowerCase())) {yes = true; break;}
-                if(!uwu.isEmpty()) for(int i = 0; i < items.get().size(); i++) if(uwu.getItem().getDefaultStack().getName().equals(items.get().get(i).getDefaultStack().getName())) {yes = true; break;}
-                if (!(uwu.isEmpty()) && yes) {
-                    ClickSlotC2SPacket packet = getPacket(uwu, slot);
+                if (shouldSteal(slot.getStack())) {
+                    ClickSlotC2SPacket packet = getPacket(slot.getStack(), slot);
                     assert mc.player != null;
                     mc.player.networkHandler.sendPacket(packet);
                     tick = delay.get();
                     if(delay.get() > 0) return;
                 }
             }
+            if(screen.getScreenHandler().slots.stream().noneMatch(slot -> slot.hasStack() && !(slot.inventory instanceof PlayerInventory)) && close.get()) {
+                screen.close();
+                mc.player.networkHandler.sendPacket(new CloseHandledScreenC2SPacket(screen.getScreenHandler().syncId));
+            }
         }
+    }
+
+    private boolean shouldSteal(ItemStack item){
+        if(item.isEmpty()) return false;
+        for(int i = 0; i < name.get().size(); i++) if(item.getName().getString().equalsIgnoreCase(name.get().get(i))) return stealMode.get() == StealMode.Whitelist;
+        for(int i = 0; i < contain.get().size(); i++) if(item.getName().getString().toLowerCase().contains(contain.get().get(i).toLowerCase())) return stealMode.get() == StealMode.Whitelist;
+        for(int i = 0; i < items.get().size(); i++) if(item.getItem().getDefaultStack().getName().equals(items.get().get(i).getDefaultStack().getName())) return stealMode.get() == StealMode.Whitelist;
+        return (name.get().isEmpty() && contain.get().isEmpty() && items.get().isEmpty()) || stealMode.get() != StealMode.Whitelist;
     }
 
     private ClickSlotC2SPacket getPacket(ItemStack uwu) { // intellij wtf
