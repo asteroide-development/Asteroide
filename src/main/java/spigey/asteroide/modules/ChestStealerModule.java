@@ -151,6 +151,7 @@ public class ChestStealerModule extends Module {
 
     private boolean shouldSteal(ItemStack item){
         if(item.isEmpty()) return false;
+        if(stealMode.get() == StealMode.All) return true;
         for(int i = 0; i < name.get().size(); i++) if(item.getName().getString().equalsIgnoreCase(name.get().get(i))) return stealMode.get() == StealMode.Whitelist;
         for(int i = 0; i < contain.get().size(); i++) if(item.getName().getString().toLowerCase().contains(contain.get().get(i).toLowerCase())) return stealMode.get() == StealMode.Whitelist;
         for(int i = 0; i < items.get().size(); i++) if(item.getItem().getDefaultStack().getName().equals(items.get().get(i).getDefaultStack().getName())) return stealMode.get() == StealMode.Whitelist;

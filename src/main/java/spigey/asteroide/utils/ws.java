@@ -91,10 +91,6 @@ public class ws extends WebSocketClient {
                     if(rtc.censor.get() && rtc.isActive()) msg = msg.replaceAll("(?i)igg", "***").replaceAll("(?i)fag", "***");
                     if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(HexConverter.toText(msg), false);
                     break;
-                case "disc":
-                    String[] warndom = {"multiplayer.disconnect.chat_validation_failed", "multiplayer.status.unknown", "multiplayer.disconnect.kicked"};
-                    mc.getNetworkHandler().getConnection().disconnect(Text.of(I18n.translate(warndom[randomNum(0, warndom.length - 1)])));
-                    break;
             }
         }catch(Exception E){ AsteroideAddon.LOG.error(String.valueOf(E)); }
     }
