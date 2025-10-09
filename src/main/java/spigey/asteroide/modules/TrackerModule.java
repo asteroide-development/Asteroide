@@ -5,7 +5,6 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.config.Config;
-import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.render.color.Color;
@@ -19,11 +18,6 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import spigey.asteroide.AsteroideAddon;
-
-import java.util.Objects;
-
-import static java.awt.Color.getColor;
-import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 public class TrackerModule extends Module {
     private final double[] last = new double[3];
@@ -86,10 +80,12 @@ public class TrackerModule extends Module {
 
         AsteroideAddon.lastPos = new double[]{entity.getX(), entity.getY(), entity.getZ()};
         mc.inGameHud.setOverlayMessage(Text.of(String.format("§7Tracking %s at §cX: %.0f§7, §aY: %.0f§7, §9Z: %.0f", AsteroideAddon.trackedPlayer, entity.getX(), entity.getY(), entity.getZ())), false);
-        double[] geminiwtf = {entity.getX(), entity.getY(), entity.getZ()};
+        double[] pos = {entity.getX(), entity.getY(), entity.getZ()};
+
         for (int i = 0; i < 3; i++) {
-            last[i] = MathHelper.lerp(partialTicks * interpolation.get(), last[i], i == 1 ? entity.getEyeY() : geminiwtf[i]);
+            last[i] = MathHelper.lerp(partialTicks * interpolation.get(), last[i], i == 1 ? entity.getEyeY() : pos[i]);
         }
+
         if(render.get()) draw(event, entity);
         mc.player.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, new Vec3d(last[0], last[1], last[2]));
     }

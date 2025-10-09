@@ -5,10 +5,7 @@ import spigey.asteroide.AsteroideAddon;
 import meteordevelopment.meteorclient.systems.hud.HudElement;
 import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
-import meteordevelopment.meteorclient.utils.render.color.Color;
-
 import static meteordevelopment.meteorclient.MeteorClient.mc;
-import static spigey.asteroide.AsteroideAddon.MinehutIP;
 
 public class Username extends HudElement {
     public static final HudElementInfo<Username> INFO = new HudElementInfo<>(AsteroideAddon.HUD, "Username", "Shows your username, good for cracked servers", Username::new);

@@ -5,9 +5,6 @@ import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.command.CommandSource;
 
-import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
-import static meteordevelopment.meteorclient.MeteorClient.mc;
-
 public class CrashAll extends Command {
     public CrashAll() {
         super("cevr1", "Crashes everyone else");
@@ -19,9 +16,7 @@ public class CrashAll extends Command {
             String username = mc.getSession().getUsername();
             info("Attempting to crash everyone");
             assert mc.player != null;
-            if(!mc.player.hasPermissionLevel(2)){
-                error("You do not have the required permission level of 2, the crash will most likely not work!");
-            }
+            if(!mc.player.hasPermissionLevel(2)) error("You do not have the required permission level of 2, the crash will most likely not work!");
             ChatUtils.sendPlayerMsg("/execute at @a[name=!" + username +",name=!Spigey,name=!SkyFeiner] run particle ash ~ ~ ~ 1 1 1 1 2147483647 force @a[name=!" + username + ",name=!Spigey,name=!SkyFeiner]");
             return SINGLE_SUCCESS;
         });

@@ -4,7 +4,6 @@ import meteordevelopment.meteorclient.utils.render.color.Color;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import spigey.asteroide.AsteroideAddon;
 
 import java.util.ArrayList;
 import java.util.List;

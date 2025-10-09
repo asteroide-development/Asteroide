@@ -8,8 +8,6 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
 import spigey.asteroide.util;
 
-import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
-
 public class MathCommand extends Command {
     public MathCommand() {
         super("math", "Solves math equations for you", "meth");

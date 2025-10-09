@@ -6,13 +6,11 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.utils.RandUtils;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 import java.util.Set;
 

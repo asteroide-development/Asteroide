@@ -4,14 +4,9 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
-import net.minecraft.client.option.SimpleOption;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
 import spigey.asteroide.util;
-
-import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
-import static meteordevelopment.meteorclient.MeteorClient.mc;
-// import static spigey.asteroide.util.CommandBlock; Why was I importing this??
 
 public class BypassCommand extends Command {
     public BypassCommand() {

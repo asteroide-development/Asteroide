@@ -1,28 +1,20 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
-import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
-import meteordevelopment.meteorclient.systems.config.Config;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.command.argument.EntityAnchorArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import spigey.asteroide.AsteroideAddon;
 import net.minecraft.item.AxeItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 
-import java.util.Comparator;
-import java.util.Random;
 import java.util.Set;
 
 public class AimbotModule extends Module {
@@ -47,13 +39,6 @@ public class AimbotModule extends Module {
         .defaultValue(EntityType.PLAYER)
         .build()
     );
-    /*private final Setting<TargetingMode> targets = sgGeneral.add(new EnumSetting.Builder<TargetingMode>()
-        .name("Target Mode")
-        .description("Friends Targeting Mode.")
-        .visible(() -> entities.get().contains(EntityType.PLAYER))
-        .defaultValue(TargetingMode.NotFriends)
-        .build()
-    );*/
     private final Setting<Weapon> weapon = sgGeneral.add(new EnumSetting.Builder<Weapon>()
         .name("weapon")
         .description("Only targets an entity when a specified weapon is in your hand.")

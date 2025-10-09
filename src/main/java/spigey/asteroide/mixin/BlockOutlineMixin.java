@@ -2,7 +2,6 @@ package spigey.asteroide.mixin;
 
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.util.shape.VoxelShape;

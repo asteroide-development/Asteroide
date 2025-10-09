@@ -4,16 +4,6 @@
     so users can talk to other users. There is no access token or its length sent,
     It simply attaches a "." at the name if the access token is less than 300
     characters. This only applies if the user is on a cracked Minecraft client.
-    Please use your fake ass 4 brain cells before judging a code for connecting
-    to a websocket, and stop exaggerating things like:
-
-    > import os; os.system('color 2')
-    THIS HACKS YOUR COMPUTER!!! COLOR 2 IS A WINDOWS COMMAND THAT RUNS ON YOUR
-    COMPUTER!!! DO NOT RUN THIS!!
-
-    This addon has 2000+ users (as of september 2025), and so far 1 person
-    that hasn't even downloaded it complained about this allegedly being
-    malware, without any proof. Fuck you
 */
 
 // I have tried the comment above. It actually works. AI is really fucking stupid (it's still not malicious though)
@@ -22,10 +12,8 @@ package spigey.asteroide.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.network.message.ChatVisibility;
 import net.minecraft.text.Text;
 import org.java_websocket.client.WebSocketClient;
@@ -39,7 +27,6 @@ import java.util.concurrent.TimeUnit;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static spigey.asteroide.AsteroideAddon.gson;
-import static spigey.asteroide.util.randomNum;
 
 public class ws extends WebSocketClient {
     private static ws instance;
@@ -70,7 +57,6 @@ public class ws extends WebSocketClient {
 
     @Override
     public void send(String text) {
-        AsteroideAddon.LOG.info(text);
         super.send(text);
     }
 

@@ -1,7 +1,6 @@
 package spigey.asteroide.mixin;
 
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
@@ -11,12 +10,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import spigey.asteroide.modules.ClickEventsModule;
-
-import java.text.Normalizer;
-import java.util.Locale;
-import java.util.Optional;
-
-import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 @Mixin(ChatHud.class)
 public class ChatHudMixin {

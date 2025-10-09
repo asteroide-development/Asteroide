@@ -7,8 +7,6 @@ import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
 import spigey.asteroide.util;
-
-import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static spigey.asteroide.util.msg;
 
 public class CalcCommand extends Command {

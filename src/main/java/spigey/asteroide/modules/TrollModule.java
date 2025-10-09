@@ -10,7 +10,6 @@ import net.minecraft.client.network.PlayerListEntry;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.utils.Regex;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

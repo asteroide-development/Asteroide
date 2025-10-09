@@ -1,13 +1,14 @@
 /*
 * I sincerely apologize for the spaghetti code.
-* Also TODO: fix this dumbass code
+* I sincerely apologize for the spaghetti code.
+* I sincerely apologize for the spaghetti code.
+* I sincerely apologize for the spaghetti code.
 */
 
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.mixininterface.IClientPlayerInteractionManager;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
@@ -15,10 +16,8 @@ import meteordevelopment.orbit.EventHandler;
 import net.minecraft.item.Item;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.util;
-import net.minecraft.stat.StatHandler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AutoSlotSwitchModule extends Module {
@@ -92,7 +91,7 @@ public class AutoSlotSwitchModule extends Module {
         SlotActivated = true;
     }
     @EventHandler
-    private void onTick(TickEvent.Post event) {
+    private void onTick(TickEvent.Post event) { // This code is garbage I'm not even gonna try
         if (remainingDelay > 0) { remainingDelay--; return; }
         int num = 9;
         if (slotmode.get() == SlotMode.Custom) {

@@ -1,14 +1,9 @@
 package spigey.asteroide.modules;
 
-import meteordevelopment.meteorclient.events.game.OpenScreenEvent;
-import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.IntSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.orbit.EventHandler;
-import net.minecraft.client.gui.screen.DisconnectedScreen;
-import net.minecraft.network.packet.PacketType;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import spigey.asteroide.AsteroideAddon;
 

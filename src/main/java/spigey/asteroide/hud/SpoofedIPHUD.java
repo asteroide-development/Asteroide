@@ -4,13 +4,8 @@ import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudElement;
 import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
-import meteordevelopment.meteorclient.utils.render.color.Color;
 import spigey.asteroide.AsteroideAddon;
-
-import static spigey.asteroide.AsteroideAddon.MinehutIP;
 import static spigey.asteroide.AsteroideAddon.spoofedIP;
-
-import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 public class SpoofedIPHUD extends HudElement {
     public static final HudElementInfo<SpoofedIPHUD> INFO = new HudElementInfo<>(AsteroideAddon.HUD, "Spoofed IP", "Shows your IP that's spoofed from BungeeSpoof", SpoofedIPHUD::new);

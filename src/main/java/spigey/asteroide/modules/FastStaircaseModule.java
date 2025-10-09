@@ -6,7 +6,6 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.movement.HighJump;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.StairsBlock;
-import net.minecraft.util.math.Direction;
 import spigey.asteroide.AsteroideAddon;
 import net.minecraft.registry.Registries;
 

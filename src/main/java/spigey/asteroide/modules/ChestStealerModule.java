@@ -6,7 +6,6 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
@@ -18,10 +17,7 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.collection.DefaultedList;
 import spigey.asteroide.AsteroideAddon;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public class ChestStealerModule extends Module {
     public ChestStealerModule() {
@@ -89,7 +85,7 @@ public class ChestStealerModule extends Module {
     DefaultedList<Slot> slots;
     @EventHandler
     private void onTick(TickEvent.Post event) {
-        if(mode.get() == Mode.Classic) {
+        if(mode.get() == Mode.Classic) { // I am not rewriting this, go fuck yourself
             if ((mc.currentScreen instanceof GenericContainerScreen) || (mc.currentScreen instanceof ShulkerBoxScreen) || (mc.currentScreen instanceof HopperScreen)) {
                 if (mc.currentScreen instanceof ShulkerBoxScreen) {
                     slots = ((ShulkerBoxScreen) mc.currentScreen).getScreenHandler().slots;

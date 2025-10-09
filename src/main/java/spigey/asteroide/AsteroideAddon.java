@@ -23,7 +23,6 @@ import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
 import spigey.asteroide.utils.ws;
-import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -31,7 +30,6 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.function.Supplier;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
@@ -55,8 +53,6 @@ public class AsteroideAddon extends MeteorAddon {
 
     @Override
     public void onInitialize() {
-        // LOG.info(mc.getSession().getAccessToken()); // Turns out my cracked players access token is "FabricMC"??
-
         MeteorClient.EVENT_BUS.subscribe(this); // dear fuck chatskibidi...
         String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz", "spoofedservers"};
 
@@ -66,20 +62,20 @@ public class AsteroideAddon extends MeteorAddon {
         } catch(Exception e){ LOG.error("Failed to connect to RTC! {}", String.valueOf(e)); }
 
         LOG.info("\nLoaded Asteroide v0.2.1\n");
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("trolls.txt");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+
+        // src/main/java/spigey/asteroide/modules/TrollModule.java
+        try ( InputStream is = getClass().getClassLoader().getResourceAsStream("trolls.txt");
+              BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
+        ){
             String line;
-            while ((line = reader.readLine()) != null) {
-                trolls.add(line);
-            }
+            while ((line = reader.readLine()) != null) trolls.add(line);
         } catch (Exception e) {/**/}
 
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("notinsults.txt");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+        try ( InputStream is = getClass().getClassLoader().getResourceAsStream("notinsults.txt");
+              BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
+        ){
             String line;
-            while ((line = reader.readLine()) != null) {
-                notInsults.add(line);
-            }
+            while ((line = reader.readLine()) != null) notInsults.add(line);
         } catch (Exception e) {/**/}
 
         Modules modules = Modules.get();
@@ -90,14 +86,8 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new AutoChatGame());
         modules.add(new AntiAnnouncement());
         modules.add(new AutoBack());
-        modules.add(new ChatBot());
         modules.add(new AutoMacro());
-        modules.add(new ExperimentalModules());
         modules.add(new AutoSlotSwitchModule());
-        // addModule(new WordFilterModule());
-
-        // addModule(new AutoEz());
-        modules.add(new MultiCommandCommandBlockModule());
         modules.add(new PlatformFlyModule());
         modules.add(new BetterBungeeSpoofModule());
         modules.add(new BetterCollisionsModule());
@@ -109,23 +99,19 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new InvCleanerModule());
         modules.add(new BorderNoclipModule());
         modules.add(new WordFilterModule());
-        /*if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player"))*/ modules.add(new PacketLoggerModule());
+        modules.add(new PacketLoggerModule());
         modules.add(new VersionSpoofModule());
-        // addModule(new OPNotifierModule());
         modules.add(new TrackerModule());
         modules.add(new AimbotModule());
         modules.add(new EncryptChatModule());
         modules.add(new DistributeModule());
         modules.add(new TrollModule());
         if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) modules.add(new DevModule());
-        // addModule(new SwimModule());
         modules.add(new FastStaircaseModule());
         modules.add(new BlockHitboxesModule());
         modules.add(new ClientDeleteModule());
         modules.add(new RTCSettingsModule());
         modules.add(new BetterNoInteractModule());
-        //if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) addModule(new OPNotifierModule());
-        if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) modules.add(new SpamTwo());
         modules.add(new BetterAntiCrashModule());
         modules.add(new AutoCrashModule());
         modules.add(new TypoModule());
@@ -142,9 +128,7 @@ public class AsteroideAddon extends MeteorAddon {
         Commands.add(new CrashAll());
         Commands.add(new CrashPlayer());
         Commands.add(new ServerCrash());
-        Commands.add(new GetNbtItem());
         Commands.add(new PermLevel());
-        Commands.add(new FuckServerCommand());
         Commands.add(new MeCommand());
         Commands.add(new CommandBlockCommand());
         Commands.add(new PhaseCommand());
@@ -184,8 +168,8 @@ public class AsteroideAddon extends MeteorAddon {
         return prefix;
     } // Text.of("§7[§cAsteroide§7] ")
 
-    @EventHandler
-    private void onMessageReceive(ReceiveMessageEvent event){
+    // src/main/java/spigey/asteroide/hud/MinehutIPHud.java
+    @EventHandler private void onMessageReceive(ReceiveMessageEvent event){
         String content = event.getMessage().getString();
         if(!content.startsWith("Sending you to") || !content.endsWith("!")) return;
         try {

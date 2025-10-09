@@ -1,18 +1,12 @@
 package spigey.asteroide.mixin;
 
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.Box;
 import net.minecraft.world.border.WorldBorder;
-
-import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import spigey.asteroide.modules.BorderNoclipModule;
-
-import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 @Mixin(WorldBorder.class)
 public abstract class WorldBorderMixin {

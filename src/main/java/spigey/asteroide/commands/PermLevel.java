@@ -5,7 +5,6 @@ import meteordevelopment.meteorclient.commands.Command;
 import net.minecraft.command.CommandSource;
 
 import static spigey.asteroide.util.getPermissionLevel;
-import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
 public class PermLevel extends Command {
     public PermLevel() {

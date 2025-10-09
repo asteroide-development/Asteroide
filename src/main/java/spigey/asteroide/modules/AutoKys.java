@@ -13,8 +13,6 @@ import net.minecraft.entity.Entity;
 import java.util.List;
 import java.util.Random;
 
-import static meteordevelopment.meteorclient.utils.player.ChatUtils.sendMsg;
-import static spigey.asteroide.util.banstuff;
 import static spigey.asteroide.util.msg;
 
 public class AutoKys extends Module {

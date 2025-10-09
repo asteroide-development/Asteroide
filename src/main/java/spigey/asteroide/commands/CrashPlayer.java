@@ -8,12 +8,8 @@ import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
-
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
-import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static spigey.asteroide.util.perm;
 
 public class CrashPlayer extends Command {

@@ -1,19 +1,12 @@
 package spigey.asteroide.modules;
 
-import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
-import meteordevelopment.orbit.EventHandler;
-import net.minecraft.network.message.ChatVisibility;
-import net.minecraft.text.Text;
 import spigey.asteroide.utils.ws;
 import spigey.asteroide.AsteroideAddon;
 import meteordevelopment.meteorclient.settings.*;
-
-import java.awt.*;
-import java.util.Set;
 
 public class RTCSettingsModule extends Module {
     public RTCSettingsModule() {

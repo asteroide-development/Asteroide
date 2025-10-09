@@ -2,7 +2,6 @@ package spigey.asteroide.mixin;
 
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,11 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.item.tooltip.TooltipType;
-import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.modules.BetterAntiCrashModule;
-import spigey.asteroide.utils.RandUtils;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

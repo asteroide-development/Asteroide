@@ -1,7 +1,5 @@
 package spigey.asteroide.modules;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
-import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.ItemListSetting;
 import meteordevelopment.meteorclient.settings.Setting;
@@ -13,22 +11,15 @@ import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.gui.screen.ingame.CraftingScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.client.gui.screen.ingame.ShulkerBoxScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtHelper;
-import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
-import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import spigey.asteroide.AsteroideAddon;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class InvCleanerModule extends Module {
     public InvCleanerModule() {
@@ -47,13 +38,6 @@ public class InvCleanerModule extends Module {
         .defaultValue()
         .build()
     );
-    /*private final Setting<List<String>> nbt = sgGeneral.add(new StringListSetting.Builder()
-        .name("nbt")
-        .description("Also drop items that contain this nbt")
-        .defaultValue()
-        .build()
-    );*/
-
 
     @EventHandler
     public void onTick(TickEvent.Post event){

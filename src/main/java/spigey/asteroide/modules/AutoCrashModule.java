@@ -1,6 +1,5 @@
 package spigey.asteroide.modules;
 
-import meteordevelopment.meteorclient.events.game.GameJoinedEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -32,28 +31,28 @@ public class AutoCrashModule extends Module {
         .name("Kill Command")
         .description("The command to use to kill the player.")
         .defaultValue("kill {name}")
-        .visible(() -> { return ModeSetting.get() == Mode.Kill; })
+        .visible(() -> ModeSetting.get() == Mode.Kill)
         .build()
     );
     public Setting<String> kickMessage = sgGeneral.add(new StringSetting.Builder()
         .name("Kick Command")
         .description("The command to use to kick the player.")
         .defaultValue("kick {name} www.asteroide.cc")
-        .visible(() -> { return ModeSetting.get() == Mode.Kick; })
+        .visible(() -> ModeSetting.get() == Mode.Kick)
         .build()
     );
     public Setting<String> crashMessage = sgGeneral.add(new StringSetting.Builder()
         .name("Crash Command")
         .description("The command to use to crash the player.")
         .defaultValue("execute at {name} run particle ash ~ ~ ~ 1 1 1 1 2147483647 force {name}")
-        .visible(() -> { return ModeSetting.get() == Mode.Crash; })
+        .visible(() -> ModeSetting.get() == Mode.Crash)
         .build()
     );
     public Setting<String> banMessage = sgGeneral.add(new StringSetting.Builder()
         .name("Ban Command")
         .description("The command to use to ban the player.")
         .defaultValue("minecraft:ban {name} www.asteroide.cc")
-        .visible(() -> { return ModeSetting.get() == Mode.Ban; })
+        .visible(() -> ModeSetting.get() == Mode.Ban)
         .build()
     );
 
@@ -88,7 +87,6 @@ public class AutoCrashModule extends Module {
             if (player.getProfile() == null || player.getProfile().getName() == null) continue;
 
             String name = player.getProfile().getName();
-            //if (name.equals(mc.player.getName().getString())) continue;
             if (PlayerModeSetting.get() == PlayerMode.Whitelist && !players.get().contains(name)) continue;
             if (PlayerModeSetting.get() == PlayerMode.Blacklist && players.get().contains(name)) continue;
 

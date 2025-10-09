@@ -3,9 +3,7 @@ package spigey.asteroide.modules;
 import meteordevelopment.meteorclient.events.game.SendMessageEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.network.message.MessageSignatureData;
 import spigey.asteroide.AsteroideAddon;
 
 import java.util.List;
@@ -49,9 +47,6 @@ public class WordFilterModule extends Module {
         .build()
     );
 
-
-    ///////////////////////////////   CODE NOW USES A MIXIN   ///////////////////////////////
-
     private enum Type {
         Censor,
         Bypass
@@ -77,7 +72,7 @@ public class WordFilterModule extends Module {
                 }
             }
         }
-        for (int i = 0; i < datshit.length; i++) message.append(datshit[i]).append(" ");
+        for (String s : datshit) message.append(s).append(" ");
         event.message = message.toString().trim();
     }
 }

@@ -2,29 +2,21 @@ package spigey.asteroide.mixin;
 
 import com.google.gson.JsonObject;
 import org.spongepowered.asm.mixin.*;
-import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.modules.BetterBungeeSpoofModule;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.network.Http;
-import net.minecraft.network.NetworkState;
 import net.minecraft.network.packet.c2s.handshake.ConnectionIntent;
 import net.minecraft.network.packet.c2s.handshake.HandshakeC2SPacket;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import spigey.asteroide.util;
-import spigey.asteroide.utils.RandUtils;
-
-import java.util.UUID;
-
 import static spigey.asteroide.AsteroideAddon.gson;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static spigey.asteroide.AsteroideAddon.spoofedIP;
 
 @Mixin(HandshakeC2SPacket.class)
 public abstract class HandshakeC2SMixin {
-    // public abstract NetworkState getNewNetworkState();
-
     @Mutable
     @Shadow
     @Final
@@ -36,8 +28,6 @@ public abstract class HandshakeC2SMixin {
             BetterBungeeSpoofModule bungeeSpoofModule = Modules.get().get(BetterBungeeSpoofModule.class);
             assert bungeeSpoofModule != null;
             if (!bungeeSpoofModule.isActive()) return;
-            // if (this.getNewNetworkState() != NetworkState.LOGIN) return;
-            // this is so definitely gonna fucking break
 
             String spoofedUUID = mc.getSession().getUuidOrNull().toString();
             spoofedIP = bungeeSpoofModule.spoofedAddress.get();

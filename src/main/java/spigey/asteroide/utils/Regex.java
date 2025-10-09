@@ -32,11 +32,8 @@ public class Regex {
         String[] split = expression.split(" ");
         StringBuilder replacedExpression = new StringBuilder();
         for (String part : split) {
-            if (map.containsKey(part)) {
-                replacedExpression.append(map.get(part));
-            } else {
-                replacedExpression.append(part);
-            }
+            if (map.containsKey(part)) replacedExpression.append(map.get(part));
+            else replacedExpression.append(part);
             replacedExpression.append(" ");
         }
         return replacedExpression.toString().trim();

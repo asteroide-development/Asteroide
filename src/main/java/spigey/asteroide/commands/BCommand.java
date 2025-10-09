@@ -3,11 +3,8 @@ package spigey.asteroide.commands;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.commands.Command;
-import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.command.CommandSource;
-import net.minecraft.text.Text;
 import spigey.asteroide.util;
-// import static spigey.asteroide.util.CommandBlock; Why was I importing this?? // Ah, because this is copied from the CommandBlock Command
 
 public class BCommand extends Command {
     public BCommand() {
