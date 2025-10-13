@@ -40,13 +40,13 @@ public class PacketLoggerModule extends Module {
     private void onReceivePacket(PacketEvent.Receive event) {
         if (s2cPackets.get().contains(event.packet.getClass())) {
             if(event.packet instanceof CommonPingS2CPacket) info(String.valueOf(((CommonPingS2CPacket) event.packet).getParameter()));
-            else ChatUtils.sendMsg(Text.of("§7" + event.packet.getClass().getSimpleName() + " was received!"));
+            else ChatUtils.sendMsg(Text.of("§7" + PacketUtils.getName((Class<? extends Packet<?>>) event.packet.getClass()) + " was received!"));
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void onSendPacket(PacketEvent.Send event) {
-        if (c2sPackets.get().contains(event.packet.getClass())) ChatUtils.sendMsg(Text.of("§7" + event.packet.getClass().getSimpleName() + " was sent!"));
+        if (c2sPackets.get().contains(event.packet.getClass())) ChatUtils.sendMsg(Text.of("§7" + PacketUtils.getName((Class<? extends Packet<?>>) event.packet.getClass()) + " was sent!"));
     }
 }
 

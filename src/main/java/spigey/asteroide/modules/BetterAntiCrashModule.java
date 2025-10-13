@@ -6,6 +6,7 @@ import meteordevelopment.meteorclient.events.world.ParticleEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.network.PacketUtils;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
 import net.minecraft.entity.Entity;
@@ -262,7 +263,7 @@ public class BetterAntiCrashModule extends Module {
         if(packets.get() && shouldCheck(event.packet)){
             if(packetThreshold.get() < event.packet.toString().length()){
                 event.cancel();
-                if(logBlockedPackets.get()) info(String.format("Blocked large %s packet with length %s!", event.packet.getClass().getSimpleName(), getMessagePacketThing(event.packet.toString())));
+                if(logBlockedPackets.get()) info(String.format("Blocked large %s packet with length %s!", PacketUtils.getName((Class<? extends Packet<?>>) event.packet.getClass()), getMessagePacketThing(event.packet.toString())));
             }
         }
         if(event.packet instanceof EntityTrackerUpdateS2CPacket && entityLengthLimit.get()) { try{
