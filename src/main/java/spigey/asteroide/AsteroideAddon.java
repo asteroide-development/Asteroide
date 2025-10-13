@@ -28,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -38,28 +39,33 @@ public class AsteroideAddon extends MeteorAddon {
     public static final Category CATEGORY = new Category("Asteroide", Items.MAGMA_BLOCK.getDefaultStack());
     public static final HudGroup HUD = new HudGroup("Asteroide");
     public static final Gson gson = new Gson();
-    public static List<String> banlist = new ArrayList<>();
     public static String spoofedIP = "?";
     public static String MinehutIP = "?";
     public static String trackedPlayer = null;
     public static double[] lastPos = {0, 0, 0};
     public static List<String> trolls = new ArrayList<>();
     public static List<String> notInsults = new ArrayList<>();
-    public static boolean slotttt = false;
     public static Set<String> users = new HashSet<>();
     public static ws wss;
 
     public static boolean showRtc = false;
+
+    private boolean attemptConnect(String uri) {
+        // Uncomment below to disable RTC, will add proper config soon
+        // if(1 > 2) return true;
+        try {
+            wss = new ws(new URI(uri + "asws?version=0.2.1"));
+            wss.connect();
+            return true;
+        }catch(Exception e){ LOG.error("Failed to connect to RTC! {}", String.valueOf(e)); return false; }
+    }
 
     @Override
     public void onInitialize() {
         MeteorClient.EVENT_BUS.subscribe(this); // dear fuck chatskibidi...
         String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz", "spoofedservers"};
 
-        try{
-            wss = new ws(new URI("ws://rtc.asteroide.cc/asws?version=0.2.1"));
-            wss.connect();
-        } catch(Exception e){ LOG.error("Failed to connect to RTC! {}", String.valueOf(e)); }
+        if(!attemptConnect("ws://rtc.asteroide.cc/")) attemptConnect("wss://rtc.asteroide.fun/");
 
         LOG.info("\nLoaded Asteroide v0.2.1\n");
 
@@ -124,6 +130,7 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new MurderMysteryESP());
         modules.add(new SilentSwapModule());
         modules.add(new AutoParkourModule());
+        modules.add(new SafeElytra());
 
         // Commands
         Commands.add(new CrashAll());

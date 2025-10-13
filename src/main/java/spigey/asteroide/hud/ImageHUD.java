@@ -157,7 +157,10 @@ public class ImageHUD extends HudElement {
                 if (url.get() == null) { locked = false; return; }
                 String compiled = compile(url.get()).isEmpty() ? url.get() : compile(url.get());
                 var tempImage = NativeImage.read(Http.get(compiled).sendInputStream());
-                mc.getTextureManager().registerTexture(TEXID, new NativeImageBackedTexture(tempImage));
+                mc.execute(() -> {
+                    try{ mc.getTextureManager().registerTexture(TEXID, new NativeImageBackedTexture(tempImage)); }
+                    catch(Exception e){mc.player.sendMessage(Text.of(String.format("§8[§cAsteroide§8] §cCould not load image from URL §7%s§c! %s", url.get(), e)), false);}
+                });
                 this.image = tempImage;
                 empty = false;
             } catch (Exception ex) { mc.player.sendMessage(Text.of(String.format("§8[§cAsteroide§8] §cCould not load image from URL §7%s§c! %s", url.get(), ex)), false); }

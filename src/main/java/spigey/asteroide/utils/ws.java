@@ -62,6 +62,7 @@ public class ws extends WebSocketClient {
 
     @Override
     public void onMessage(String s) {
+        if(AsteroideAddon.wss != this) { close(); return; }
         JsonObject message = JsonParser.parseString(s).getAsJsonObject();
         try {
             switch (message.has("event") ? message.get("event").getAsString() : "") {
@@ -83,6 +84,7 @@ public class ws extends WebSocketClient {
 
     @Override
     public void onClose(int i, String s, boolean b) {
+        if(AsteroideAddon.wss != this) { return; }
         AsteroideAddon.LOG.info("Disconnected from RTC Server: {} {}", i, s);
         if(reconnecting || (reconnectThread != null && reconnectThread.isAlive())) return;
         reconnecting = true;
