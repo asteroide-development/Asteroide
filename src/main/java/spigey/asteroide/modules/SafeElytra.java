@@ -64,7 +64,8 @@ public class SafeElytra extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Post event) {
-        if(verticalVelocity.get() && mc.player.isInPose(EntityPose.GLIDING) && mc.player.getVelocity().y < -maxVelocity.get()) mc.player.setVelocity(mc.player.getVelocity().x, -maxVelocity.get(), mc.player.getVelocity().z);
+        if(!mc.player.isInPose(EntityPose.GLIDING) || !isActive()) return;
+        if(verticalVelocity.get() && mc.player.getVelocity().y < -maxVelocity.get()) mc.player.setVelocity(mc.player.getVelocity().x, -maxVelocity.get(), mc.player.getVelocity().z);
         if(!walls.get()) return;
         if(mc.player.raycast(wallRange.get(), 0f, false).getType() != HitResult.Type.BLOCK) return;
         Vec3d vel = mc.player.getVelocity();
