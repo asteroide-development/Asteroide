@@ -79,7 +79,7 @@ public class ws extends WebSocketClient {
                     if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(HexConverter.toText(msg), false);
                     break;
             }
-        }catch(Exception E){ AsteroideAddon.LOG.error(String.valueOf(E)); }
+        }catch(Exception E){ /**/ }
     }
 
     @Override
