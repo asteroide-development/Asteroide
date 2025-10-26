@@ -85,18 +85,18 @@ public class ws extends WebSocketClient {
     @Override
     public void onClose(int i, String s, boolean b) {
         if(AsteroideAddon.wss != this) { return; }
+        final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
         AsteroideAddon.LOG.info("Disconnected from RTC Server: {} {}", i, s);
         if(reconnecting || (reconnectThread != null && reconnectThread.isAlive())) return;
         reconnecting = true;
         if(ping != null) { ping.cancel(); ping = null; }
         try{
-            final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
             if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(Text.of("§8§l[§c§lAsteroide§8§l]§r Disconnected from RTC Server. ("+s+")"), false);
         }catch(Exception L){/**/}
         reconnectThread = new Thread(() -> {
             while(true){
                 try{
-                    Thread.sleep(3000);
+                    Thread.sleep(rtc.isActive() ? rtc.reconnectDelay.get() : 3000);
                     ws tempClient = new ws(getURI());
                     if(tempClient.connectBlocking(2500, TimeUnit.MILLISECONDS)) {
                         instance = tempClient;

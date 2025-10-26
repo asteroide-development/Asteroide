@@ -85,6 +85,15 @@ public class RTCSettingsModule extends Module {
         .build()
     );
 
+    public final Setting<Integer> reconnectDelay = sgSettings.add(new IntSetting.Builder()
+        .name("Reconnect Delay (ms)")
+        .description("Delay before reconnecting to the RTC in milliseconds")
+        .defaultValue(3000)
+        .min(0)
+        .sliderRange(1000, 10_000)
+        .build()
+    );
+
     @Override public void onActivate() { ws.call("online", isActive() && broadcastOnline.get()); }
     @Override public void onDeactivate() { ws.call("online", false); }
 

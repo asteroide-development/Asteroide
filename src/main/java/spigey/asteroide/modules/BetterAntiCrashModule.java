@@ -327,7 +327,7 @@ public class BetterAntiCrashModule extends Module {
     @EventHandler
     private void onMessageReceive(ReceiveMessageEvent event){
         if(!isActive()) return;
-        if(chatLimitEnabled.get() && this.messages < messagesLimit.get()){ this.messages++; return; }
+        if(chatLimitEnabled.get() && this.messages < messagesLimit.get()){ this.messages++; }
         else if(chatLimitEnabled.get()){ event.cancel(); return; }
         if(!chatLimit.get()) return;
         int length = event.getMessage().getString().length();
@@ -349,7 +349,7 @@ public class BetterAntiCrashModule extends Module {
     public String getMessagePacketThing(String text){ return lengthMode.get() == LengthMode.Performance ? ">"+packetThreshold.get() : String.valueOf(text.length()); }
 
     private enum LengthMode {
-        Details,
+        Detailed,
         Performance
     }
 
