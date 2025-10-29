@@ -8,35 +8,28 @@ import spigey.asteroide.utils.ws;
 import spigey.asteroide.AsteroideAddon;
 import meteordevelopment.meteorclient.settings.*;
 
+import java.util.List;
+
 public class RTCSettingsModule extends Module {
     public RTCSettingsModule() {
         super(AsteroideAddon.CATEGORY, "RTC-Settings", "Settings for the .rtc command. Enable to apply settings.");
     }
 
-    private boolean useCustomColor = false;
-
     private final SettingGroup sgColors = settings.createGroup("Colors", true);
     private final SettingGroup sgSettings = settings.createGroup("Settings", true);
+
+    public final Setting<ColorType> colorType = sgColors.add(new EnumSetting.Builder<ColorType>()
+        .name("color-type")
+        .description("Whether to use a custom gradient, color or a predefined color.")
+        .defaultValue(ColorType.Predefined)
+        .build()
+    );
+
     public final Setting<colors> color = sgColors.add(new EnumSetting.Builder<colors>()
         .name("chat-color")
         .description("Chat Color.")
         .defaultValue(colors.aqua)
-        .visible(() -> !useCustomColor)
-        .build()
-    );
-
-    public final Setting<format> formath = sgColors.add(new EnumSetting.Builder<format>()
-        .name("chat-format")
-        .description("Chat Format.")
-        .defaultValue(format.none)
-        .build()
-    );
-
-    public final Setting<Boolean> useCustomColorSetting = sgColors.add(new BoolSetting.Builder()
-        .name("Custom Chat Color")
-        .description("Use a custom color instead of the preset colors.")
-        .defaultValue(false)
-        .onChanged((value) -> useCustomColor = value)
+        .visible(() -> colorType.get() == ColorType.Predefined)
         .build()
     );
 
@@ -44,7 +37,25 @@ public class RTCSettingsModule extends Module {
         .name("custom-color")
         .description("Custom Chat Color.")
         .defaultValue(SettingColor.WHITE)
-        .visible(() -> useCustomColor)
+        .visible(() -> colorType.get() == ColorType.Custom)
+        .build()
+    );
+
+    public final Setting<List<SettingColor>> gradientColors = sgColors.add(new ColorListSetting.Builder()
+        .name("gradient-colors")
+        .description("Which colors to use for the custom gradient.")
+        .defaultValue(List.of(
+            new SettingColor(135, 15, 255),
+            new SettingColor(252, 40, 189)
+        ))
+        .visible(() -> colorType.get() == ColorType.Gradient)
+        .build()
+    );
+
+    public final Setting<format> formath = sgColors.add(new EnumSetting.Builder<format>()
+        .name("chat-format")
+        .description("Chat Format.")
+        .defaultValue(format.none)
         .build()
     );
 
@@ -73,7 +84,7 @@ public class RTCSettingsModule extends Module {
     public final Setting<Boolean> broadcastOnline = sgSettings.add(new BoolSetting.Builder()
         .name("Get notified when someone comes online")
         .description("Self explanatory")
-        .onChanged((value) -> { ws.call("online", isActive() && value); } )
+        .onChanged((value) -> ws.call("online", isActive() && value))
         .defaultValue(false)
         .build()
     );
@@ -128,6 +139,10 @@ public class RTCSettingsModule extends Module {
         strike,
         obfuscated
     }
+
+    public enum ColorType {
+        Predefined,
+        Custom,
+        Gradient
+    }
 }
-
-

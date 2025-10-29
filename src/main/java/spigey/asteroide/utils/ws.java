@@ -57,6 +57,7 @@ public class ws extends WebSocketClient {
 
     @Override
     public void send(String text) {
+        AsteroideAddon.LOG.info(text);
         super.send(text);
     }
 
@@ -115,15 +116,22 @@ public class ws extends WebSocketClient {
     @Override
     public void onError(Exception e) { AsteroideAddon.LOG.info("RTC {}", String.valueOf(e)); if(isOpen()) { close(); } }
 
+    private static boolean checkClr(RTCSettingsModule.ColorType type){
+        final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
+        return rtc.isActive() && rtc.colorType.get() == type;
+    }
+
     public static void sendChat(String... args){
         if(instance == null || !instance.isOpen()) return;
         Map<String, Object> json = new HashMap<>();
         final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
         json.put("event", "rtc");
         SettingColor c = rtc.customColor.get();
-        boolean its4amIamsoTired = rtc.isActive() && rtc.useCustomColorSetting.get();
-        if(its4amIamsoTired) args[0] = String.format("§#%s%s", String.format("%02x%02x%02x", c.r, c.g, c.b).toUpperCase(), args[0]);
-        if(rtc.isActive()) json.put("format", new String[]{its4amIamsoTired ? "white" : rtc.color.get().name(), rtc.formath.get().name()});
+
+        if(checkClr(RTCSettingsModule.ColorType.Custom)) args[0] = String.format("§#%s%s", String.format("%02x%02x%02x", c.r, c.g, c.b).toUpperCase(), args[0]);
+        if(rtc.isActive()) json.put("format", new String[]{!checkClr(RTCSettingsModule.ColorType.Predefined) ? "white" : rtc.color.get().name(), rtc.formath.get().name()});
+        if(checkClr(RTCSettingsModule.ColorType.Gradient)) json.put("gradient", rtc.gradientColors.get().stream().map(cc -> String.format("#%02x%02x%02x", cc.r, cc.g, cc.b).toUpperCase()).toArray(String[]::new));
+
         json.put("args", Arrays.asList(args));
         instance.send(gson.toJson(json));
     }
