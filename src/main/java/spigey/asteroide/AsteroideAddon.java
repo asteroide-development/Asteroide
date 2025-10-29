@@ -151,6 +151,7 @@ public class AsteroideAddon extends MeteorAddon {
         Commands.add(new UUIDCommand());
         Commands.add(new DupeCommand());
         Commands.add(new DelayCommand());
+        Commands.add(new CopyCommand());
 
 
 
