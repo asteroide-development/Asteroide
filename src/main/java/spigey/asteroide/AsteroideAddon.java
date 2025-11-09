@@ -65,7 +65,7 @@ public class AsteroideAddon extends MeteorAddon {
         MeteorClient.EVENT_BUS.subscribe(this); // dear fuck chatskibidi...
         String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz", "spoofedservers"};
 
-        if(!attemptConnect("ws://rtc.asteroide.cc/")) attemptConnect("wss://rtc.asteroide.fun/");
+        if(!attemptConnect("wss://rtc.asteroide.fun/")) attemptConnect("ws://rtc.asteroide.cc/");
 
         LOG.info("\nLoaded Asteroide v0.2.1\n");
 

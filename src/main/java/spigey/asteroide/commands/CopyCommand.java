@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class CopyCommand extends Command {
     public CopyCommand() {
-        super("copy", "Copy someone's items.");
+        super("copyitem", "Copy someone's items.");
     }
 
     @Override

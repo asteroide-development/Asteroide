@@ -76,6 +76,8 @@ public class AutoChatGame extends Module {
     private List<String> buffer = new ArrayList<>();
     private boolean isVariable = false;
 
+    //private long startTime = 0;
+
     @EventHandler
     private void onMessageReceive(ReceiveMessageEvent event){ try{
         if(!isActive()) return;
@@ -86,6 +88,7 @@ public class AutoChatGame extends Module {
         String game = null;
 
         // Triggers
+        //startTime = System.nanoTime();
         for(String msg : messages.get()) if (content.toLowerCase().contains(msg.toLowerCase())) { gameMode = GameMode.STRING; break; }
         for(String msg : reversers.get()) if (content.toLowerCase().contains(msg.toLowerCase())) { gameMode = GameMode.REVERSE; break; }
         for(String msg : mether.get()) if (content.toLowerCase().contains(msg.toLowerCase())) { gameMode = GameMode.SOLVE; break; }
@@ -136,8 +139,9 @@ public class AutoChatGame extends Module {
         if(this.tick == 0) run();
         else this.tick--; // It's wrong by exactly 1 tick??
         this.isVariable = false;
-        this.buffer.clear(); } catch (Exception L) { info("§8§l[§4§lX§8§l] §c" + L.getMessage()); }
-    }
+        this.buffer.clear();
+        //info(Text.of(String.format("Solved %s chatgame in %sµs", gameMode, (System.nanoTime() - this.startTime) / 1000.0)));
+    } catch (Exception L) { info("§8§l[§4§lX§8§l] §c" + L.getMessage()); }}
 
     private int variableSolution(int index){ // readability...
         try{ return Integer.parseInt(this.buffer.get(index).split("= ")[1].trim()); }

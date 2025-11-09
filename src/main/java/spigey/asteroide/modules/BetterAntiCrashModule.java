@@ -1,6 +1,7 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
+import meteordevelopment.meteorclient.events.game.SendMessageEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.ParticleEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -246,6 +247,12 @@ public class BetterAntiCrashModule extends Module {
         .visible(commandBlockCrash::get)
         .build()
     );
+    public final Setting<Boolean> sectionFix = sgOther.add(new BoolSetting.Builder()
+        .name("Block §")
+        .description("Blocks outgoing § in chat messages")
+        .defaultValue(true)
+        .build()
+    );
 
     private Map<EntityType<?>, Integer> entityCounts = new HashMap<>();
 
@@ -333,6 +340,13 @@ public class BetterAntiCrashModule extends Module {
         int length = event.getMessage().getString().length();
         if(chatLimit.get() && length <= ThresholdLength.get()) return;
         event.setMessage(Text.of("§c[Message with length " + getMessage(event.getMessage().getString()) + " blocked]"));
+    }
+
+    @EventHandler
+    private void onMessageSend(SendMessageEvent event){
+        if(!isActive()) return;
+        if(!sectionFix.get()) return;
+        event.message = event.message.replaceAll("§", "");
     }
 
     @Override
