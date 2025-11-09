@@ -52,7 +52,7 @@ public class AsteroideAddon extends MeteorAddon {
 
     private boolean attemptConnect(String uri) {
         // Uncomment below to disable RTC, will add proper config soon
-        // if(1 > 2) return true;
+        // if(1 < 2) return true;
         try {
             wss = new ws(new URI(uri + "asws?version=0.2.1"));
             wss.connect();
