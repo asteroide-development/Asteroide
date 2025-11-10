@@ -2,9 +2,15 @@ package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.gui.utils.StarscriptTextBoxRenderer;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.misc.MeteorStarscript;
 import meteordevelopment.orbit.EventHandler;
+import meteordevelopment.starscript.Script;
+import meteordevelopment.starscript.compiler.Compiler;
+import meteordevelopment.starscript.compiler.Parser;
+import meteordevelopment.starscript.utils.StarscriptError;
 import spigey.asteroide.AsteroideAddon;
 import spigey.asteroide.utils.RandUtils;
 
@@ -14,7 +20,8 @@ import static spigey.asteroide.util.msg;
 
 public class AutoMacro extends Module {
 
-    private final SettingGroup sgGeneral = settings.getDefaultGroup();
+    private final SettingGroup sgGeneral = settings.createGroup("General", true);
+    private final SettingGroup sgDelay = settings.createGroup("Delay", true);
 
     private final Setting<List<String>> messages = sgGeneral.add(new StringListSetting.Builder()
         .name("messages")
@@ -24,16 +31,24 @@ public class AutoMacro extends Module {
     );
 
     private final Setting<List<String>> macro = sgGeneral.add(new StringListSetting.Builder()
-        .name("message")
-        .description("message to send")
+        .name("responses")
+        .description("Response for the messages. First message = First response, etc")
         .defaultValue("Welcome")
+        .renderer(StarscriptTextBoxRenderer.class)
         .build()
     );
 
-    private final Setting<AutoChatGame.Mode> mode = sgGeneral.add(new EnumSetting.Builder<AutoChatGame.Mode>().name("delay type").description("Whether it waits for a random or precise amount of time").defaultValue(AutoChatGame.Mode.Random).build());
-    private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder().name("delay").description("The delay before sending the solution in ticks").defaultValue(30).min(0).sliderMax(200).build());
-    private final Setting<Integer> minoffset = sgGeneral.add(new IntSetting.Builder().name("delay min offset").description("Minimum offset from the delay in ticks").defaultValue(0).min(0).sliderMax(40).visible(() -> mode.get() == AutoChatGame.Mode.Random).build());
-    private final Setting<Integer> maxoffset = sgGeneral.add(new IntSetting.Builder().name("delay max offset").description("Maximum offset from the delay in ticks").defaultValue(10).min(0).sliderMax(40).visible(() -> mode.get() == AutoChatGame.Mode.Random).build());
+    private final Setting<Boolean> enableStarscript = sgGeneral.add(new BoolSetting.Builder()
+        .name("Starscript Support")
+        .description("Parse macro messages using starscript")
+        .defaultValue(true)
+        .build()
+    );
+
+    private final Setting<AutoChatGame.Mode> mode = sgDelay.add(new EnumSetting.Builder<AutoChatGame.Mode>().name("delay type").description("Whether it waits for a random or precise amount of time").defaultValue(AutoChatGame.Mode.Random).build());
+    private final Setting<Integer> delay = sgDelay.add(new IntSetting.Builder().name("delay").description("The delay before sending the solution in ticks").defaultValue(30).min(0).sliderMax(200).build());
+    private final Setting<Integer> minoffset = sgDelay.add(new IntSetting.Builder().name("delay min offset").description("Minimum offset from the delay in ticks").defaultValue(0).min(0).sliderMax(40).visible(() -> mode.get() == AutoChatGame.Mode.Random).build());
+    private final Setting<Integer> maxoffset = sgDelay.add(new IntSetting.Builder().name("delay max offset").description("Maximum offset from the delay in ticks").defaultValue(10).min(0).sliderMax(40).visible(() -> mode.get() == AutoChatGame.Mode.Random).build());
 
     public AutoMacro() {
         super(AsteroideAddon.CATEGORY, "Auto-Macro", "Automatically runs a command when a specified message is sent in the chat");
@@ -48,7 +63,10 @@ public class AutoMacro extends Module {
         String content = event.getMessage().getString();
         for(int i = 0; i < messages.get().size(); i++){
             if(!content.toLowerCase().contains(messages.get().get(i).toLowerCase())) continue;
-            if(macro.get().size() <= i) continue;
+            if(macro.get().size() <= i){
+                error(String.format("Triggered Macro #%d, but could not find that many elements in response list!", i+1));
+                continue;
+            }
             if(macro.get().get(i) != null){
                 this.message = macro.get().get(i);
                 if(mode.get() == AutoChatGame.Mode.Precise) this.tick = delay.get();
@@ -56,14 +74,28 @@ public class AutoMacro extends Module {
             }
             else error("Error: Macro is null");
         }
-        if(this.tick == 0) { msg(this.message); this.tick = -1; }
+        if(this.tick == 0) { msg(compile(this.message)); this.tick = -1; }
     }
 
     @EventHandler
     private void onTick(TickEvent.Post event){
         if(this.tick == -1 || !isActive()) return;
         if(this.tick > 0) { tick--; return; }
-        msg(this.message);
+        msg(compile(this.message));
         tick = -1;
+    }
+
+    private String compile(String script) { // Partly from meteor rejects https://github.com/AntiCope/meteor-rejects/blob/master/src/main/java/anticope/rejects/modules/ChatBot.java
+        if(!enableStarscript.get()) return script;
+        if (script == null) return null;
+        Parser.Result result = Parser.parse(script);
+        if (result.hasErrors()) {
+            MeteorStarscript.printChatError(result.errors.get(0));
+            return script;
+        }
+        Script compiled = Compiler.compile(result);
+        if(compiled == null){ return script; }
+        try { return MeteorStarscript.ss.run(compiled).text; }
+        catch(StarscriptError e){ MeteorStarscript.printChatError(e); return script; }
     }
 }
