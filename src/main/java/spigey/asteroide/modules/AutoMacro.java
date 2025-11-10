@@ -45,6 +45,13 @@ public class AutoMacro extends Module {
         .build()
     );
 
+    private final Setting<Boolean> preventSelfTrigger = sgGeneral.add(new BoolSetting.Builder()
+        .name("Prevent Self-Trigger")
+        .description("Attempts to prevent Auto Macro from triggering itself")
+        .defaultValue(false)
+        .build()
+    );
+
     private final Setting<AutoChatGame.Mode> mode = sgDelay.add(new EnumSetting.Builder<AutoChatGame.Mode>().name("delay type").description("Whether it waits for a random or precise amount of time").defaultValue(AutoChatGame.Mode.Random).build());
     private final Setting<Integer> delay = sgDelay.add(new IntSetting.Builder().name("delay").description("The delay before sending the solution in ticks").defaultValue(30).min(0).sliderMax(200).build());
     private final Setting<Integer> minoffset = sgDelay.add(new IntSetting.Builder().name("delay min offset").description("Minimum offset from the delay in ticks").defaultValue(0).min(0).sliderMax(40).visible(() -> mode.get() == AutoChatGame.Mode.Random).build());
@@ -62,10 +69,16 @@ public class AutoMacro extends Module {
         if(!isActive()) return;
         String content = event.getMessage().getString();
         for(int i = 0; i < messages.get().size(); i++){
+            if(messages.get().get(i).trim().isEmpty()) continue;
             if(!content.toLowerCase().contains(messages.get().get(i).toLowerCase())) continue;
             if(macro.get().size() <= i){
                 error(String.format("Triggered Macro #%d, but could not find that many elements in response list!", i+1));
                 continue;
+            }
+            int finalI = i; // Fuck damnit
+            if(messages.get().stream().anyMatch(value -> value.toLowerCase().contains(macro.get().get(finalI).toLowerCase())) && preventSelfTrigger.get()) {
+                error("Blocked message from sending because Prevent Self Trigger option is enabled.");
+                return;
             }
             if(macro.get().get(i) != null){
                 this.message = macro.get().get(i);
