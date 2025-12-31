@@ -59,6 +59,17 @@ public class RTCSettingsModule extends Module {
         .build()
     );
 
+    public final Setting<Boolean> connect = sgSettings.add(new BoolSetting.Builder()
+        .name("Connect to RTC (Broken)")
+        .description("Self-explanatory.")
+        .defaultValue(true)
+        .onChanged((value) -> {
+            if(value){ if(!AsteroideAddon.attemptConnect("wss://rtc.asteroide.fun/")) AsteroideAddon.attemptConnect("ws://rtc.asteroide.cc/"); }
+            else AsteroideAddon.wss.close();
+        })
+        .build()
+    );
+
     public final Setting<Boolean> hideMessages = sgSettings.add(new BoolSetting.Builder()
         .name("Hide RTC Messages")
         .description("Hides all messages received from the RTC.")

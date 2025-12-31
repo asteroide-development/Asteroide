@@ -9,6 +9,7 @@ import net.minecraft.command.argument.EntityAnchorArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import spigey.asteroide.AsteroideAddon;
@@ -60,6 +61,12 @@ public class AimbotModule extends Module {
         .visible(() -> !allowUp.get())
         .build()
     );
+    private final Setting<Boolean> teamCheck = sgGeneral.add(new BoolSetting.Builder()
+        .name("Team Check")
+        .description("Disables Aimbot on players on the same team")
+        .defaultValue(true)
+        .build()
+    );
 
     private final Setting<Boolean> targetFriends = sgGeneral.add(new BoolSetting.Builder().name("target friends").description("Also targets friends when enabled.").defaultValue(false).build());
     // this shit so fucking skidded 💔
@@ -86,11 +93,11 @@ public class AimbotModule extends Module {
         double closestDistance = Double.MAX_VALUE;
         for (Entity e : mc.world.getEntities()) {
             if (e != mc.player && e.isAlive() && mc.player.distanceTo(e) <= range.get() && entities.get().contains(e.getType()) && (!(e instanceof PlayerEntity) || (Friends.get().shouldAttack((PlayerEntity) e) || targetFriends.get()))) {
+                if(mc.player.isTeammate(e) && teamCheck.get()) continue;
                 double distance = mc.player.distanceTo(e);
-                if (distance < closestDistance) {
-                    closestEntity = e;
-                    closestDistance = distance;
-                }
+                if (distance >= closestDistance) continue;
+                closestEntity = e;
+                closestDistance = distance;
             }
         }
         return closestEntity;
@@ -113,7 +120,7 @@ public class AimbotModule extends Module {
         return switch (weapon.get()) {
             case Axe -> mc.player.getMainHandStack().getItem() instanceof AxeItem;
             case Sword -> mc.player.getMainHandStack().getItem() instanceof SwordItem;
-            case Both -> mc.player.getMainHandStack().getItem() instanceof AxeItem || mc.player.getMainHandStack().getItem() instanceof SwordItem;
+            case Both -> mc.player.getMainHandStack().getItem() instanceof AxeItem || mc.player.getMainHandStack().isIn(ItemTags.SWORDS);
             case All -> true;
         };
     }

@@ -46,15 +46,16 @@ public class AsteroideAddon extends MeteorAddon {
     public static List<String> trolls = new ArrayList<>();
     public static List<String> notInsults = new ArrayList<>();
     public static Set<String> users = new HashSet<>();
-    public static ws wss;
+    public static ws wss = null;
 
     public static boolean showRtc = false;
 
-    private boolean attemptConnect(String uri) {
-        // Uncomment below to disable RTC, will add proper config soon
-        // if(1 < 2) return true;
+    public static boolean attemptConnect(String uri) {
+        RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
+        LOG.info(String.format("%b %b", !rtc.connect.get(), rtc.isActive()));
+        if(rtc.isActive() && !rtc.connect.get()) return true;
         try {
-            wss = new ws(new URI(uri + "asws?version=0.2.1"));
+            wss = new ws(new URI(uri + "asws?version=0.2.2"));
             wss.connect();
             return true;
         }catch(Exception e){ LOG.error("Failed to connect to RTC! {}", String.valueOf(e)); return false; }
@@ -65,9 +66,7 @@ public class AsteroideAddon extends MeteorAddon {
         MeteorClient.EVENT_BUS.subscribe(this); // dear fuck chatskibidi...
         String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz", "spoofedservers"};
 
-        if(!attemptConnect("wss://rtc.asteroide.fun/")) attemptConnect("ws://rtc.asteroide.cc/");
-
-        LOG.info("\nLoaded Asteroide v0.2.1\n");
+        LOG.info("\nLoaded Asteroide v0.2.2\n");
 
         // src/main/java/spigey/asteroide/modules/TrollModule.java
         try ( InputStream is = getClass().getClassLoader().getResourceAsStream("trolls.txt");
@@ -131,6 +130,7 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new SilentSwapModule());
         modules.add(new AutoParkourModule());
         modules.add(new SafeElytra());
+        modules.add(new AntiAntiXrayModule());
 
         // Commands
         Commands.add(new CrashAll());
@@ -164,6 +164,8 @@ public class AsteroideAddon extends MeteorAddon {
 
         showRtc = !(Modules.get().get(RTCSettingsModule.class).isActive() && Modules.get().get(RTCSettingsModule.class).hideMessages.get());
         ChatUtils.registerCustomPrefix("spigey.asteroide.modules", this::getPrefix);
+
+        if(!attemptConnect("wss://rtc.asteroide.fun/")) attemptConnect("ws://rtc.asteroide.cc/");
     }
 
     private Text getPrefix(){ // https://github.com/MeteorClientPlus/MeteorPlus/blob/1.21.8/src/main/java/nekiplay/meteorplus/features/modules/misc/ChatPrefix.java

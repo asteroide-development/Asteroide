@@ -63,6 +63,7 @@ public class ws extends WebSocketClient {
 
     @Override
     public void onMessage(String s) {
+        if(AsteroideAddon.wss == null) { AsteroideAddon.wss = this; }
         if(AsteroideAddon.wss != this) { close(); return; }
         JsonObject message = JsonParser.parseString(s).getAsJsonObject();
         try {
@@ -98,6 +99,7 @@ public class ws extends WebSocketClient {
             while(true){
                 try{
                     Thread.sleep(rtc.isActive() ? rtc.reconnectDelay.get() : 3000);
+                    if(!rtc.isActive() || !rtc.connect.get()) continue;
                     ws tempClient = new ws(getURI());
                     if(tempClient.connectBlocking(2500, TimeUnit.MILLISECONDS)) {
                         instance = tempClient;
