@@ -59,7 +59,7 @@ public class RTCSettingsModule extends Module {
         .build()
     );
 
-    public final Setting<Boolean> connect = sgSettings.add(new BoolSetting.Builder()
+    /*public final Setting<Boolean> connect = sgSettings.add(new BoolSetting.Builder()
         .name("Connect to RTC (Broken)")
         .description("Self-explanatory.")
         .defaultValue(true)
@@ -68,7 +68,7 @@ public class RTCSettingsModule extends Module {
             else AsteroideAddon.wss.close();
         })
         .build()
-    );
+    );*/
 
     public final Setting<Boolean> hideMessages = sgSettings.add(new BoolSetting.Builder()
         .name("Hide RTC Messages")

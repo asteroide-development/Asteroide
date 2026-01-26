@@ -99,7 +99,7 @@ public class ws extends WebSocketClient {
             while(true){
                 try{
                     Thread.sleep(rtc.isActive() ? rtc.reconnectDelay.get() : 3000);
-                    if(!rtc.isActive() || !rtc.connect.get()) continue;
+                    //if(!rtc.isActive() || !rtc.connect.get()) continue;
                     ws tempClient = new ws(getURI());
                     if(tempClient.connectBlocking(2500, TimeUnit.MILLISECONDS)) {
                         instance = tempClient;

@@ -144,7 +144,7 @@ public class AutoSlotSwitchModule extends Module {
                 for (int j = 0; j < slotPriority && j < 10; j++) { priorityList.add(i); }
             }
             int[] priorityArray = priorityList.stream().mapToInt(Integer::intValue).toArray();
-            assert priorityArray.length > 0;
+            if(priorityArray.length < 1) { remainingDelay = delay.get(); return; }
             num = priorityArray[util.randomNum(0, priorityArray.length - 1)] - 1;
         }
         InvUtils.swap(num, false); // Done

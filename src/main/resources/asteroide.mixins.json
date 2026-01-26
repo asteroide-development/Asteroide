@@ -19,7 +19,7 @@
   "client": [
     "BossBarHudMixin",
     "ChatHudMixin",
-    "CommandBlockScreenMixin",
-    "CommandAccessor"
+    "CommandAccessor",
+    "CommandBlockScreenMixin"
   ]
 }

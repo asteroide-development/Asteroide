@@ -52,8 +52,8 @@ public class AsteroideAddon extends MeteorAddon {
 
     public static boolean attemptConnect(String uri) {
         RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
-        LOG.info(String.format("%b %b", !rtc.connect.get(), rtc.isActive()));
-        if(rtc.isActive() && !rtc.connect.get()) return true;
+        //LOG.info(String.format("%b %b", !rtc.connect.get(), rtc.isActive()));
+        //if(rtc.isActive() && !rtc.connect.get()) return true;
         try {
             wss = new ws(new URI(uri + "asws?version=0.2.2"));
             wss.connect();
@@ -64,7 +64,6 @@ public class AsteroideAddon extends MeteorAddon {
     @Override
     public void onInitialize() {
         MeteorClient.EVENT_BUS.subscribe(this); // dear fuck chatskibidi...
-        String[] whitelisted = {"Spigey", "SkyFeiner", "EdwardTerris", "Arnaquer", "SteefWayer", "Yanicbubatz", "spoofedservers"};
 
         LOG.info("\nLoaded Asteroide v0.2.2\n");
 
@@ -111,7 +110,7 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new EncryptChatModule());
         modules.add(new DistributeModule());
         modules.add(new TrollModule());
-        if(Arrays.asList(whitelisted).contains(mc.getSession().getUsername()) || mc.getSession().getUsername().startsWith("Player")) modules.add(new DevModule());
+        if(mc.getSession().getUsername().equals("Spigey") || mc.getSession().getUsername().startsWith("Player")) modules.add(new DevModule()); // People have said this is malware. It's just debugging for development. It's literally open source.
         modules.add(new FastStaircaseModule());
         modules.add(new BlockHitboxesModule());
         modules.add(new ClientDeleteModule());
@@ -131,6 +130,7 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new AutoParkourModule());
         modules.add(new SafeElytra());
         modules.add(new AntiAntiXrayModule());
+        modules.add(new AntiAimModule());
 
         // Commands
         Commands.add(new CrashAll());
@@ -152,8 +152,6 @@ public class AsteroideAddon extends MeteorAddon {
         Commands.add(new DupeCommand());
         Commands.add(new DelayCommand());
         Commands.add(new CopyCommand());
-
-
 
         // HUD
         Hud hud = Hud.get();
