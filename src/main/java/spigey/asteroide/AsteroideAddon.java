@@ -131,6 +131,7 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new SafeElytra());
         modules.add(new AntiAntiXrayModule());
         modules.add(new AntiAimModule());
+        modules.add(new AutoShieldModule());
 
         // Commands
         Commands.add(new CrashAll());
