@@ -133,6 +133,7 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new AntiAimModule());
         modules.add(new AutoShieldModule());
         modules.add(new AntiSocialModule());
+        modules.add(new CaveESPModule());
 
         // Commands
         Commands.add(new CrashAll());
