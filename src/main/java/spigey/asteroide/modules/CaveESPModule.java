@@ -51,12 +51,12 @@ public class CaveESPModule extends Module {
         poses.clear();
         List<String> blacklisted = new ArrayList<>();
         Entity cam = mc.getCameraEntity();
-        for(int x = -radius.get(); x <= radius.get(); x++){ for(int z = -radius.get(); z <= radius.get(); z++){ for(int y = cam.getBlockY()-1;y > -65;y--){
+        for(int x = -radius.get(); x <= radius.get(); x++){ for(int z = -radius.get(); z <= radius.get(); z++){ for(int y = cam.getBlockY()-1;y >= mc.world.getBottomY();y--){
             BlockPos pos = new BlockPos(cam.getBlockX()+x, y, cam.getBlockZ()+z);
             if(blacklisted.contains(String.format("%s,%s", pos.getX(), pos.getZ()))) continue;
             if(!mc.world.getBlockState(pos).isTransparent() || mc.world.getBlockState(pos.add(0,1,0)).isTransparent()) continue;
             int height = getHeight(pos);
-            if(height < 3) continue;
+            if(height < minY.get()) continue;
             blacklisted.add(String.format("%s,%s", pos.getX(), pos.getZ()));
             poses.add(Map.of(pos, height));
         }}}
@@ -77,6 +77,7 @@ public class CaveESPModule extends Module {
     private int getHeight(BlockPos pos){ // Spaghetti, kind of
         int height = 0;
         while(mc.world.getBlockState(pos).isTransparent()){
+            if(pos.getY() < mc.world.getBottomY()) return height;
             height++;
             pos = pos.add(0, -1, 0);
         }
