@@ -1,8 +1,0 @@
-name: Publish Development Build
-on: push
-
-jobs:
-    noop:
-        runs-on: ubuntu-latest
-        steps:
-            - run: echo "totally succeeded"
