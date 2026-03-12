@@ -173,13 +173,20 @@ public class MurderMysteryESP extends Module {
         .build()
     );
 
+    private final Setting<List<Item>> resetItems = sgGeneral.add(new ItemListSetting.Builder()
+        .name("Reset Items")
+        .description("The murderer list will reset if this item is on the 9th slot.")
+        .defaultValue(List.of(Items.MAGMA_CREAM, Items.RED_BED))
+        .build()
+    );
+
     private Set<String> murderers = new HashSet<>();
     private Set<String> detectives = new HashSet<>();
     private Set<String> found = new HashSet<>();
 
     @EventHandler
     private void onTick(TickEvent.Post event){
-        if(mc.player.getInventory().getStack(8).getItem() == Items.RED_BED) { murderers.clear(); detectives.clear(); found.clear(); } // lmao
+        if(resetItems.get().contains(mc.player.getInventory().getStack(8).getItem())) { murderers.clear(); detectives.clear(); found.clear(); } // lmao
         for(Entity entity : mc.world.getEntities()){
             if(entity == mc.player && ignoreSelf.get()) continue;
             if(!(entity instanceof PlayerEntity)) continue;
