@@ -1,10 +1,12 @@
 package spigey.asteroide.modules;
 
+import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.render.RenderUtils;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
@@ -17,6 +19,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import spigey.asteroide.AsteroideAddon;
@@ -31,6 +34,7 @@ public class MurderMysteryESP extends Module {
     private final SettingGroup sgMurder = settings.createGroup("Murderer", true);
     private final SettingGroup sgDetective = settings.createGroup("Detective", true);
     private final SettingGroup sgInnocent = settings.createGroup("Innocent", true);
+    private final SettingGroup sgAutoSkip = settings.createGroup("Auto Skip", true);
 
     private final Setting<Boolean> ignoreSelf = sgGeneral.add(new BoolSetting.Builder()
         .name("Ignore Self")
@@ -180,9 +184,64 @@ public class MurderMysteryESP extends Module {
         .build()
     );
 
+    private final Setting<Boolean> autoSkipEnabled = sgAutoSkip.add(new BoolSetting.Builder()
+        .name("Enabled")
+        .description("Whether to automatically skip when a specific role")
+        .defaultValue(false)
+        .build()
+    );
+
+    private final Setting<String> skipCommand = sgAutoSkip.add(new StringSetting.Builder()
+        .name("Skip Command")
+        .description("Command to use to skip")
+        .defaultValue("/next")
+        .visible(autoSkipEnabled::get)
+        .build()
+    );
+
+    private final Setting<Boolean> skipIfInnocent = sgAutoSkip.add(new BoolSetting.Builder()
+        .name("Innocent")
+        .description("Skip if innocent")
+        .defaultValue(true)
+        .visible(autoSkipEnabled::get)
+        .build()
+    );
+    private final Setting<Boolean> skipIfDetective = sgAutoSkip.add(new BoolSetting.Builder()
+        .name("Detective")
+        .description("Skip if detective")
+        .defaultValue(false)
+        .visible(autoSkipEnabled::get)
+        .build()
+    );
+    private final Setting<Boolean> skipIfMurderer = sgAutoSkip.add(new BoolSetting.Builder()
+        .name("Murderer")
+        .description("Skip if murderer")
+        .defaultValue(false)
+        .visible(autoSkipEnabled::get)
+        .build()
+    );
+
     private Set<String> murderers = new HashSet<>();
     private Set<String> detectives = new HashSet<>();
     private Set<String> found = new HashSet<>();
+
+    private void skip(){
+        //String command = this.skipCommand.get();
+        //if(command.startsWith("/")) command = command.substring(1);
+        //try{ mc.getNetworkHandler().sendChatCommand(command); }
+        try{ ChatUtils.sendPlayerMsg(skipCommand.get()); }
+        catch(Exception e){/* */}
+    }
+
+    @EventHandler
+    private void onPacketReceive(PacketEvent.Receive event) {
+        if(!(event.packet instanceof TitleS2CPacket packet)) return;
+        if(!autoSkipEnabled.get()) return;
+        String text = packet.text().getString();
+        if(skipIfInnocent.get() && text.toLowerCase().contains("innocent")) skip();
+        if(skipIfDetective.get() && text.toLowerCase().contains("detective")) skip();
+        if(skipIfMurderer.get() && text.toLowerCase().contains("murder")) skip();
+    }
 
     @EventHandler
     private void onTick(TickEvent.Post event){
