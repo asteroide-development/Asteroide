@@ -33,7 +33,8 @@ public class DelayCommand extends Command {
     private void onTick(TickEvent.Post event) {
         if(this.tick == -1 || this.message.isEmpty()){ MeteorClient.EVENT_BUS.unsubscribe(this); return; }
         if(this.tick > 0){ this.tick--; return; }
-        ChatUtils.sendPlayerMsg(this.message);
+        try{ ChatUtils.sendPlayerMsg(this.message); }
+        catch(Exception e){ /* */ }
         this.tick = -1;
         MeteorClient.EVENT_BUS.unsubscribe(this);
     }

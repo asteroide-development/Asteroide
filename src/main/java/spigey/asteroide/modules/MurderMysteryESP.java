@@ -196,8 +196,8 @@ public class MurderMysteryESP extends Module {
             if(murd) { murderers.add(player); detectives.remove(player); }
             if(dec) detectives.add(player);
             if(murd || dec){
-                if(murd && murdLog.get() && !found.contains(player) && mc.player.getInventory().getStack(8).getItem() != Items.RED_BED) info(String.format("§c%s§7 is holding §c%s§7!", player, main.getName().getString()));
-                if(dec && decLog.get() && !found.contains(player) && mc.player.getInventory().getStack(8).getItem() != Items.RED_BED) info(String.format("§b%s§7 is holding §b%s§7!", player, main.getName().getString()));
+                if(murd && murdLog.get() && !found.contains(player) && !resetItems.get().contains(mc.player.getInventory().getStack(8).getItem())) info(String.format("§c%s§7 is holding §c%s§7!", player, main.getName().getString()));
+                if(dec && decLog.get() && !found.contains(player) && !resetItems.get().contains(mc.player.getInventory().getStack(8).getItem())) info(String.format("§b%s§7 is holding §b%s§7!", player, main.getName().getString()));
                 found.add(player);
             }
         }
