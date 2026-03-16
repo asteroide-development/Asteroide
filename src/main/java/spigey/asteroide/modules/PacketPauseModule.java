@@ -1,10 +1,12 @@
 package spigey.asteroide.modules;
 
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.PacketListSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.network.PacketUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.network.packet.Packet;
 import spigey.asteroide.AsteroideAddon;
@@ -19,6 +21,13 @@ public class PacketPauseModule extends Module {
     private final Setting<Set<Class<? extends Packet<?>>>> packets = sgGeneral.add(new PacketListSetting.Builder()
         .name("packets")
         .description("Packets to pause.")
+        .filter(aClass -> PacketUtils.getC2SPackets().contains(aClass))
+        .build()
+    );
+    private final Setting<Boolean> feedback = sgGeneral.add(new BoolSetting.Builder()
+        .name("Feedback")
+        .description("Tells you how many packets were sent")
+        .defaultValue(true)
         .build()
     );
 
@@ -35,7 +44,7 @@ public class PacketPauseModule extends Module {
     public void onDeactivate() {
         if (mc.player == null || mc.world == null) { pausedPackets.clear(); return; }
         for (Packet<?> packet : pausedPackets) mc.player.networkHandler.sendPacket(packet);
-        info("Sent " + pausedPackets.size() + " paused packets.");
+        if(feedback.get()) info("Sent " + pausedPackets.size() + " paused packets.");
         pausedPackets.clear();
     }
 }

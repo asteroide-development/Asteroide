@@ -6,22 +6,28 @@ import meteordevelopment.meteorclient.events.game.SendMessageEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.settings.PacketListSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.network.PacketUtils;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.common.CustomPayloadC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.text.Text;
 import spigey.asteroide.AsteroideAddon;
+
+import java.util.Set;
 
 public class DevModule extends Module {
     public DevModule() {
         super(AsteroideAddon.CATEGORY, "Dev", "Dev tools you shouldn't be able to see.");
     }
 
-    private final SettingGroup sgGeneral = settings.getDefaultGroup();
+    private final SettingGroup sgPackets = settings.createGroup("Packets"); // Artics*
+    private final SettingGroup sgGeneral = settings.createGroup("General");
 
     private final Setting<Boolean> slots = sgGeneral.add(new BoolSetting.Builder()
         .name("Test Slot Packets")
@@ -51,8 +57,35 @@ public class DevModule extends Module {
         .build()
     );
 
+    private final Setting<Set<Class<? extends Packet<?>>>> packets = sgPackets.add(new PacketListSetting.Builder()
+        .name("Packets")
+        .description("Artics to log")
+        .filter(aClass -> PacketUtils.getC2SPackets().contains(aClass))
+        .build()
+    );
+    private final Setting<Boolean> packetDetails = sgPackets.add(new BoolSetting.Builder()
+        .name("Details")
+        .description("Include the full packet body")
+        .defaultValue(true)
+        .build()
+    );
+    private final Setting<Boolean> packetDelay = sgPackets.add(new BoolSetting.Builder()
+        .name("Delays")
+        .description("Log delays in ticks")
+        .defaultValue(false)
+        .build()
+    );
+
+    private int lastPacket = 0;
+
     @EventHandler
     private void onPacketSend(PacketEvent.Send event) {
+        if(packets.get().contains(event.packet.getClass())){
+            if(packetDetails.get()) info(event.packet.toString());
+            else info(PacketUtils.getName((Class<? extends Packet<?>>) event.packet.getClass()));
+            if(packetDelay.get()) info(String.format("Last packet %d ticks ago", lastPacket));
+            this.lastPacket = 0;
+        }
         if(event.packet instanceof CustomPayloadC2SPacket && testBrand.get()){
             info("§cClient Brand: §a" + ((CustomPayloadC2SPacket) event.packet).payload().getId().id());
             System.out.print(((CustomPayloadC2SPacket) event.packet).payload().getId().id());
@@ -104,6 +137,7 @@ public class DevModule extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Post event){
+        this.lastPacket++;
         if(!testMsgs.get() || !isActive() || !this.Received) return;
         this.ticks++;
     }
