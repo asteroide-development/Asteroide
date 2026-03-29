@@ -34,10 +34,11 @@ public class VulcanDisablerModule extends Module {
     public void onActivate(){
         if(((List<ItemStack>) mc.player.getArmorItems()).get(2).getItem() != Items.ELYTRA){
             if(!muteTips.get()) info("You need to wear an elytra!");
+            toggle();
             return;
         }
         if(jump.get()) mc.player.jump();
-        mc.getNetworkHandler().sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.START_FALL_FLYING));
+        mc.getNetworkHandler().sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.START_FALL_FLYING)); // Yes, it's that easy
         if(!muteTips.get()) info("Flight & Speed should now work. You can take off the elytra");
         toggle();
     }
