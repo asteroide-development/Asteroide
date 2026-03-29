@@ -153,11 +153,11 @@ public class AutoSlotSwitchModule extends Module {
 
     private int findNextSlot(int slot){
         assert mc.player != null;
-        int temp = slot + 1;
-        for (int i = 0; i < 10; i++) {
-            if (temp > 9) { temp = 0; }
-            if (ItemModeSetting.get() == ItemMode.Blacklist && ItemFilter.get().contains(mc.player.getInventory().getStack(temp).getItem())) { temp++; continue; }
-            if (ItemModeSetting.get() == ItemMode.Whitelist && !ItemFilter.get().contains(mc.player.getInventory().getStack(temp).getItem())) { temp++; continue; }
+        int temp = slot;
+        for (int i = 0; i < 9; i++) {
+            temp = (temp + 1) % 9;
+            if (ItemModeSetting.get() == ItemMode.Blacklist && ItemFilter.get().contains(mc.player.getInventory().getStack(temp).getItem())) continue;
+            if (ItemModeSetting.get() == ItemMode.Whitelist && !ItemFilter.get().contains(mc.player.getInventory().getStack(temp).getItem())) continue;
         }
         return temp;
     }
@@ -180,6 +180,7 @@ public class AutoSlotSwitchModule extends Module {
 
     private enum ItemMode {
         Whitelist,
-        Blacklist
+        Blacklist,
+        All
     }
 }
