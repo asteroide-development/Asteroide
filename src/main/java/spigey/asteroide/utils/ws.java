@@ -57,7 +57,7 @@ public class ws extends WebSocketClient {
 
     @Override
     public void send(String text) {
-        AsteroideAddon.LOG.info(text);
+        //AsteroideAddon.LOG.info(text);
         super.send(text);
     }
 
