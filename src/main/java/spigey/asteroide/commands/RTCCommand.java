@@ -53,6 +53,11 @@ public class RTCCommand extends Command {
             mc.player.sendMessage(getButton(Text.literal("§8§l[§c§lAsteroide§8§l]§7 Join our Discord")), false);
             return SINGLE_SUCCESS;
         }));
+        builder.then(literal("reconnect").executes(ctx -> {
+            info("Attempting to reconnect");
+            ws.reConnect();
+            return SINGLE_SUCCESS;
+        }));
         builder.then(literal("keep typing to send a message").executes(ctx -> SINGLE_SUCCESS));
     }
 

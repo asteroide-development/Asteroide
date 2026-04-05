@@ -156,6 +156,12 @@ public class ws extends WebSocketClient {
         instance.send(gson.toJson(json));
     }
 
+    public static void reConnect(){
+        if(instance == null) return;
+        if(instance.isOpen()) instance.close();
+        else instance.reconnect();
+    }
+
     private boolean isAvailable(){
         RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
         return !(
