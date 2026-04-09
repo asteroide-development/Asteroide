@@ -168,7 +168,7 @@ public class AsteroideAddon extends MeteorAddon {
         showRtc = !(Modules.get().get(RTCSettingsModule.class).isActive() && Modules.get().get(RTCSettingsModule.class).hideMessages.get());
         ChatUtils.registerCustomPrefix("spigey.asteroide.modules", this::getPrefix);
 
-        if(!attemptConnect("wss://rtc.asteroide.fun/")) attemptConnect("ws://rtc.asteroide.cc/");
+        if(!attemptConnect("wss://rtc.asteroide.top/")) attemptConnect("ws://rtc.asteroide.cc/");
     }
 
     private Text getPrefix(){ // https://github.com/MeteorClientPlus/MeteorPlus/blob/1.21.8/src/main/java/nekiplay/meteorplus/features/modules/misc/ChatPrefix.java

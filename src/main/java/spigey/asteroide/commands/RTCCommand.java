@@ -86,7 +86,7 @@ public class RTCCommand extends Command {
     }
 
 
-    private static String compile(String script) { // Partly from meteor rejects https://github.com/AntiCope/meteor-rejects/blob/master/src/main/java/anticope/rejects/modules/ChatBot.java
+    public static String compile(String script) { // Partly from meteor rejects https://github.com/AntiCope/meteor-rejects/blob/master/src/main/java/anticope/rejects/modules/ChatBot.java
         if(!Modules.get().get(RTCSettingsModule.class).starscript.get()) return script;
         if(script == null) return script;
         Parser.Result result = Parser.parse(script);

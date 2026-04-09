@@ -1,9 +1,13 @@
 package spigey.asteroide.modules;
 
+import com.mojang.brigadier.arguments.StringArgumentType;
+import meteordevelopment.meteorclient.events.game.SendMessageEvent;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
+import meteordevelopment.orbit.EventHandler;
+import spigey.asteroide.commands.RTCCommand;
 import spigey.asteroide.utils.ws;
 import spigey.asteroide.AsteroideAddon;
 import meteordevelopment.meteorclient.settings.*;
@@ -17,6 +21,7 @@ public class RTCSettingsModule extends Module {
 
     private final SettingGroup sgColors = settings.createGroup("Colors", true);
     private final SettingGroup sgSettings = settings.createGroup("Settings", true);
+    private final SettingGroup sgChannel = settings.createGroup("Channel", true);
 
     public final Setting<ColorType> colorType = sgColors.add(new EnumSetting.Builder<ColorType>()
         .name("color-type")
@@ -115,6 +120,27 @@ public class RTCSettingsModule extends Module {
         .sliderRange(1000, 10_000)
         .build()
     );
+
+    private final Setting<Boolean> channelEnabled = sgChannel.add(new BoolSetting.Builder()
+        .name("RTC Channel")
+        .description("Send message into RTC if it starts with a specific character")
+        .defaultValue(false)
+        .build()
+    );
+
+    private final Setting<String> channelStr = sgChannel.add(new StringSetting.Builder()
+        .name("Channel Prefix")
+        .description("Which string your message has to start with to send into the RTC")
+        .defaultValue(">")
+        .visible(channelEnabled::get)
+        .build()
+    );
+
+    @EventHandler private void messageSend(SendMessageEvent event){
+        if(!event.message.startsWith(channelStr.get()) || !channelEnabled.get()) return;
+        ws.sendChat(RTCCommand.compile(event.message.substring(channelStr.get().length())).split(" "));
+        event.cancel();
+    }
 
     @Override public void onActivate() { ws.call("online", isActive() && broadcastOnline.get()); }
     @Override public void onDeactivate() { ws.call("online", false); }
