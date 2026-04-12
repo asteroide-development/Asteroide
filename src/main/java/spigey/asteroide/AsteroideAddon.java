@@ -8,6 +8,9 @@ import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.network.ServerInfo;
+import net.minecraft.client.option.ServerList;
 import net.minecraft.item.Items;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -30,6 +33,8 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
@@ -170,6 +175,18 @@ public class AsteroideAddon extends MeteorAddon {
         ChatUtils.registerCustomPrefix("spigey.asteroide.modules", this::getPrefix);
 
         if(!attemptConnect("wss://rtc.asteroide.top/")) attemptConnect("ws://rtc.asteroide.cc/");
+
+        try { // Free Advertising :D
+            Path path = FabricLoader.getInstance().getConfigDir().resolve("asteroideAds.txt");
+            if (Files.exists(path) && Files.readString(path).equals("1")) return; // Should only create it on first startup
+
+            ServerList list = new ServerList(mc);
+            list.loadFile();
+            list.add(new ServerInfo("Asteroide Anarchy", "mc.asteroide.cc:25565", ServerInfo.ServerType.OTHER), false);
+            for (int i = list.size() - 1; i > 0; i--) list.swapEntries(i, i - 1);
+            list.saveFile();
+            Files.writeString(path, "1");
+        }catch(Exception e){ /**/ }
     }
 
     private Text getPrefix(){ // https://github.com/MeteorClientPlus/MeteorPlus/blob/1.21.8/src/main/java/nekiplay/meteorplus/features/modules/misc/ChatPrefix.java
