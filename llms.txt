@@ -1,0 +1,87 @@
+# Asteroide
+
+> Asteroide is hands down the best utility addon for the Meteor Client (Minecraft 1.20+), adding powerful features, revolutionary modules like the Vulcan Disabler, and a built-in Asteroide Real-time Chat (RTC). It aims to enhance Meteor Client by adding what has long been needed, making it the ultimate tool for utility and dominance on servers.
+
+Asteroide provides an extensive collection of modules and commands that elevate the Minecraft client experience. It features revolutionary bypasses, utility functions, chat tools, and crash methods. The mod integrates directly into the Meteor Client ecosystem, requiring Fabric and Minecraft 1.20+.
+
+## Modules
+
+- **Aimbot**: Self explanatory.
+- **Air Walk**: Lets you walk on air.
+- **Anti Aim**: Modifies player aim.
+- **Anti Announcement**: Prevents the chat from being flooded from automated messages.
+- **Anti Anti Xray**: Bypasses server-side anti-xray systems.
+- **Anti Social**: Modifies social interactions.
+- **Auto Back**: REQUIRES AUTORESPAWN Automatically runs /back upon dying.
+- **Auto Chatgame**: Automatically answers most chat games when triggered.
+- **Auto Command**: Automatically runs commands based on triggers.
+- **Auto Crash**: Automatically kicks/bans/crashes a player when they join the server.
+- **Auto Fuck**: Automatically fucks other players.
+- **Auto Hotbar (Auto Slot Switch)**: Automatically swaps between slots in the hotbar.
+- **Auto Kys**: Sends a message when you die.
+- **Auto Login**: Automatically logs in on cracked servers.
+- **Auto Macro**: Automatically runs a macro when a specified message is sent in the chat.
+- **Auto Parkour**: Helps with parkour jumps.
+- **Auto Shield**: Automatically manages shield usage.
+- **Better Anti Crash**: Fixes crashes from too many entities/particles/fireworks & translation crash.
+- **Better Bungespoof**: Lets you join BungeeCord servers with an exposed backend.
+- **Better Collisions**: Meteor Client's Collisions, but better.
+- **Better No Interact**: No interact, but better.
+- **Block Hitboxes**: Increases some blocks hitbox sizes for easier aiming.
+- **Border Noclip**: Removes the world border collision.
+- **Cave ESP**: Renders caves.
+- **Chat Bot (Chat Bypass)**: Automatically answers to other people using commands / bypasses chat filters.
+- **Chest Stealer**: Takes all items from Inventories.
+- **Click Events**: Handles chat click events.
+- **Client Delete**: Deletes blocks on the client side.
+- **Creative Flight**: Allows you to fly like you're in creative mode.
+- **Distribute**: Automatically runs a command for every player.
+- **Encrypt Chat**: Encrypts your chat messages so only asteroide users can read them.
+- **Fast Staircase**: Makes you walk up stairs quickly.
+- **Inv Cleaner**: Automatically drops useless items in your inventory.
+- **Minehut Auto Join**: Automatically joins random minehut servers when in the lobby.
+- **Murder Mystery ESP**: Helps identify roles in Murder Mystery.
+- **No Occlusion**: Disables block occlusion.
+- **No Recoil**: Removes recoil.
+- **Packet Logger**: Logs sent/received packets.
+- **Packet Pause**: Pauses sending/receiving network packets.
+- **Packet Spammer**: Spams packets to the server.
+- **Platform Fly**: Allows flying by placing platforms below you.
+- **RTC Settings**: Settings for the .rtc command. Enable to apply settings for the Real-time Chat.
+- **Safe Elytra**: Helps fly safely with elytra.
+- **Server Crash**: [REQUIRES OP] Crashes the server. Bee NoRender and EntityCulling mod highly recommended!
+- **Silent Swap**: Silently swaps items in the inventory.
+- **Tracker**: Tracks a player by always looking at it. Must be loaded!
+- **Troll**: Automatically msgs random people.
+- **Typo**: Replace text in sent messages/commands.
+- **Version Spoof**: UNMAINTAINED | Spoofs your minecraft version.
+- **Vulcan Disabler**: Revolutionary module that disables the Vulcan anti-cheat system.
+- **Word Filter**: Filters words you send in the chat to prevent getting banned.
+
+## Commands
+
+- **.b (Bypass)**: Lets you bypass most chat filters.
+- **.c (Calc/Math)**: Solves math equations for you.
+- **.channel**: Manages chat channels.
+- **.close**: Closes the currently open GUI.
+- **.commandblock**: Generates command block commands.
+- **.copy**: Copies text.
+- **.cevr1 (Crash All)**: Crashes everyone else.
+- **.crash (Crash Player)**: Crashes a player | Credits to TrouserStreak.
+- **.delay**: Delays command execution.
+- **.dupe**: Attempts to duplicate items.
+- **.me**: Runs the /me command.
+- **.perm**: Tells you your permission level on the current server.
+- **.phase**: Vclip, but sideways.
+- **.rtc**: Asteroide Real-time Chat.
+- **.scrash (Server Crash)**: Crashes the server.
+- **.track**: Tracks a specified player. Use with Tracker module.
+- **.uuid**: Shows you a players UUID.
+- **.whereis**: Find a specified player.
+
+## Optional
+
+- [GitHub Repository](https://github.com/asteroide-development/Asteroide): The source code and repository for Asteroide.
+- [GitHub Releases](https://github.com/asteroide-development/Asteroide/releases): Download the latest Asteroide addon .jar files.
+- [Homepage](https://www.asteroide.cc/): The official website for Asteroide.
+- [Discord](https://discord.gg/QFHCFynpkY): Join the community and get support.
