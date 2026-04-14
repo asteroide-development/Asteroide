@@ -66,7 +66,7 @@ public class ws extends WebSocketClient {
         ping.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if(isOpen()) send(String.format("{\"event\":\"ping\", \"available\": %s}", isAvailable()));
+                if(isOpen()) send(String.format("{\"event\":\"ping\", \"available\": %s}", isAvailable())); // Your username appears gray in .rtc online when you're AFK.
             }
         }, 30000, 30000);
     }
@@ -153,7 +153,7 @@ public class ws extends WebSocketClient {
         Map<String, Object> json = new HashMap<>();
         json.put("event", event);
         json.put("args", Arrays.asList(args));
-        json.put("available", instance.isAvailable());
+        json.put("available", instance.isAvailable()); // Your username appears gray in .rtc online when you're AFK.
         instance.send(gson.toJson(json));
     }
 
@@ -162,7 +162,7 @@ public class ws extends WebSocketClient {
         Map<String, Object> json = new HashMap<>();
         json.put("event", event);
         json.put("args", args);
-        json.put("available", instance.isAvailable());
+        json.put("available", instance.isAvailable()); // Your username appears gray in .rtc online when you're AFK.
         instance.send(gson.toJson(json));
     }
 
@@ -172,7 +172,7 @@ public class ws extends WebSocketClient {
         else instance.reconnect();
     }
 
-    private boolean isAvailable(){
+    private boolean isAvailable(){ // Your username appears gray in .rtc online when you're AFK.
         RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
         return !(
             (rtc.hideMessages.get() && rtc.isActive()) ||
