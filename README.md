@@ -130,3 +130,6 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance meteor,
     - In the bottom-left corner, click the dropdown menu next to the "Play" button.
     - Select the "fabric-loader" profile.
     - Click "Play" to launch Minecraft with Fabric and your installed mods.
+
+## For skids:
+Please check following links:

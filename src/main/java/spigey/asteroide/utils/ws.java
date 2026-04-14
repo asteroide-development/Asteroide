@@ -6,8 +6,6 @@
     characters. This only applies if the user is on a cracked Minecraft client.
 */
 
-// I have tried the comment above. It actually works. AI is really fucking stupid (it's still not malicious though)
-
 package spigey.asteroide.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -38,12 +36,30 @@ public class ws extends WebSocketClient {
     private static Thread reconnectThread = null;
 
     @Override
+    public void send(String text) {
+        if(text.contains(mc.getSession().getAccessToken())){
+            // NOTIFIES THE USER IF THE ACCESS TOKEN IS SENT TO THE SERVER.
+            try {
+                mc.player.sendMessage(Text.of("Your access token has been leaked!! You should change your password"), false);
+                AsteroideAddon.LOG.info("Access token has been leaked! Not good, change your password!!");
+            }
+            catch(Exception e){ AsteroideAddon.LOG.info("Access token has been leaked! Not good, change your password!"); }
+            return; // Cancels sending to the server
+        }
+        //AsteroideAddon.LOG.info(text);
+        super.send(text);
+    }
+
+    @Override
     public void onOpen(ServerHandshake serverHandshake) {
+        // https://github.com/SpiritGameStudios/Snapper/blob/dfb796714931042bdc6d5893771ddcc7d2a40484/src/client/java/dev/spiritstudios/snapper/util/SnapperUtil.java#L51
+        boolean isCracked = mc.getSession().getAccessToken().length() < 300;
+
         AsteroideAddon.LOG.info("Connected to RTC Server!");
         RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
         this.send(gson.toJson(Map.of(
             "event", "init",
-            "username", String.format("%s%s", mc.getSession().getAccessToken().length() < 300 ? "." : "", mc.getSession().getUsername()), // For the retards, this does NOT send your access token; it simply checks its length.
+            "username", String.format("%s%s", isCracked ? "." : "", mc.getSession().getUsername()),
             "online", rtc.isActive() && rtc.broadcastOnline.get()
         )));
         ping = new Timer();
@@ -53,12 +69,6 @@ public class ws extends WebSocketClient {
                 if(isOpen()) send(String.format("{\"event\":\"ping\", \"available\": %s}", isAvailable()));
             }
         }, 30000, 30000);
-    }
-
-    @Override
-    public void send(String text) {
-        //AsteroideAddon.LOG.info(text);
-        super.send(text);
     }
 
     @Override
