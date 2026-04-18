@@ -87,7 +87,6 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance meteor,
   <tr><td>.c</td><td>Solves math equations for you</td></tr>
   <tr><td>.close</td><td>Closes the currently open GUI</td></tr>
   <tr><td>.cevr1</td><td>Crashes everyone else</td></tr>
-  <tr><td>.crash</td><td>Crashes a player | Credits to TrouserStreak</td></tr>
   <tr><td>.scrash</td><td>Crashes the server</td></tr>
   <tr><td>.perm</td><td>Tells you your permission level on the current server</td></tr>
   <tr><td>.phase</td><td>Vclip, but sideways</td></tr>

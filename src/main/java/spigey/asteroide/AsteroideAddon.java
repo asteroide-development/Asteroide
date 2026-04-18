@@ -144,7 +144,6 @@ public class AsteroideAddon extends MeteorAddon {
 
         // Commands
         Commands.add(new CrashAll());
-        Commands.add(new CrashPlayer());
         Commands.add(new ServerCrash());
         Commands.add(new PermLevel());
         Commands.add(new MeCommand());
