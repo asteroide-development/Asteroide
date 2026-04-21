@@ -30,6 +30,7 @@ public class BetterAntiCrashModule extends Module {
     final SettingGroup sgParticles = settings.createGroup("Particles", true);
     final SettingGroup sgLength = settings.createGroup("Length", true);
     final SettingGroup sgPackets = settings.createGroup("Packets", true);
+    final SettingGroup sgGameEvents = settings.createGroup("Game Events", true);
     final SettingGroup sgChat = settings.createGroup("Chat Limit", true);
     final SettingGroup sgOther = settings.createGroup("Other", true);
     private final Setting<Set<EntityType<?>>> entities = sgEntities.add(new EntityTypeListSetting.Builder()
@@ -68,7 +69,13 @@ public class BetterAntiCrashModule extends Module {
 
     private final Setting<List<ParticleType<?>>> particles = sgParticles.add(new ParticleTypeListSetting.Builder()
         .name("particles")
-        .description("Particles to not block.")
+        .description("Particles to always block.")
+        .build()
+    );
+    private final Setting<Boolean> CancelFireworks = sgParticles.add(new BoolSetting.Builder()
+        .name("Cancel Fireworks")
+        .description("Cancels Fireworks from spawning particles.")
+        .defaultValue(false)
         .build()
     );
     private final Setting<Boolean> DeleteParticles = sgParticles.add(new BoolSetting.Builder()
@@ -174,6 +181,25 @@ public class BetterAntiCrashModule extends Module {
         .build()
     );
 
+    private final Setting<Boolean> demoEvents = sgGameEvents.add(new BoolSetting.Builder()
+        .name("Demo Events")
+        .description("Block welcome screen & other features from the demo")
+        .defaultValue(true)
+        .build()
+    );
+    private final Setting<Boolean> endCredits = sgGameEvents.add(new BoolSetting.Builder()
+        .name("End Credits")
+        .description("Block credits at the end of the game")
+        .defaultValue(false)
+        .build()
+    );
+    private final Setting<Boolean> elderGuardian = sgGameEvents.add(new BoolSetting.Builder()
+        .name("Elder Guardian")
+        .description("Block elder guardian effect on the screen")
+        .defaultValue(false)
+        .build()
+    );
+
     private int messages = 0;
     private int tick = -1;
 
@@ -217,12 +243,6 @@ public class BetterAntiCrashModule extends Module {
         .build()
     );
 
-    private final Setting<Boolean> CancelFireworks = sgOther.add(new BoolSetting.Builder()
-        .name("Cancel Fireworks")
-        .description("Cancels Fireworks from spawning particles.")
-        .defaultValue(false)
-        .build()
-    );
     public final Setting<Boolean> translationCrash = sgOther.add(new BoolSetting.Builder()
         .name("Block Invalid Translations")
         .description("Cancels invalid translation strings.")
@@ -267,6 +287,11 @@ public class BetterAntiCrashModule extends Module {
     @EventHandler(priority = EventPriority.HIGHEST + 1)
     private void onReceivePacket(PacketEvent.Receive event) {
         if(!isActive()) return;
+        if(event.packet instanceof GameStateChangeS2CPacket packet){
+            if(packet.getReason().equals(GameStateChangeS2CPacket.DEMO_MESSAGE_SHOWN) && demoEvents.get()) event.cancel();
+            if(packet.getReason().equals(GameStateChangeS2CPacket.GAME_WON) && endCredits.get()) event.cancel();
+            if(packet.getReason().equals(GameStateChangeS2CPacket.ELDER_GUARDIAN_EFFECT) && elderGuardian.get()) event.cancel();
+        }
         if(packets.get() && shouldCheck(event.packet)){
             if(packetThreshold.get() < event.packet.toString().length()){
                 event.cancel();

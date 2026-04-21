@@ -38,8 +38,13 @@ public class ws extends WebSocketClient {
     @Override
     public void send(String text) {
         if(text.contains(mc.getSession().getAccessToken())){
+            if(mc.getSession().getAccessToken().length() < 5){
+                super.send(text); // Cracked account, access token mostly empty string or "FabricMC"
+                return;
+            }
             // NOTIFIES THE USER IF THE ACCESS TOKEN IS SENT TO THE SERVER.
             try {
+                AsteroideAddon.LOG.info(text);
                 mc.player.sendMessage(Text.of("Your access token has been leaked!! You should change your password"), false);
                 AsteroideAddon.LOG.info("Access token has been leaked! Not good, change your password!!");
             }
