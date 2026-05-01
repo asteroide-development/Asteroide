@@ -30,7 +30,7 @@ public class AutoChatGame extends Module {
     private final Setting<List<String>> scramble = sgTriggers.add(new StringListSetting.Builder().name("unscramble").description("Strings that will unscramble a word as solution").defaultValue("unscramble").build());
     private final Setting<List<String>> quotes = sgFilters.add(new StringListSetting.Builder().name("quotes").description("Quotes").defaultValue("\"", "'", "`").build());
     private final Setting<List<String>> contain = sgFilters.add(new StringListSetting.Builder().name("must contain all").description("Requires the message to contain all of these Strings").defaultValue().build());
-    private final Setting<List<String>> dont = sgFilters.add(new StringListSetting.Builder().name("must not contain").description("Do not solve the chatgame if it contains one of these Strings").defaultValue("correctly unscrambled", "was the fastest to").build());
+    private final Setting<List<String>> dont = sgFilters.add(new StringListSetting.Builder().name("must not contain").description("Do not solve the chatgame if it contains one of these Strings").defaultValue("correctly unscrambled", "was the fastest to", "[.rtc] ", "/pay", "/tp", "/op", "[Asteroide]").build());
 
     private enum DelayMode { Random, Precise }
     private enum DelayUnit { Ticks, Seconds, Minutes, Hours, Days }

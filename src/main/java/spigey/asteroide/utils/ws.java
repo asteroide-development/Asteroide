@@ -4,6 +4,15 @@
     so users can talk to other users. There is no access token or its length sent,
     It simply attaches a "." at the name if the access token is less than 300
     characters. This only applies if the user is on a cracked Minecraft client.
+    Below is ALL data that is collected or sent:
+
+    - Username
+    - Whether the user is on a cracked/premium account
+    - Messages that were sent to the RTC via .rtc
+    - IPs
+
+    I'm sorry. I don't want to log IPs, yet I have to. People like spamming illegal content. We delete this data after 7 days.
+    Do remember that you can barely do anything with an IP, other than general location, which is generally off by ~300 KM.
 */
 
 package spigey.asteroide.utils;
