@@ -36,6 +36,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
@@ -61,7 +62,7 @@ public class AsteroideAddon extends MeteorAddon {
         //if(rtc.isActive() && !rtc.connect.get()) return true;
         try {
             wss = new ws(new URI(uri + "asws?version=0.2.3"));
-            wss.connect();
+            wss.connectBlocking(2500, TimeUnit.MILLISECONDS);
             return true;
         }catch(Exception e){ LOG.error("Failed to connect to RTC! {}", String.valueOf(e)); return false; }
     }
