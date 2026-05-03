@@ -4,7 +4,7 @@
     so users can talk to other users. There is no access token or its length sent,
     It simply attaches a "." at the name if the access token is less than 300
     characters. This only applies if the user is on a cracked Minecraft client.
-    Below is ALL data that is collected or sent:
+    Below is ALL data that is collected and/or sent:
 
     - Username
     - Whether the user is on a cracked/premium account

@@ -53,7 +53,7 @@ public class ChestStealerModule extends Module {
     private final Setting<StealMode> stealMode = sgGeneral.add(new EnumSetting.Builder<StealMode>()
         .name("steal-mode")
         .description("Whether to use whitelist or blacklist")
-        .defaultValue(StealMode.Whitelist)
+        .defaultValue(StealMode.All)
         .build()
     );
     public final Setting<Mode> mode = sgGeneral.add(new EnumSetting.Builder<Mode>()

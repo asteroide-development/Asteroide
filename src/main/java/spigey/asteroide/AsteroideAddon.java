@@ -142,6 +142,7 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new CaveESPModule());
         modules.add(new VulcanDisablerModule());
         modules.add(new NoRecoilModule());
+        modules.add(new ChestDumperModule());
 
         // Commands
         Commands.add(new CrashAll());
