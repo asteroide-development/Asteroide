@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ChestDumperModule extends Module {
     public ChestDumperModule() {
-        super(AsteroideAddon.CATEGORY, "Chest-Dumper", "Dumps all items into Inventories");
+        super(AsteroideAddon.CATEGORY, "Chest-Dumper", "Dumps all items into inventories");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
