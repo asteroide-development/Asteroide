@@ -81,13 +81,15 @@ public class AutoMacro extends Module {
                 return;
             }
             if(macro.get().get(i) != null){
-                this.message = macro.get().get(i);
-                if(mode.get() == AutoChatGame.Mode.Precise) this.tick = delay.get();
-                else this.tick = RandUtils.withOffset(delay.get(), minoffset.get(), maxoffset.get());
+                int delaySoon;
+                if(mode.get() == AutoChatGame.Mode.Precise) delaySoon = delay.get();
+                else delaySoon = RandUtils.withOffset(delay.get(), minoffset.get(), maxoffset.get());
+
+                if(delaySoon < 1) msg(compile(macro.get().get(i)));
+                else { this.tick = delaySoon; this.message = macro.get().get(i); }
             }
             else error("Error: Macro is null");
         }
-        if(this.tick == 0) { msg(compile(this.message)); this.tick = -1; }
     }
 
     @EventHandler

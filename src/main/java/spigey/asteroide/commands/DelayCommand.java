@@ -9,6 +9,7 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.command.CommandSource;
+import net.minecraft.text.Text;
 import spigey.asteroide.utils.RandUtils;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class DelayCommand extends Command {
             removals.add(entryWrapper.getKey());
         }
 
-        if(this.delays.isEmpty()) MeteorClient.EVENT_BUS.unsubscribe(this);
         removals.forEach(this.delays::remove);
+        if(this.delays.isEmpty()){ MeteorClient.EVENT_BUS.unsubscribe(this); this.isSubscribed = false; }
     }
 }
