@@ -183,7 +183,7 @@ public class AsteroideAddon extends MeteorAddon {
 
             ServerList list = new ServerList(mc);
             list.loadFile();
-            list.add(new ServerInfo("Asteroide Anarchy", "mc.asteroide.cc", ServerInfo.ServerType.OTHER), false);
+            list.add(new ServerInfo("You can delete this", "mc.asteroide.cc", ServerInfo.ServerType.OTHER), false);
             for (int i = list.size() - 1; i > 0; i--) list.swapEntries(i, i - 1);
             list.saveFile();
             Files.writeString(path, "1");

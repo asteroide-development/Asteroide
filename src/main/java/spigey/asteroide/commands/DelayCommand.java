@@ -31,7 +31,7 @@ public class DelayCommand extends Command {
             Map<Integer, String> inner = new HashMap<>();
             inner.put(tick, StringArgumentType.getString(context, "message"));
             this.delays.put(RandUtils.string(5), inner);
-            if(!this.isSubscribed) MeteorClient.EVENT_BUS.subscribe(this);
+            if(!this.isSubscribed) { MeteorClient.EVENT_BUS.subscribe(this); this.isSubscribed = true; }
             info(String.format("Command will be sent in %.1f seconds.", tick / 20.0));
             return SINGLE_SUCCESS;
         })));
