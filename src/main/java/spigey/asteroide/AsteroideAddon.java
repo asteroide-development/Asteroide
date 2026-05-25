@@ -62,7 +62,7 @@ public class AsteroideAddon extends MeteorAddon {
         //if(rtc.isActive() && !rtc.connect.get()) return true;
         try {
             wss = new ws(new URI(uri + "asws?version=0.2.3"));
-            wss.connectBlocking(2500, TimeUnit.MILLISECONDS);
+            wss.connect();
             return true;
         }catch(Exception e){ LOG.error("Failed to connect to RTC! {}", String.valueOf(e)); return false; }
     }
