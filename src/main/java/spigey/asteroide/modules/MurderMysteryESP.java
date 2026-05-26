@@ -85,6 +85,21 @@ public class MurderMysteryESP extends Module {
         .build()
     );
 
+    private final Setting<Boolean> announceMurd = sgMurder.add(new BoolSetting.Builder()
+        .name("Announce in Chat")
+        .description("Announces whom the murderer is in the chat.")
+        .defaultValue(false)
+        .build()
+    );
+
+    private final Setting<String> murdAnnouncement = sgMurder.add(new StringSetting.Builder()
+        .name("Message")
+        .description("Message to send in the chat. Possible replacements are %murd%, %detective%, %pos%, %murd_pos%, %detective_pos%")
+        .defaultValue("%murd% at %murd_pos% is the murderer")
+        .visible(announceMurd::get)
+        .build()
+    );
+
     private final Setting<List<Item>> murdItems = sgMurder.add(new ItemListSetting.Builder()
         .name("Murderer Items")
         .description("Items to detect the murderer.")
@@ -125,6 +140,21 @@ public class MurderMysteryESP extends Module {
         .name("Detective ESP")
         .description("Renders ESP on the detective")
         .defaultValue(true)
+        .build()
+    );
+
+    private final Setting<Boolean> announceDec = sgDetective.add(new BoolSetting.Builder()
+        .name("Announce in Chat")
+        .description("Announces whom the detective is in the chat.")
+        .defaultValue(false)
+        .build()
+    );
+
+    private final Setting<String> decAnnouncement = sgDetective.add(new StringSetting.Builder()
+        .name("Message")
+        .description("Message to send in the chat. Possible replacements are %murd%, %detective%, %pos%, %murd_pos%, %detective_pos%")
+        .defaultValue("%deetective% at %detective_pos% is the detective")
+        .visible(announceDec::get)
         .build()
     );
 
@@ -255,8 +285,27 @@ public class MurderMysteryESP extends Module {
             if(murd) { murderers.add(player); detectives.remove(player); }
             if(dec) detectives.add(player);
             if(murd || dec){
-                if(murd && murdLog.get() && !found.contains(player) && !resetItems.get().contains(mc.player.getInventory().getStack(8).getItem())) info(String.format("§c%s§7 is holding §c%s§7!", player, main.getName().getString()));
-                if(dec && decLog.get() && !found.contains(player) && !resetItems.get().contains(mc.player.getInventory().getStack(8).getItem())) info(String.format("§b%s§7 is holding §b%s§7!", player, main.getName().getString()));
+                if(murd && murdLog.get() && !found.contains(player) && !resetItems.get().contains(mc.player.getInventory().getStack(8).getItem())){
+                    // %murd%, %detective%, %pos%, %murd_pos%, %detective_pos%
+                    if(announceMurd.get()) ChatUtils.sendPlayerMsg(murdAnnouncement.get()
+                        .replaceAll("%murd%", player)
+                        .replaceAll("%detective%", detectives.stream().findFirst().orElse("None"))
+                        .replaceAll("%pos%", String.format("%.0f %.0f %.0f", mc.player.getX(), mc.player.getY(), mc.player.getZ()))
+                        .replaceAll("%murd_pos%", String.format("%.0f %.0f %.0f", entity.getX(), entity.getY(), entity.getZ()))
+                        .replaceAll("%detective_pos%", "None") // I'm sorry :/
+                    );
+                    info(String.format("§c%s§7 is holding §c%s§7!", player, main.getName().getString()));
+                }
+                if(dec && decLog.get() && !found.contains(player) && !resetItems.get().contains(mc.player.getInventory().getStack(8).getItem())){
+                    if(announceDec.get()) ChatUtils.sendPlayerMsg(decAnnouncement.get()
+                        .replaceAll("%murd%", murderers.stream().findFirst().orElse("None"))
+                        .replaceAll("%detective%", player)
+                        .replaceAll("%pos%", String.format("%.0f %.0f %.0f", mc.player.getX(), mc.player.getY(), mc.player.getZ()))
+                        .replaceAll("%murd_pos%", "None") // I'm sorry :/
+                        .replaceAll("%detective_pos%", String.format("%.0f %.0f %.0f", entity.getX(), entity.getY(), entity.getZ()))
+                    );
+                    info(String.format("§b%s§7 is holding §b%s§7!", player, main.getName().getString()));
+                }
                 found.add(player);
             }
         }
