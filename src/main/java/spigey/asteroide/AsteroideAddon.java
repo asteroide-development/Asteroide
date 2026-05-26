@@ -165,6 +165,7 @@ public class AsteroideAddon extends MeteorAddon {
         Commands.add(new DelayCommand());
         Commands.add(new CopyCommand());
         Commands.add(new ChannelCommand());
+        Commands.add(new SlotCommand());
 
         // HUD
         Hud hud = Hud.get();
