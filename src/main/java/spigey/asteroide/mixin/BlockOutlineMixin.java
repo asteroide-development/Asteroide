@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import spigey.asteroide.modules.BlockHitboxesModule;
+import spigey.asteroide.modules.PassthroughModule;
 
 @Mixin(AbstractBlock.AbstractBlockState.class)
 public abstract class BlockOutlineMixin {
@@ -20,6 +21,8 @@ public abstract class BlockOutlineMixin {
     private void enlargeOutline(BlockView world, BlockPos pos, CallbackInfoReturnable<VoxelShape> cir) {
         try {
             BlockHitboxesModule bh = Modules.get().get(BlockHitboxesModule.class);
+            PassthroughModule pt = Modules.get().get(PassthroughModule.class);
+            if(pt.isActive()) if(pt.blocks.get().contains(((BlockState) (Object) this).getBlock())) cir.setReturnValue(VoxelShapes.empty());
             if(bh.isActive()) if (bh.blocks.get().contains(((BlockState) (Object) this).getBlock())) cir.setReturnValue(VoxelShapes.cuboid(bh.miX.get(), bh.miY.get(), bh.miZ.get(), bh.maX.get(), bh.maY.get(), bh.maZ.get()));
         }catch(Exception e){/**/}
     }
@@ -28,6 +31,8 @@ public abstract class BlockOutlineMixin {
     private void enlargeOutline2(BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         try {
             BlockHitboxesModule bh = Modules.get().get(BlockHitboxesModule.class);
+            PassthroughModule pt = Modules.get().get(PassthroughModule.class);
+            if(pt.isActive()) if(pt.blocks.get().contains(((BlockState) (Object) this).getBlock())) cir.setReturnValue(VoxelShapes.empty());
             if(bh.isActive()) if (bh.blocks.get().contains(((BlockState) (Object) this).getBlock())) cir.setReturnValue(VoxelShapes.cuboid(bh.miX.get(), bh.miY.get(), bh.miZ.get(), bh.maX.get(), bh.maY.get(), bh.maZ.get()));
         }catch(Exception e){/**/}
     }
