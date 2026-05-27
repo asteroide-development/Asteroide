@@ -43,3 +43,4 @@ Changelog.md
 private/
 build/libs/org
 build/reports
+/build/processIncludeJars/Java-WebSocket-1.5.4.jar
