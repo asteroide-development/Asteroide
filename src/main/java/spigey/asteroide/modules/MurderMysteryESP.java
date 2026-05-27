@@ -1,5 +1,7 @@
 package spigey.asteroide.modules;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -35,6 +37,8 @@ public class MurderMysteryESP extends Module {
     private final SettingGroup sgDetective = settings.createGroup("Detective", true);
     private final SettingGroup sgInnocent = settings.createGroup("Innocent", true);
     private final SettingGroup sgAutoSkip = settings.createGroup("Auto Skip", true);
+    private final SettingGroup sgMultiplayer = settings.createGroup("Auto-Skip Party Mode", true);
+    private final SettingGroup sgAliases = settings.createGroup("Aliases", true);
 
     private final Setting<Boolean> ignoreSelf = sgGeneral.add(new BoolSetting.Builder()
         .name("Ignore Self")
@@ -251,6 +255,53 @@ public class MurderMysteryESP extends Module {
         .build()
     );
 
+    private final Setting<Boolean> multiplayerEnabled = sgMultiplayer.add(new BoolSetting.Builder()
+        .name("Enable Multiplayer")
+        .description("Only skips if all of your friends are innocent")
+        .defaultValue(false)
+        .build()
+    );
+    private final Setting<Boolean> isMpHost = sgMultiplayer.add(new BoolSetting.Builder()
+        .name("I am host")
+        .description("Enable this if you are the party host")
+        .defaultValue(true)
+        .visible(multiplayerEnabled::get)
+        .build()
+    );
+    private final Setting<String> secret = sgMultiplayer.add(new StringSetting.Builder()
+        .name("Secret")
+        .description("All your friends must use the same secret!")
+        .defaultValue("CHANGE ME OR THIS WILL BREAK")
+        .visible(multiplayerEnabled::get)
+        .build()
+    );
+    private final Setting<Integer> playerCount = sgMultiplayer.add(new IntSetting.Builder()
+        .name("Player Count")
+        .description("Amount of total friends. This must be the same for everyone.")
+        .defaultValue(3)
+        .sliderRange(2, 16)
+        .visible(multiplayerEnabled::get)
+        .build()
+    );
+    private final Setting<List<String>> innAlias = sgAliases.add(new StringListSetting.Builder()
+        .name("Innocent")
+        .description("MM ESP will also consider these strings as innocent")
+        .defaultValue("мирный житель", "Unschuld")
+        .build()
+    );
+    private final Setting<List<String>> decAlias = sgAliases.add(new StringListSetting.Builder()
+        .name("Detective")
+        .description("MM ESP will also consider these strings as detective")
+        .defaultValue("детектив", "Detektiv")
+        .build()
+    );
+    private final Setting<List<String>> murderAlias = sgAliases.add(new StringListSetting.Builder()
+        .name("Murderer")
+        .description("MM ESP will also consider these strings as murderer")
+        .defaultValue("убийца", "Mörder")
+        .build()
+    );
+
     private Set<String> murderers = new HashSet<>();
     private Set<String> detectives = new HashSet<>();
     private Set<String> found = new HashSet<>();
@@ -263,14 +314,49 @@ public class MurderMysteryESP extends Module {
         catch(Exception e){/* */}
     }
 
+    public void mmData(JsonArray innocents, JsonArray detectives, JsonArray murderers){
+        String[] inn = AsteroideAddon.gson.fromJson(innocents, String[].class);
+        String[] dec = AsteroideAddon.gson.fromJson(detectives, String[].class);
+        String[] murd = AsteroideAddon.gson.fromJson(murderers, String[].class);
+        for(String detec : dec){
+            if(Objects.equals(detec, mc.getSession().getUsername())) continue;
+            if(!found.contains(detec)) detectives.add(detec);
+            info(String.format("Your friend §b%s§7 is §bDetective§7!", detec));
+        }
+
+        for(String mur : murd){
+            if(Objects.equals(mur, mc.getSession().getUsername())) continue;
+            if(!found.contains(mur)) murderers.add(mur);
+            info(String.format("Your friend §c%s§7 is §cMurderer§7!", mur));
+        }
+
+        if(!isMpHost.get()) return;
+        if(!skipIfInnocent.get() && inn.length > 0) return;
+        if(!skipIfDetective.get() && dec.length > 0) return;
+        if(!skipIfMurderer.get() && murd.length > 0) return;
+
+        skip();
+    }
+
     @EventHandler
     private void onPacketReceive(PacketEvent.Receive event) {
+        if(!isActive()) return;
         if(!(event.packet instanceof TitleS2CPacket packet)) return;
-        if(!autoSkipEnabled.get()) return;
+
         String text = packet.text().getString();
-        if(skipIfInnocent.get() && text.toLowerCase().contains("innocent")) skip();
-        if(skipIfDetective.get() && text.toLowerCase().contains("detective")) skip();
-        if(skipIfMurderer.get() && text.toLowerCase().contains("murder")) skip();
+
+        for(String replacement : innAlias.get()) text = text.toLowerCase().replaceAll(replacement.toLowerCase(), "innocent");
+        for(String replacement : decAlias.get()) text = text.toLowerCase().replaceAll(replacement.toLowerCase(), "detective");
+        for(String replacement : murderAlias.get()) text = text.toLowerCase().replaceAll(replacement.toLowerCase(), "murder");
+
+        if(multiplayerEnabled.get()) AsteroideAddon.wss.call("mmmp", playerCount.get().toString(), secret.get(), text);
+
+        if(!autoSkipEnabled.get()) return;
+        Role role = text.toLowerCase().contains("murder") ? Role.Murderer : text.toLowerCase().contains("detective") ? Role.Detective : text.toLowerCase().contains("innocent") ? Role.Innocent : null;
+        if(role == null) return;
+        if(skipIfInnocent.get() && role == Role.Innocent) skip();
+        if(skipIfDetective.get() && role == Role.Detective) skip();
+        if(skipIfMurderer.get() && role == Role.Murderer) skip();
     }
 
     @EventHandler

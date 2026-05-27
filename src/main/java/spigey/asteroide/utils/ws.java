@@ -26,6 +26,7 @@ import net.minecraft.text.Text;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import spigey.asteroide.AsteroideAddon;
+import spigey.asteroide.modules.MurderMysteryESP;
 import spigey.asteroide.modules.RTCSettingsModule;
 
 import java.net.URI;
@@ -104,6 +105,8 @@ public class ws extends WebSocketClient {
                     if(rtc.censor.get() && rtc.isActive()) msg = msg.replaceAll("(?i)igg", "***").replaceAll("(?i)fag", "***");
                     if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(HexConverter.toText(msg), false);
                     break;
+                case "mmesp":
+                    Modules.get().get(MurderMysteryESP.class).mmData(message.get("innocent").getAsJsonArray(), message.get("detective").getAsJsonArray(), message.get("murder").getAsJsonArray());
             }
         }catch(Exception E){ /**/ }
     }
