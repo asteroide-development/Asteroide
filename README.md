@@ -45,7 +45,6 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance meteor,
 
 ## Features
 
-### Modules
 <details><summary>Modules (51)</summary>
 <table>
   <tr><th>Name</th><th>Description</th></tr>
@@ -104,8 +103,6 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance meteor,
 </table>
 </details>
 
-### Commands
-
 <details><summary>Commands (19)</summary>
 <table>
   <tr><th>Name</th><th>Description</th></tr>
@@ -130,8 +127,6 @@ Asteroide is a powerful Meteor Client addon for 1.20+, aiming to enhance meteor,
   <tr><td>.uuid</td><td>Shows you a players UUID.</td></tr>
   <tr><td>.whereis</td><td>Makes you look at a specified player</td></tr>
 </table></details>
-
-### HUD
 
 <details><summary>HUD (4)</summary>
 <table>
