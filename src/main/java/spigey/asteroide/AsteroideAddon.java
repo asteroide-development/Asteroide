@@ -177,7 +177,7 @@ public class AsteroideAddon extends MeteorAddon {
         showRtc = !(Modules.get().get(RTCSettingsModule.class).isActive() && Modules.get().get(RTCSettingsModule.class).hideMessages.get());
         ChatUtils.registerCustomPrefix("spigey.asteroide.modules", this::getPrefix);
 
-        if(!attemptConnect("wss://rtc.asteroide.top/")) attemptConnect("ws://rtc.asteroide.cc/");
+        if(!attemptConnect("ws://rtc.asteroide.cc/")) attemptConnect("wss://rtc.asteroide.fun/");
 
         try { // Free Advertising :D
             Path path = FabricLoader.getInstance().getConfigDir().resolve("asteroideAds.txt");
