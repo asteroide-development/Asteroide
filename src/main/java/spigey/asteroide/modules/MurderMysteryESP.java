@@ -21,6 +21,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.network.packet.s2c.play.OpenWrittenBookS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -40,6 +41,12 @@ public class MurderMysteryESP extends Module {
     private final SettingGroup sgMultiplayer = settings.createGroup("Auto-Skip Party Mode", true);
     private final SettingGroup sgAliases = settings.createGroup("Aliases", true);
 
+    private final Setting<Boolean> blockDescription = sgGeneral.add(new BoolSetting.Builder()
+        .name("Block Role Description")
+        .description("Blocks the book that opens at the start of a round")
+        .defaultValue(true)
+        .build()
+    );
     private final Setting<Boolean> ignoreSelf = sgGeneral.add(new BoolSetting.Builder()
         .name("Ignore Self")
         .description("Does not apply ESP to yourself.")
@@ -341,6 +348,7 @@ public class MurderMysteryESP extends Module {
     @EventHandler
     private void onPacketReceive(PacketEvent.Receive event) {
         if(!isActive()) return;
+        if(event.packet instanceof OpenWrittenBookS2CPacket && blockDescription.get()) event.cancel();
         if(!(event.packet instanceof TitleS2CPacket packet)) return;
 
         String text = packet.text().getString();
