@@ -261,6 +261,12 @@ public class MurderMysteryESP extends Module {
         .visible(autoSkipEnabled::get)
         .build()
     );
+    private final Setting<List<String>> blacklists = sgAutoSkip.add(new StringListSetting.Builder()
+        .name("Blacklisted Strings")
+        .description("Does not count a title as a role if it contains this string")
+        .defaultValue("murder mystery", "starting in", "you died", "you win")
+        .build()
+    );
 
     private final Setting<Boolean> multiplayerEnabled = sgMultiplayer.add(new BoolSetting.Builder()
         .name("Enable Multiplayer")
@@ -353,11 +359,13 @@ public class MurderMysteryESP extends Module {
 
         String text = packet.text().getString();
 
+        for(String blacklist : blacklists.get()) if(blacklist.toLowerCase().contains(text.toLowerCase())) event.cancel();
+
         for(String replacement : innAlias.get()) text = text.toLowerCase().replaceAll(replacement.toLowerCase(), "innocent");
         for(String replacement : decAlias.get()) text = text.toLowerCase().replaceAll(replacement.toLowerCase(), "detective");
         for(String replacement : murderAlias.get()) text = text.toLowerCase().replaceAll(replacement.toLowerCase(), "murder");
 
-        if(multiplayerEnabled.get()) AsteroideAddon.wss.call("mmmp", playerCount.get().toString(), secret.get(), text);
+        if(multiplayerEnabled.get()) AsteroideAddon.wss.call("mmmp", playerCount.get().toString(), secret.get(), text, String.valueOf(System.currentTimeMillis() / 5000));
 
         if(!autoSkipEnabled.get()) return;
         Role role = text.toLowerCase().contains("murder") ? Role.Murderer : text.toLowerCase().contains("detective") ? Role.Detective : text.toLowerCase().contains("innocent") ? Role.Innocent : null;
