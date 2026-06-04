@@ -13,6 +13,7 @@
 
     I'm sorry. I don't want to log IPs, yet I have to. People like spamming illegal content. We delete this data after 7 days.
     Do remember that you can barely do anything with an IP, other than general location, which is generally off by ~300 KM.
+    Your plain text IP is not stored either. They are stored as SHA256 hashes, so even I cannot access them.
 */
 
 package spigey.asteroide.utils;
