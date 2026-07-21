@@ -14,7 +14,8 @@
     "ItemStackMixin",
     "PlayerListHudMixin",
     "TranslationMixin",
-    "WorldBorderMixin"
+    "WorldBorderMixin",
+    "BetterTabMixin"
   ],
   "client": [
     "BossBarHudMixin",

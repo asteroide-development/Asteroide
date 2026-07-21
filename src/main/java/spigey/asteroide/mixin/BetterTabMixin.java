@@ -1,6 +1,7 @@
 package spigey.asteroide.mixin;
 
 import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.systems.modules.render.BetterTab;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.text.Text;
@@ -13,8 +14,8 @@ import spigey.asteroide.modules.RTCSettingsModule;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
-@Mixin(value = PlayerListHud.class, priority = 2026)
-public class PlayerListHudMixin {
+@Mixin(value = BetterTab.class, remap = false)
+public class BetterTabMixin {
     @Inject(method = "getPlayerName", at = @At("RETURN"), cancellable = true)
     private void modifyPlayerName(PlayerListEntry entry, CallbackInfoReturnable<Text> cir) {
         final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
