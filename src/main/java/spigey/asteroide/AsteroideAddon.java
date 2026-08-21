@@ -61,7 +61,7 @@ public class AsteroideAddon extends MeteorAddon {
         //LOG.info(String.format("%b %b", !rtc.connect.get(), rtc.isActive()));
         //if(rtc.isActive() && !rtc.connect.get()) return true;
         try {
-            wss = new ws(new URI(uri + "asws?version=0.2.3"));
+            wss = new ws(new URI(uri + "asws?version=0.2.4"));
             wss.connect();
             return true;
         }catch(Exception e){ LOG.error("Failed to connect to RTC! {}", String.valueOf(e)); return false; }
@@ -71,7 +71,7 @@ public class AsteroideAddon extends MeteorAddon {
     public void onInitialize() {
         MeteorClient.EVENT_BUS.subscribe(this); // dear fuck chatskibidi...
 
-        LOG.info("\nLoaded Asteroide v0.2.3\n");
+        LOG.info("\nLoaded Asteroide v0.2.4\n");
 
         // src/main/java/spigey/asteroide/modules/TrollModule.java
         try ( InputStream is = getClass().getClassLoader().getResourceAsStream("trolls.txt");

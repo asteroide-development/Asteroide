@@ -152,6 +152,13 @@ public class ws extends WebSocketClient {
     }
 
     public static void sendChat(String... args){
+        try{
+            final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
+            if((rtc.hideMessages.get() && rtc.isActive())) {
+                mc.player.sendMessage(Text.of("§8§l[§c§lAsteroide§8§l]§c RTC Messages are currently hidden. To show them, type §a.rtc hide§c."), false);
+                return;
+            }
+        }catch(Exception L){/**/}
         if(instance == null || !instance.isOpen()) return;
         Map<String, Object> json = new HashMap<>();
         final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);

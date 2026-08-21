@@ -6,7 +6,9 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import meteordevelopment.meteorclient.commands.Command;
+import meteordevelopment.meteorclient.gui.GuiThemes;
 import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.misc.MeteorStarscript;
 import meteordevelopment.meteorclient.utils.misc.text.MeteorClickEvent;
 import meteordevelopment.starscript.Script;
@@ -56,6 +58,10 @@ public class RTCCommand extends Command {
         builder.then(literal("reconnect").executes(ctx -> {
             info("Attempting to reconnect");
             ws.reConnect();
+            return SINGLE_SUCCESS;
+        }));
+        builder.then(literal("settings").executes(ctx -> {
+            Utils.screenToOpen = GuiThemes.get().moduleScreen(Modules.get().get(RTCSettingsModule.class));
             return SINGLE_SUCCESS;
         }));
         builder.then(literal("keep typing to send a message").executes(ctx -> SINGLE_SUCCESS));
