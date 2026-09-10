@@ -416,7 +416,7 @@ public class MurderMysteryESP extends Module {
     @EventHandler
     private void onRender3D(Render3DEvent event){
         for(Entity entity : mc.world.getEntities()){
-            if(entity instanceof ArmorStandEntity && ((ArmorStandEntity)entity).getEquippedStack(EquipmentSlot.MAINHAND).getItem() instanceof BowItem && (bowEsp.get() || bowTracers.get())) bowEsp(event, entity);
+            if(entity instanceof ArmorStandEntity && entity.isInvisible() && ((ArmorStandEntity)entity).getEquippedStack(EquipmentSlot.MAINHAND).getItem() instanceof BowItem && (bowEsp.get() || bowTracers.get())) bowEsp(event, entity);
             if(entity instanceof ItemEntity && ((ItemEntity) entity).getStack().getItem() == Items.GOLD_INGOT && itemEsp.get()) itemEsp(event, entity);
             if(entity == mc.player && ignoreSelf.get()) continue;
             if(!(entity instanceof PlayerEntity)) continue;
