@@ -218,6 +218,14 @@ public class MurderMysteryESP extends Module {
         .build()
     );
 
+    private final Setting<Boolean> innTracersAsMurd = sgInnocent.add(new BoolSetting.Builder()
+        .name("Innocent Tracers As Murderer")
+        .description("Automatically enable innocent tracers while murderer")
+        .defaultValue(false)
+        .visible(() -> !innTracers.get())
+        .build()
+    );
+
     private final Setting<List<Item>> resetItems = sgGeneral.add(new ItemListSetting.Builder()
         .name("Reset Items")
         .description("The murderer list will reset if this item is on the 9th slot.")
@@ -318,6 +326,7 @@ public class MurderMysteryESP extends Module {
     private Set<String> murderers = new HashSet<>();
     private Set<String> detectives = new HashSet<>();
     private Set<String> found = new HashSet<>();
+    private Role selfRole = Role.Innocent;
 
     private void skip(){
         //String command = this.skipCommand.get();
@@ -367,9 +376,10 @@ public class MurderMysteryESP extends Module {
 
         if(multiplayerEnabled.get()) AsteroideAddon.wss.call("mmmp", playerCount.get().toString(), secret.get(), text, String.valueOf(System.currentTimeMillis() / 5000));
 
-        if(!autoSkipEnabled.get()) return;
         Role role = text.toLowerCase().contains("murder") ? Role.Murderer : text.toLowerCase().contains("detective") ? Role.Detective : text.toLowerCase().contains("innocent") ? Role.Innocent : null;
         if(role == null) return;
+        this.selfRole = role;
+        if(!autoSkipEnabled.get()) return;
         if(skipIfInnocent.get() && role == Role.Innocent) skip();
         if(skipIfDetective.get() && role == Role.Detective) skip();
         if(skipIfMurderer.get() && role == Role.Murderer) skip();
@@ -377,7 +387,12 @@ public class MurderMysteryESP extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Post event){
-        if(resetItems.get().contains(mc.player.getInventory().getStack(8).getItem())) { murderers.clear(); detectives.clear(); found.clear(); } // lmao
+        if(resetItems.get().contains(mc.player.getInventory().getStack(8).getItem())) {
+            murderers.clear();
+            detectives.clear();
+            found.clear();
+            this.selfRole = Role.Innocent;
+        }
         for(Entity entity : mc.world.getEntities()){
             if(entity == mc.player && ignoreSelf.get()) continue;
             if(!(entity instanceof PlayerEntity)) continue;
@@ -462,7 +477,7 @@ public class MurderMysteryESP extends Module {
         Role role = getRole(((PlayerEntity) entity).getGameProfile().getName());
         if(role == Role.Murderer && !murdTracers.get()) return;
         if(role == Role.Detective && !decTracers.get()) return;
-        if(role == Role.Innocent && !innTracers.get()) return;
+        if(role == Role.Innocent && !(innTracers.get() || (innTracersAsMurd.get() && this.selfRole == Role.Murderer))) return;
 
         Color color = getColor(role);
         if(color == null) return;
