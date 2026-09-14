@@ -145,6 +145,7 @@ public class AsteroideAddon extends MeteorAddon {
         modules.add(new ChestDumperModule());
         modules.add(new PassthroughModule());
         modules.add(new NoXaeroDisableModule());
+        modules.add(new AutoReportModule());
 
         // Commands
         Commands.add(new CrashAll());
