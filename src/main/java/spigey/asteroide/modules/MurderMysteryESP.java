@@ -14,6 +14,7 @@ import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
@@ -63,8 +64,15 @@ public class MurderMysteryESP extends Module {
 
     private final Setting<SettingColor> itemColor = sgGeneral.add(new ColorSetting.Builder()
         .name("Item ESP Color")
-        .description("ESP Color of the Item")
+        .description("ESP Color of Items")
         .defaultValue(new SettingColor(252, 186, 3, 130))
+        .build()
+    );
+
+    private final Setting<Boolean> blockFalsePositives = sgGeneral.add(new BoolSetting.Builder()
+        .name("Block False Positives")
+        .description("Attempts to block false positives by not rendering ESP for sleeping players")
+        .defaultValue(true)
         .build()
     );
 
@@ -374,10 +382,10 @@ public class MurderMysteryESP extends Module {
         for(String replacement : decAlias.get()) text = text.toLowerCase().replaceAll(replacement.toLowerCase(), "detective");
         for(String replacement : murderAlias.get()) text = text.toLowerCase().replaceAll(replacement.toLowerCase(), "murder");
 
-        if(multiplayerEnabled.get()) AsteroideAddon.wss.call("mmmp", playerCount.get().toString(), secret.get(), text, String.valueOf(System.currentTimeMillis() / 5000));
 
         Role role = text.toLowerCase().contains("murder") ? Role.Murderer : text.toLowerCase().contains("detective") ? Role.Detective : text.toLowerCase().contains("innocent") ? Role.Innocent : null;
         if(role == null) return;
+        if(multiplayerEnabled.get()) AsteroideAddon.wss.call("mmmp", playerCount.get().toString(), secret.get(), text, String.valueOf(Math.floor((double) System.currentTimeMillis() / 5000)));
         this.selfRole = role;
         if(!autoSkipEnabled.get()) return;
         if(skipIfInnocent.get() && role == Role.Innocent) skip();
@@ -435,7 +443,6 @@ public class MurderMysteryESP extends Module {
             if(entity instanceof ItemEntity && ((ItemEntity) entity).getStack().getItem() == Items.GOLD_INGOT && itemEsp.get()) itemEsp(event, entity);
             if(entity == mc.player && ignoreSelf.get()) continue;
             if(!(entity instanceof PlayerEntity)) continue;
-            String player = ((PlayerEntity) entity).getGameProfile().getName();
             tracers(event, entity);
             drawBoundingBox(event, entity);
         }
@@ -461,6 +468,7 @@ public class MurderMysteryESP extends Module {
         if(role == Role.Murderer && !murdESP.get()) return;
         if(role == Role.Detective && !decESP.get()) return;
         if(role == Role.Innocent && !innESP.get()) return;
+        if(blockFalsePositives.get() && entity.isInPose(EntityPose.SLEEPING)) return;
 
         Color color = getColor(role);
         if(color == null) return;
@@ -478,6 +486,7 @@ public class MurderMysteryESP extends Module {
         if(role == Role.Murderer && !murdTracers.get()) return;
         if(role == Role.Detective && !decTracers.get()) return;
         if(role == Role.Innocent && !(innTracers.get() || (innTracersAsMurd.get() && this.selfRole == Role.Murderer))) return;
+        if(blockFalsePositives.get() && entity.isInPose(EntityPose.SLEEPING)) return;
 
         Color color = getColor(role);
         if(color == null) return;
@@ -507,11 +516,5 @@ public class MurderMysteryESP extends Module {
         Murderer,
         Detective,
         Innocent
-    }
-
-    private enum Action {
-        Slot_0,
-        Attack,
-        Slot_1
     }
 }
