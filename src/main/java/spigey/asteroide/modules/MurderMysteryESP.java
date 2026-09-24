@@ -24,6 +24,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.OpenWrittenBookS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import spigey.asteroide.AsteroideAddon;
@@ -290,6 +292,13 @@ public class MurderMysteryESP extends Module {
         .defaultValue(false)
         .build()
     );
+    private final Setting<String> mpSkipCommand = sgAutoSkip.add(new StringSetting.Builder()
+        .name("Multiplayer Skip Command")
+        .description("Command to use to skip")
+        .defaultValue("/next")
+        .visible(multiplayerEnabled::get)
+        .build()
+    );
     private final Setting<Boolean> isMpHost = sgMultiplayer.add(new BoolSetting.Builder()
         .name("I am host")
         .description("Enable this if you are the party host")
@@ -340,7 +349,7 @@ public class MurderMysteryESP extends Module {
         //String command = this.skipCommand.get();
         //if(command.startsWith("/")) command = command.substring(1);
         //try{ mc.getNetworkHandler().sendChatCommand(command); }
-        try{ ChatUtils.sendPlayerMsg(skipCommand.get()); }
+        try{ ChatUtils.sendPlayerMsg(multiplayerEnabled.get() ? mpSkipCommand.get() : skipCommand.get()); }
         catch(Exception e){/* */}
     }
 
@@ -382,12 +391,11 @@ public class MurderMysteryESP extends Module {
         for(String replacement : decAlias.get()) text = text.toLowerCase().replaceAll(replacement.toLowerCase(), "detective");
         for(String replacement : murderAlias.get()) text = text.toLowerCase().replaceAll(replacement.toLowerCase(), "murder");
 
-
         Role role = text.toLowerCase().contains("murder") ? Role.Murderer : text.toLowerCase().contains("detective") ? Role.Detective : text.toLowerCase().contains("innocent") ? Role.Innocent : null;
         if(role == null) return;
-        if(multiplayerEnabled.get()) AsteroideAddon.wss.call("mmmp", playerCount.get().toString(), secret.get(), text, String.valueOf(Math.floor((double) System.currentTimeMillis() / 5000)));
+        if(multiplayerEnabled.get()) AsteroideAddon.wss.call("mmmp", playerCount.get().toString(), secret.get(), text, Registries.BLOCK.getId(mc.world.getBlockState(new BlockPos(0, 64, 0)).getBlock()).toString());
         this.selfRole = role;
-        if(!autoSkipEnabled.get()) return;
+        if(!autoSkipEnabled.get() || multiplayerEnabled.get()) return;
         if(skipIfInnocent.get() && role == Role.Innocent) skip();
         if(skipIfDetective.get() && role == Role.Detective) skip();
         if(skipIfMurderer.get() && role == Role.Murderer) skip();
