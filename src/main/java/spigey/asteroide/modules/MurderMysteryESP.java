@@ -14,6 +14,7 @@ import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
@@ -23,6 +24,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.OpenWrittenBookS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import spigey.asteroide.AsteroideAddon;
@@ -63,8 +66,15 @@ public class MurderMysteryESP extends Module {
 
     private final Setting<SettingColor> itemColor = sgGeneral.add(new ColorSetting.Builder()
         .name("Item ESP Color")
-        .description("ESP Color of the Item")
+        .description("ESP Color of Items")
         .defaultValue(new SettingColor(252, 186, 3, 130))
+        .build()
+    );
+
+    private final Setting<Boolean> blockFalsePositives = sgGeneral.add(new BoolSetting.Builder()
+        .name("Block False Positives")
+        .description("Attempts to block false positives by not rendering ESP for sleeping players")
+        .defaultValue(true)
         .build()
     );
 
@@ -282,6 +292,13 @@ public class MurderMysteryESP extends Module {
         .defaultValue(false)
         .build()
     );
+    private final Setting<String> mpSkipCommand = sgAutoSkip.add(new StringSetting.Builder()
+        .name("Multiplayer Skip Command")
+        .description("Command to use to skip")
+        .defaultValue("/next")
+        .visible(multiplayerEnabled::get)
+        .build()
+    );
     private final Setting<Boolean> isMpHost = sgMultiplayer.add(new BoolSetting.Builder()
         .name("I am host")
         .description("Enable this if you are the party host")
@@ -332,7 +349,7 @@ public class MurderMysteryESP extends Module {
         //String command = this.skipCommand.get();
         //if(command.startsWith("/")) command = command.substring(1);
         //try{ mc.getNetworkHandler().sendChatCommand(command); }
-        try{ ChatUtils.sendPlayerMsg(skipCommand.get()); }
+        try{ ChatUtils.sendPlayerMsg(multiplayerEnabled.get() ? mpSkipCommand.get() : skipCommand.get()); }
         catch(Exception e){/* */}
     }
 
@@ -374,12 +391,11 @@ public class MurderMysteryESP extends Module {
         for(String replacement : decAlias.get()) text = text.toLowerCase().replaceAll(replacement.toLowerCase(), "detective");
         for(String replacement : murderAlias.get()) text = text.toLowerCase().replaceAll(replacement.toLowerCase(), "murder");
 
-        if(multiplayerEnabled.get()) AsteroideAddon.wss.call("mmmp", playerCount.get().toString(), secret.get(), text, String.valueOf(System.currentTimeMillis() / 5000));
-
         Role role = text.toLowerCase().contains("murder") ? Role.Murderer : text.toLowerCase().contains("detective") ? Role.Detective : text.toLowerCase().contains("innocent") ? Role.Innocent : null;
         if(role == null) return;
+        if(multiplayerEnabled.get()) AsteroideAddon.wss.call("mmmp", playerCount.get().toString(), secret.get(), text, Registries.BLOCK.getId(mc.world.getBlockState(new BlockPos(0, 64, 0)).getBlock()).toString());
         this.selfRole = role;
-        if(!autoSkipEnabled.get()) return;
+        if(!autoSkipEnabled.get() || multiplayerEnabled.get()) return;
         if(skipIfInnocent.get() && role == Role.Innocent) skip();
         if(skipIfDetective.get() && role == Role.Detective) skip();
         if(skipIfMurderer.get() && role == Role.Murderer) skip();
@@ -435,7 +451,6 @@ public class MurderMysteryESP extends Module {
             if(entity instanceof ItemEntity && ((ItemEntity) entity).getStack().getItem() == Items.GOLD_INGOT && itemEsp.get()) itemEsp(event, entity);
             if(entity == mc.player && ignoreSelf.get()) continue;
             if(!(entity instanceof PlayerEntity)) continue;
-            String player = ((PlayerEntity) entity).getGameProfile().getName();
             tracers(event, entity);
             drawBoundingBox(event, entity);
         }
@@ -461,6 +476,7 @@ public class MurderMysteryESP extends Module {
         if(role == Role.Murderer && !murdESP.get()) return;
         if(role == Role.Detective && !decESP.get()) return;
         if(role == Role.Innocent && !innESP.get()) return;
+        if(blockFalsePositives.get() && entity.isInPose(EntityPose.SLEEPING)) return;
 
         Color color = getColor(role);
         if(color == null) return;
@@ -478,6 +494,7 @@ public class MurderMysteryESP extends Module {
         if(role == Role.Murderer && !murdTracers.get()) return;
         if(role == Role.Detective && !decTracers.get()) return;
         if(role == Role.Innocent && !(innTracers.get() || (innTracersAsMurd.get() && this.selfRole == Role.Murderer))) return;
+        if(blockFalsePositives.get() && entity.isInPose(EntityPose.SLEEPING)) return;
 
         Color color = getColor(role);
         if(color == null) return;
@@ -507,11 +524,5 @@ public class MurderMysteryESP extends Module {
         Murderer,
         Detective,
         Innocent
-    }
-
-    private enum Action {
-        Slot_0,
-        Attack,
-        Slot_1
     }
 }

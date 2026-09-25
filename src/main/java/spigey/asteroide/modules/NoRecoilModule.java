@@ -5,7 +5,10 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.packet.s2c.play.LookAtS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import spigey.asteroide.AsteroideAddon;
 
 public class NoRecoilModule extends Module {
@@ -43,18 +46,38 @@ public class NoRecoilModule extends Module {
 
     @EventHandler
     private void onPacketReceive(PacketEvent.Receive event) {
-        if(!(event.packet instanceof PlayerPositionLookS2CPacket packet)) return;
-        if(debugMode.get()) info(String.format("Yaw %.2f | Pitch %.2f | Pos %s", packet.change().yaw(), packet.change().pitch(), packet.change().position().toString()));
+        float yaw;
+        float pitch;
+        double multiplierVal = multiplier.get();
 
-        float pitch = packet.change().pitch(); float yaw = packet.change().yaw();
-        if(isInRange(pitch, RotationType.Pitch)) mc.player.setPitch((float) (mc.player.getPitch() - (pitch * multiplier.get())));
-        if(isInRange(yaw, RotationType.Yaw)) mc.player.setYaw((float) (mc.player.getYaw() - (yaw * multiplier.get())));
+        if(event.packet instanceof LookAtS2CPacket packet) {
+            Vec3d target = packet.getTargetPosition(mc.world);
+
+            // God damn mess below
+            double dx = target.x - mc.player.getX();
+            double dz = target.z - mc.player.getZ();
+
+            float targetYaw = (float) (Math.toDegrees(Math.atan2(dz, dx)) - 90.0);
+            float targetPitch = (float) -Math.toDegrees(Math.atan2(target.y - mc.player.getEyeY(), Math.sqrt(dx * dx + dz * dz)));
+
+            yaw = MathHelper.wrapDegrees(targetYaw - mc.player.getYaw());
+            pitch = MathHelper.wrapDegrees(targetPitch - mc.player.getPitch());
+
+            multiplierVal--;
+            event.cancel();
+        } else if(event.packet instanceof PlayerPositionLookS2CPacket packet){
+            yaw = packet.change().yaw();
+            pitch = packet.change().pitch();
+        } else return;
+        if(debugMode.get()) info(String.format("Yaw %.2f | Pitch %.2f", yaw, pitch));
+
+        if(isInRange(pitch, RotationType.Pitch)) mc.player.setPitch((float) (mc.player.getPitch() - (pitch * multiplierVal)));
+        if(isInRange(yaw, RotationType.Yaw)) mc.player.setYaw((float) (mc.player.getYaw() - (yaw * multiplierVal)));
         if(!isInRange(pitch, RotationType.Pitch) && !isInRange(yaw, RotationType.Yaw)) return;
-
         mc.getNetworkHandler().sendPacket(new PlayerMoveC2SPacket.LookAndOnGround(
             // mc.player.getX(), mc.player.getY(), mc.player.getZ(),
-            (float) (mc.player.getYaw() - (yaw * multiplier.get())),
-            (float) (mc.player.getPitch() - (pitch * multiplier.get())),
+            (float) (mc.player.getYaw() - (yaw * multiplierVal)),
+            (float) (mc.player.getPitch() - (pitch * multiplierVal)),
             mc.player.isOnGround(),
             true
         ));
