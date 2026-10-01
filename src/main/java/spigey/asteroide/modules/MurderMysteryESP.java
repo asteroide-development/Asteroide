@@ -292,7 +292,7 @@ public class MurderMysteryESP extends Module {
         .defaultValue(false)
         .build()
     );
-    private final Setting<String> mpSkipCommand = sgAutoSkip.add(new StringSetting.Builder()
+    private final Setting<String> mpSkipCommand = sgMultiplayer.add(new StringSetting.Builder()
         .name("Multiplayer Skip Command")
         .description("Command to use to skip")
         .defaultValue("/next")

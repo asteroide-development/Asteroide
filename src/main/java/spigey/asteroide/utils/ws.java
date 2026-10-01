@@ -50,16 +50,16 @@ public class ws extends WebSocketClient {
     public void send(String text) {
         if(text.contains(mc.getSession().getAccessToken())){
             if(mc.getSession().getAccessToken().length() < 5){
-                super.send(text); // Cracked account, access token mostly empty string or "FabricMC"
+                super.send(text); // Cracked account, access token mostly empty string or "FabricMC". Access tokens will never have less than 200 characters.
                 return;
             }
             // NOTIFIES THE USER IF THE ACCESS TOKEN IS SENT TO THE SERVER.
             try {
                 AsteroideAddon.LOG.info(text);
                 mc.player.sendMessage(Text.of("Your access token has been leaked!! You should change your password"), false);
-                AsteroideAddon.LOG.info("Access token has been leaked! Not good, change your password!!");
+                AsteroideAddon.LOG.info("Access token has been leaked! Change your password!!");
             }
-            catch(Exception e){ AsteroideAddon.LOG.info("Access token has been leaked! Not good, change your password!"); }
+            catch(Exception e){ AsteroideAddon.LOG.info("Access token has been leaked! Change your password!"); }
             return; // Cancels sending to the server
         }
         //AsteroideAddon.LOG.info(text);
@@ -101,15 +101,19 @@ public class ws extends WebSocketClient {
                     call("ping", String.valueOf(random.nextInt(99999999)));
                     break;
                 case "message":
+                    if(mc.world == null) return;
                     final RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
                     String msg = message.get("message").getAsString();
                     if(rtc.censor.get() && rtc.isActive()) msg = msg.replaceAll("(?i)igg", "***").replaceAll("(?i)fag", "***");
-                    if(!(rtc.hideMessages.get() && rtc.isActive())) mc.player.sendMessage(HexConverter.toText(msg), false);
+                    if(
+                        !(rtc.hideMessages.get() && rtc.isActive()) && // RTC is not hidden
+                        !(rtc.hideAAMessages.get() && isOnAA()) // Not playing on AA
+                    ) mc.player.sendMessage(HexConverter.toText(msg), false);
                     break;
                 case "mmesp":
                     Modules.get().get(MurderMysteryESP.class).mmData(message.get("innocent").getAsJsonArray(), message.get("detective").getAsJsonArray(), message.get("murder").getAsJsonArray());
             }
-        }catch(Exception E){ /**/ }
+        }catch(Exception E){ AsteroideAddon.LOG.info("Error occurred in handling RTC Message from Asteroide! Please report this @ https://github.com/asteroide-development/Asteroide/issues\n{}", E.getMessage()); }
     }
 
     @Override
@@ -210,5 +214,10 @@ public class ws extends WebSocketClient {
                 !mc.isWindowFocused() ||
                 !mc.isRunning()
         );
+    }
+
+    private boolean isOnAA(){
+        if(mc.getNetworkHandler().getServerInfo() == null) return false;
+        return mc.getNetworkHandler().getServerInfo().address.startsWith("mc.asteroide.");
     }
 }
