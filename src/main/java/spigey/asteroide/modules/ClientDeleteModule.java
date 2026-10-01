@@ -20,37 +20,13 @@ public class ClientDeleteModule extends Module {
         super(AsteroideAddon.CATEGORY, "Client-Delete", "Deletes blocks on the client side");
     }
 
-    private final SettingGroup sgGeneral = settings.getDefaultGroup();
-
-    private final Setting<Boolean> customInput = sgGeneral.add(new BoolSetting.Builder()
-        .name("custom-keybind")
-        .description("Use a number value as custom keybind.")
-        .defaultValue(false)
-        .build()
-    );
-
-    public Setting<String> keybind = sgGeneral.add(new StringSetting.Builder()
-        .name("custom-keybind")
-        .description("Custom keybind number")
-        .defaultValue("1")
-        .filter((text, c) -> (text + c).matches("^\\d+$"))
-        .visible(customInput::get)
-        .build()
-    );
+    private final SettingGroup sgGeneral = settings.createGroup("General");
+    private final SettingGroup sgVisual = settings.createGroup("Visual");
 
     private final Setting<Keybind> selectionBind = sgGeneral.add(new KeybindSetting.Builder()
         .name("selection bind")
         .description("Bind to draw selection.")
         .defaultValue(Keybind.fromButton(GLFW.GLFW_MOUSE_BUTTON_RIGHT))
-        .visible(() -> !customInput.get())
-        .onChanged((newValue) -> keybind.set(String.valueOf(newValue.getValue())))
-        .build()
-    );
-
-    private final Setting<Boolean> keepActive = sgGeneral.add(new BoolSetting.Builder()
-        .name("keep-active")
-        .description("Keep the module active after deleting a block.")
-        .defaultValue(true)
         .build()
     );
 
@@ -61,21 +37,35 @@ public class ClientDeleteModule extends Module {
         .build()
     );
 
-    private final Setting<ShapeMode> shapeMode = sgGeneral.add(new EnumSetting.Builder<ShapeMode>()
+    private final Setting<Boolean> keepActive = sgGeneral.add(new BoolSetting.Builder()
+        .name("keep-active")
+        .description("Keep the module active after deleting a block.")
+        .defaultValue(true)
+        .build()
+    );
+
+    private final Setting<Boolean> allowTargetingAir = sgGeneral.add(new BoolSetting.Builder()
+        .name("Allow Targeting Air")
+        .description("Allows you to target air")
+        .defaultValue(false)
+        .build()
+    );
+
+    private final Setting<ShapeMode> shapeMode = sgVisual.add(new EnumSetting.Builder<ShapeMode>()
         .name("shape-mode")
         .description("How the shapes are rendered.")
         .defaultValue(ShapeMode.Both)
         .build()
     );
 
-    private final Setting<SettingColor> sideColor = sgGeneral.add(new ColorSetting.Builder()
+    private final Setting<SettingColor> sideColor = sgVisual.add(new ColorSetting.Builder()
         .name("side-color")
         .description("The side color.")
         .defaultValue(new SettingColor(255, 255, 255, 50))
         .build()
     );
 
-    private final Setting<SettingColor> lineColor = sgGeneral.add(new ColorSetting.Builder()
+    private final Setting<SettingColor> lineColor = sgVisual.add(new ColorSetting.Builder()
         .name("line-color")
         .description("The line color.")
         .defaultValue(new SettingColor(255, 255, 255, 255))
@@ -84,9 +74,8 @@ public class ClientDeleteModule extends Module {
 
     @EventHandler
     private void onKey(MouseButtonEvent event){
-        int bind = customInput.get() ? Integer.parseInt(keybind.get()) : selectionBind.get().getValue();
-        if(!(event.action == KeyAction.Press || (allowHolding.get() && event.action == KeyAction.Repeat)) || mc.currentScreen != null || event.button != bind) return;
-        if (!(mc.crosshairTarget instanceof BlockHitResult result)) return;
+        if(!(event.action == KeyAction.Press || (allowHolding.get() && event.action == KeyAction.Repeat)) || mc.currentScreen != null || event.button != selectionBind.get().getValue()) return;
+        if(!(mc.crosshairTarget instanceof BlockHitResult result)) return;
         mc.world.setBlockState(result.getBlockPos(), Blocks.AIR.getDefaultState());
         if(!keepActive.get()) toggle();
         event.cancel();
@@ -94,9 +83,8 @@ public class ClientDeleteModule extends Module {
 
     @EventHandler
     private void onKey(KeyEvent event){
-        int bind = customInput.get() ? Integer.parseInt(keybind.get()) : selectionBind.get().getValue();
-        if(!(event.action == KeyAction.Press || (allowHolding.get() && event.action == KeyAction.Repeat)) || mc.currentScreen != null || event.key != bind) return;
-        if (!(mc.crosshairTarget instanceof BlockHitResult result)) return;
+        if(!(event.action == KeyAction.Press || (allowHolding.get() && event.action == KeyAction.Repeat)) || mc.currentScreen != null || event.key != selectionBind.get().getValue()) return;
+        if(!(mc.crosshairTarget instanceof BlockHitResult result)) return;
         mc.world.setBlockState(result.getBlockPos(), Blocks.AIR.getDefaultState());
         if(!keepActive.get()) toggle();
         event.cancel();
@@ -104,7 +92,8 @@ public class ClientDeleteModule extends Module {
 
     @EventHandler
     private void onRender3D(Render3DEvent event) {
-        if (!(mc.crosshairTarget instanceof BlockHitResult result)) return;
+        if(!(mc.crosshairTarget instanceof BlockHitResult result)) return;
+        if(mc.world.getBlockState(result.getBlockPos()).isAir() && !allowTargetingAir.get()) return;
         event.renderer.box(result.getBlockPos(), sideColor.get(), lineColor.get(), shapeMode.get(), 0);
     }
 }
