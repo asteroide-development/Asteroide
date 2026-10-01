@@ -48,7 +48,6 @@ public class RTCCommand extends Command {
             rtc.hideMessages.set(willHide);
             if(!rtc.isActive()) rtc.toggle();
             info("§fRTC messages are now " + (willHide ? "§c§lHIDDEN" : "§a§lSHOWN") + "§f. Type §7.rtc hide§f again to " + (willHide ? "show" : "hide") + "§f them.");
-            AsteroideAddon.showRtc = !willHide;
             return SINGLE_SUCCESS;
         }));
         builder.then(literal("discord").executes(ctx ->{

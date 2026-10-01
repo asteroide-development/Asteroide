@@ -79,7 +79,13 @@ public class RTCSettingsModule extends Module {
         .name("Hide RTC Messages")
         .description("Hides all messages received from the RTC.")
         .defaultValue(false)
-        .onChanged((value) -> AsteroideAddon.showRtc = !(value && isActive()))
+        .build()
+    );
+
+    public final Setting<Boolean> hideAAMessages = sgSettings.add(new BoolSetting.Builder()
+        .name("Hide RTC on Asteroide Anarchy")
+        .description("Hides RTC Messages while playing on mc.asteroid.cc")
+        .defaultValue(true)
         .build()
     );
 

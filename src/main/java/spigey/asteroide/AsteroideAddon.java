@@ -31,12 +31,10 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
@@ -53,9 +51,6 @@ public class AsteroideAddon extends MeteorAddon {
     public static List<String> notInsults = new ArrayList<>();
     public static Set<String> users = new HashSet<>();
     public static ws wss = null;
-
-    public static boolean showRtc = false;
-
     public static boolean attemptConnect(String uri) {
         RTCSettingsModule rtc = Modules.get().get(RTCSettingsModule.class);
         //LOG.info(String.format("%b %b", !rtc.connect.get(), rtc.isActive()));
@@ -176,8 +171,6 @@ public class AsteroideAddon extends MeteorAddon {
         hud.register(SpoofedIPHUD.INFO);
         hud.register(MinehutIPHud.INFO);
         hud.register(ImageHUD.INFO);
-
-        showRtc = !(Modules.get().get(RTCSettingsModule.class).isActive() && Modules.get().get(RTCSettingsModule.class).hideMessages.get());
         ChatUtils.registerCustomPrefix("spigey.asteroide.modules", this::getPrefix);
 
         if(!attemptConnect("ws://rtc.asteroide.cc/")) attemptConnect("wss://rtc.asteroide.fun/");
@@ -224,5 +217,5 @@ public class AsteroideAddon extends MeteorAddon {
     }
     @Override public GithubRepo getRepo() { return new GithubRepo("asteroide-development", "Asteroide"); }
     @Override public String getWebsite() { return "https://www.asteroide.cc/"; }
-    @Override public String getCommit() { return "d99742cf8cfed610ddb1e5ff5cd9041dca39d973"; } // Crashes when I try to do it dynamically, requires any commit for the website & GitHub to be clickable
+    @Override public String getCommit() { return "d99742cf8cfed610ddb1e5ff5cd9041dca39d973"; } // Too lazy to make this auto update
 }
