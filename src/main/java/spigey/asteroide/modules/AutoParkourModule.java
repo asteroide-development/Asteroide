@@ -13,6 +13,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import spigey.asteroide.AsteroideAddon;
+import spigey.asteroide.utils.RandUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class AutoParkourModule extends Module {
     private final SettingGroup sgGeneral = settings.createGroup("General");
     private final SettingGroup sgRange = settings.createGroup("Range");
     private final SettingGroup sgOffset = settings.createGroup("Offset");
+    private final SettingGroup sgDelay = settings.createGroup("Delay");
     private final Setting<Boolean> flightKick = sgGeneral.add(new BoolSetting.Builder()
         .name("Anti Flight Kick")
         .description("Attempts to prevent getting kicked for flying.")
@@ -49,14 +51,6 @@ public class AutoParkourModule extends Module {
         .name("Sort Mode")
         .description("Whitelist, Blacklist or All blocks.")
         .defaultValue(SortMode.Nearest)
-        .build()
-    );
-    private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
-        .name("Delay")
-        .description("Delay between teleports in ticks.")
-        .defaultValue(5)
-        .min(0)
-        .sliderMax(20)
         .build()
     );
 
@@ -85,7 +79,6 @@ public class AutoParkourModule extends Module {
         .build()
     );
 
-
     private final Setting<Double> offsetX = sgOffset.add(new DoubleSetting.Builder()
         .name("X")
         .description("X Offset")
@@ -110,6 +103,14 @@ public class AutoParkourModule extends Module {
         .sliderMax(2)
         .build()
     );
+
+    private enum DelayMode { Random, Precise }
+    private enum DelayUnit { Ticks, Seconds, Minutes, Hours, Days }
+    private final Setting<Integer> delay = sgDelay.add(new IntSetting.Builder().name("Delay").description("Delay between teleports in ticks.").defaultValue(3).min(0).sliderMax(200).build());
+    private final Setting<DelayMode> delayMode = sgDelay.add(new EnumSetting.Builder<DelayMode>().name("Delay Mode").description("Random or precise?").defaultValue(DelayMode.Precise).build());
+    private final Setting<DelayUnit> delayUnit = sgDelay.add(new EnumSetting.Builder<DelayUnit>().name("Delay Unit").description("Time unit to use for delay.").defaultValue(DelayUnit.Ticks).build());
+    private final Setting<Integer> minOffset = sgDelay.add(new IntSetting.Builder().name("Min Offset").description("Minimum offset of random delay.").defaultValue(5).visible(() -> delayMode.get() == DelayMode.Random).min(0).sliderMax(10).build());
+    private final Setting<Integer> maxOffset = sgDelay.add(new IntSetting.Builder().name("Max Offset").description("Maximum offset of random delay.").defaultValue(5).visible(() -> delayMode.get() == DelayMode.Random).min(0).sliderMax(10).build());
 
     private int tick = 0;
     private List<BlockPos> blocked = new ArrayList<>();
@@ -145,7 +146,7 @@ public class AutoParkourModule extends Module {
         blocked.add(mc.player.getBlockPos());
         blocked.add(candidates.get(0));
         mc.player.setPosition(candidates.get(0).getX() + offsetX.get(), candidates.get(0).getY() + offsetY.get(), candidates.get(0).getZ() + offsetZ.get());
-        this.tick = delay.get();
+        this.tick = getDelay();
     }
 
     private boolean canMove(BlockPos to){
@@ -153,5 +154,18 @@ public class AutoParkourModule extends Module {
         if(blocks.get().contains(block.getBlock()) && mode.get() == Mode.Blacklist) return false;
         for(BlockPos pos : blocked) if(pos.getX() == to.getX() && pos.getZ() == to.getZ()) return false;
         return (mode.get() == Mode.All || (mode.get() == Mode.Whitelist) == blocks.get().contains(block.getBlock())) && !block.isAir();
+    }
+
+    private int getDelay(){
+        int base = delay.get();
+        if(delayMode.get() == DelayMode.Random) base = RandUtils.withOffset(base, minOffset.get(), maxOffset.get());
+        switch (delayUnit.get()){
+            case Ticks -> { return base; }
+            case Seconds -> { return base * 20; }
+            case Minutes -> { return base * 20 * 60; }
+            case Hours -> { return base * 20 * 60 * 60; }
+            case Days -> { return base * 20 * 60 * 60 * 24; }
+        }
+        return base;
     }
 }
